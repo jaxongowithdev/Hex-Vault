@@ -1,0 +1,45 @@
+name: user_screen
+description: "Larder Haven - Map kitchen shelves, catalog pantry staples, and know what to restock. Completely offline."
+version: 1.0.0+2
+
+environment:
+  sdk: '>=3.4.0 <4.0.0'
+  flutter: '>=3.32.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Fonts
+  google_fonts: ^6.1.0
+
+  # Storage
+  sqflite: ^2.3.0
+  path_provider: ^2.1.1
+  path: ^1.8.3
+
+  # Date formatting
+  intl: ^0.19.0
+
+  # Shared Preferences
+  shared_preferences: ^2.2.2
+
+  # UUID generation
+  uuid: ^4.5.1
+
+  # Image picker
+  image_picker: ^1.1.2
+
+  # File picker
+  file_picker: ^8.1.6
+
+  # Share
+  share_plus: ^10.1.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true

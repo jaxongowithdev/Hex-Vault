@@ -1,0 +1,37 @@
+APP NAME
+Larder Haven
+
+SUBTITLE
+Map your pantry shelves
+
+KEYWORDS
+pantry,kitchen,larder,spice,grocery,stock,jar,shelf,food,restock,organize,offline
+
+PROMOTION
+Catalog jars, spices, and dry goods by shelf. See what is low before you shop. Private, offline, and built for a real kitchen.
+
+DESCRIPTION
+Larder Haven is a quiet kitchen catalog for people who cook from what they already have.
+
+Map every larder in the house — the spice drawer, the baking bay, the freezer door, the overflow cupboard — then file each staple where it actually lives. When you wonder whether you still have smoked paprika or a second bag of oats, search once instead of opening every door.
+
+What you can do
+• Create named larders with a shelf mark, kitchen zone, and bay
+• File staples by aisle: grains, spices, oils, canned, baking, tea, and more
+• Mark stock as Fresh, Opened, Low, or Expired
+• Attach a label photo from the camera or your album
+• Pin weekly staples you reach for again and again
+• Reshelve a jar from one larder to another and keep a short note
+• See a kitchen snapshot: how many larders are in use, which aisles are fullest
+• Export or restore the whole catalog as a JSON file
+
+Why it is different
+Larder Haven is not a shopping list and not a generic box inventory. It is a pantry map. The language, layout, and categories are written for a working kitchen: zones instead of rooms, bays instead of warehouse racks, stock status instead of “used or damaged.”
+
+Private by design
+Everything stays on your iPhone. There is no account, no cloud sync, and no grocery feed. Open the app offline and the same shelves are still there.
+
+Who it is for
+Home cooks who buy in bulk, households that share a pantry, anyone tired of buying a third bottle of soy sauce. Start with one drawer. Grow it into a full kitchen map.
+
+Larder Haven — know the shelf before you write the list.
