@@ -6,7 +6,6 @@ import 'config_view.dart';
 
 class DashboardView extends StatefulWidget {
   final VoidCallback onSettingsChanged;
-
   const DashboardView({super.key, required this.onSettingsChanged});
 
   @override
@@ -34,27 +33,27 @@ class _DashboardViewState extends State<DashboardView> {
       body: IndexedStack(index: _selectedIndex, children: _screens),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
-        onDestinationSelected: (index) => setState(() => _selectedIndex = index),
+        onDestinationSelected: (i) => setState(() => _selectedIndex = i),
         destinations: const [
           NavigationDestination(
-            icon: Icon(Icons.weekend_outlined),
-            selectedIcon: Icon(Icons.weekend),
-            label: 'Lounge',
+            icon: Icon(Icons.chair_outlined),
+            selectedIcon: Icon(Icons.chair),
+            label: 'Studio',
           ),
           NavigationDestination(
-            icon: Icon(Icons.album_outlined),
-            selectedIcon: Icon(Icons.album),
-            label: 'Crates',
+            icon: Icon(Icons.shopping_basket_outlined),
+            selectedIcon: Icon(Icons.shopping_basket),
+            label: 'Baskets',
           ),
           NavigationDestination(
-            icon: Icon(Icons.graphic_eq),
-            selectedIcon: Icon(Icons.graphic_eq),
-            label: 'Spin',
+            icon: Icon(Icons.straighten_outlined),
+            selectedIcon: Icon(Icons.straighten),
+            label: 'Gauge',
           ),
           NavigationDestination(
-            icon: Icon(Icons.tune),
-            selectedIcon: Icon(Icons.tune),
-            label: 'Booth',
+            icon: Icon(Icons.carpenter_outlined),
+            selectedIcon: Icon(Icons.carpenter),
+            label: 'Bench',
           ),
         ],
       ),

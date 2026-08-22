@@ -1,3 +1,3 @@
-# Vinyl Folio
+# Stash Loom
 
-Offline record folio. Burgundy / gold / ivory UI, Playfair Display + Figtree. Music App Store category. Listing copy in `meta-data-apple-store.txt`.
+Offline yarn stash map. Sage / dusty rose / clay UI, Newsreader + Karla. Lifestyle App Store category. Listing copy in `meta-data-apple-store.txt`.

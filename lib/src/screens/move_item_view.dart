@@ -38,9 +38,7 @@ class _MoveItemViewState extends State<MoveItemView> {
     setState(() => _isLoading = true);
     try {
       final current = await _storage.getContainer(widget.item.containerId);
-      final others = (await _storage.getAllContainers())
-          .where((c) => c.id != widget.item.containerId)
-          .toList();
+      final others = (await _storage.getAllContainers()).where((c) => c.id != widget.item.containerId).toList();
       final counts = <int, int>{};
       for (final c in others) {
         counts[c.id!] = await _storage.getItemCountInContainer(c.id!);
@@ -59,7 +57,7 @@ class _MoveItemViewState extends State<MoveItemView> {
 
   Future<void> _moveItem() async {
     if (_selectedContainer == null) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Pick a destination crate')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Pick a destination basket')));
       return;
     }
     final destCount = _itemCounts[_selectedContainer!.id] ?? 0;
@@ -67,7 +65,7 @@ class _MoveItemViewState extends State<MoveItemView> {
       final confirm = await showDialog<bool>(
         context: context,
         builder: (_) => AlertDialog(
-          title: const Text('That crate is full'),
+          title: const Text('That basket is full'),
           content: Text('"${_selectedContainer!.name}" has no open slots. File it anyway?'),
           actions: [
             TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Cancel')),
@@ -92,7 +90,7 @@ class _MoveItemViewState extends State<MoveItemView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Reshelve')),
+      appBar: AppBar(title: const Text('Rewind')),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : ListView(
@@ -104,9 +102,9 @@ class _MoveItemViewState extends State<MoveItemView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('MOVING', style: TextStyle(color: VisualTheme.secondaryColor, fontWeight: FontWeight.w800, letterSpacing: 1.4, fontSize: 11)),
+                        const Text('MOVING', style: TextStyle(color: VisualTheme.secondaryColor, fontWeight: FontWeight.w800, letterSpacing: 1.2, fontSize: 11)),
                         const SizedBox(height: 6),
-                        Text(widget.item.name, style: GoogleFonts.playfairDisplay(fontSize: 24, fontWeight: FontWeight.w600)),
+                        Text(widget.item.name, style: GoogleFonts.newsreader(fontSize: 24, fontWeight: FontWeight.w600)),
                         Text('${widget.item.category} · ${widget.item.quantity}'),
                       ],
                     ),
@@ -115,25 +113,24 @@ class _MoveItemViewState extends State<MoveItemView> {
                 const SizedBox(height: 10),
                 Container(
                   padding: const EdgeInsets.all(14),
-                  decoration: BoxDecoration(color: VisualTheme.primaryColor, borderRadius: BorderRadius.circular(16)),
+                  decoration: BoxDecoration(color: VisualTheme.primaryColor, borderRadius: BorderRadius.circular(20)),
                   child: Text(
-                    'Now in ${_currentContainer?.name ?? 'unknown'}'
-                    '${_currentContainer != null ? ' · ${_currentContainer!.room}' : ''}',
+                    'Now in ${_currentContainer?.name ?? 'unknown'}${_currentContainer != null ? ' · ${_currentContainer!.room}' : ''}',
                     style: const TextStyle(color: Colors.white),
                   ),
                 ),
                 const SizedBox(height: 22),
-                Text('Move into', style: GoogleFonts.playfairDisplay(fontSize: 22, fontWeight: FontWeight.w600)),
+                Text('Move into', style: GoogleFonts.newsreader(fontSize: 22, fontWeight: FontWeight.w600)),
                 const SizedBox(height: 10),
                 if (_containers == null || _containers!.isEmpty)
-                  const Card(child: Padding(padding: EdgeInsets.all(28), child: Center(child: Text('No other crates yet'))))
+                  const Card(child: Padding(padding: EdgeInsets.all(28), child: Center(child: Text('No other baskets yet'))))
                 else
                   ..._containers!.map((c) {
                     final count = _itemCounts[c.id] ?? 0;
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 8),
                       child: Card(
-                        color: _selectedContainer?.id == c.id ? VisualTheme.linen : null,
+                        color: _selectedContainer?.id == c.id ? VisualTheme.blush : null,
                         child: RadioListTile<int>(
                           value: c.id!,
                           groupValue: _selectedContainer?.id,
@@ -148,11 +145,7 @@ class _MoveItemViewState extends State<MoveItemView> {
                 TextField(
                   key: const ValueKey('move_notes_field'),
                   controller: _notesController,
-                  decoration: const InputDecoration(
-                    labelText: 'Why the move?',
-                    hintText: 'e.g., Closer to the turntable',
-                    prefixIcon: Icon(Icons.notes),
-                  ),
+                  decoration: const InputDecoration(labelText: 'Why the move?', hintText: 'e.g., Starting the cardigan', prefixIcon: Icon(Icons.notes)),
                   maxLines: 2,
                 ),
                 const SizedBox(height: 22),
@@ -160,7 +153,7 @@ class _MoveItemViewState extends State<MoveItemView> {
                   key: const ValueKey('confirm_move_button'),
                   onPressed: _selectedContainer == null ? null : _moveItem,
                   icon: const Icon(Icons.swap_horiz),
-                  label: const Text('Reshelve pressing'),
+                  label: const Text('Rewind skein'),
                 ),
               ],
             ),

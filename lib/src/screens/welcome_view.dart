@@ -15,42 +15,36 @@ class _WelcomeViewState extends State<WelcomeView> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
-  final List<Map<String, dynamic>> _pages = [
+  final _pages = [
     {
-      'icon': Icons.album,
-      'title': 'A quieter record folio',
-      'description':
-          'Map every crate in the den. Know which pressing lives on which shelf before you flip for twenty minutes.',
+      'icon': Icons.volunteer_activism,
+      'title': 'Your stash, finally mapped',
+      'description': 'Give every basket a home. Know which wool lives in which drawer before you start another sweater.',
     },
     {
       'icon': Icons.photo_outlined,
-      'title': 'Keep the sleeve in view',
-      'description':
-          'Photograph the cover or the dead-wax so you remember the exact pressing you own.',
+      'title': 'Photograph the fiber',
+      'description': 'Snap the label or the cake so you remember the dye lot, the yardage, and the brand.',
     },
     {
       'icon': Icons.search,
-      'title': 'Find the cut, not the pile',
-      'description':
-          'Search an artist, a label, or a scribbled note and see the crate immediately.',
+      'title': 'Find the skein, not the pile',
+      'description': 'Search merino, sock, or a project name and see the basket immediately.',
     },
     {
       'icon': Icons.lock_outline,
-      'title': 'The collection stays here',
-      'description':
-          'No account, no cloud, no marketplace. The folio lives only on this phone.',
+      'title': 'The studio stays private',
+      'description': 'No account, no cloud, no yarn ads. The stash lives only on this phone.',
     },
   ];
 
-  Future<void> _finishOnboarding() async {
+  Future<void> _finish() async {
     final storage = StorageManager.instance;
     final prefs = await storage.getPreferences();
     await storage.updatePreferences(prefs.copyWith(showOnboarding: false));
     if (mounted) {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => DashboardView(onSettingsChanged: () {}),
-        ),
+        MaterialPageRoute(builder: (_) => DashboardView(onSettingsChanged: () {})),
       );
     }
   }
@@ -58,44 +52,46 @@ class _WelcomeViewState extends State<WelcomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: VisualTheme.ivory,
+      backgroundColor: VisualTheme.blush,
       body: SafeArea(
         child: Column(
           children: [
             Align(
               alignment: Alignment.centerRight,
-              child: TextButton(
-                onPressed: _finishOnboarding,
-                child: const Text('Skip'),
-              ),
+              child: TextButton(onPressed: _finish, child: const Text('Skip')),
             ),
             Expanded(
               child: PageView.builder(
                 controller: _pageController,
-                onPageChanged: (index) => setState(() => _currentPage = index),
+                onPageChanged: (i) => setState(() => _currentPage = i),
                 itemCount: _pages.length,
                 itemBuilder: (context, index) {
                   final page = _pages[index];
                   return Padding(
-                    padding: const EdgeInsets.fromLTRB(32, 12, 32, 12),
+                    padding: const EdgeInsets.fromLTRB(28, 8, 28, 8),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Spacer(),
-                        Icon(page['icon'] as IconData, size: 64, color: VisualTheme.primaryColor),
+                        Container(
+                          width: 96,
+                          height: 96,
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(page['icon'] as IconData, size: 42, color: VisualTheme.secondaryColor),
+                        ),
                         const SizedBox(height: 28),
                         Text(
                           page['title'] as String,
-                          style: GoogleFonts.playfairDisplay(
-                            fontSize: 36,
-                            height: 1.15,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.newsreader(fontSize: 34, height: 1.15, fontWeight: FontWeight.w600),
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 14),
                         Text(
                           page['description'] as String,
-                          style: GoogleFonts.figtree(fontSize: 17, height: 1.5),
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.karla(fontSize: 16, height: 1.5),
                         ),
                         const Spacer(),
                       ],
@@ -110,15 +106,13 @@ class _WelcomeViewState extends State<WelcomeView> {
                 children: [
                   ...List.generate(
                     _pages.length,
-                    (index) => Container(
+                    (i) => Container(
                       margin: const EdgeInsets.only(right: 6),
-                      width: _currentPage == index ? 20 : 7,
-                      height: 7,
+                      width: 8,
+                      height: 8,
                       decoration: BoxDecoration(
-                        color: _currentPage == index
-                            ? VisualTheme.primaryColor
-                            : VisualTheme.linen,
-                        borderRadius: BorderRadius.circular(8),
+                        color: _currentPage == i ? VisualTheme.secondaryColor : Colors.white,
+                        shape: BoxShape.circle,
                       ),
                     ),
                   ),
@@ -126,15 +120,12 @@ class _WelcomeViewState extends State<WelcomeView> {
                   FilledButton(
                     onPressed: () {
                       if (_currentPage == _pages.length - 1) {
-                        _finishOnboarding();
+                        _finish();
                       } else {
-                        _pageController.nextPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeOut,
-                        );
+                        _pageController.nextPage(duration: const Duration(milliseconds: 280), curve: Curves.easeOut);
                       }
                     },
-                    child: Text(_currentPage == _pages.length - 1 ? 'Open the folio' : 'Continue'),
+                    child: Text(_currentPage == _pages.length - 1 ? 'Open the studio' : 'Next'),
                   ),
                 ],
               ),

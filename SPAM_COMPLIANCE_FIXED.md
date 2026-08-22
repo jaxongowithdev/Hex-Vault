@@ -1,3 +1,3 @@
 # Listing notes
 
-This project is Vinyl Folio (`com.app.vinylfolio.build`), a record-collection catalog. Copy, palette, icon, bundle ID, and onboarding are original to this product.
+This project is Stash Loom (`com.app.stashloom.build`), a yarn-stash catalog. Copy, palette, icon, bundle ID, and onboarding are original to this product.

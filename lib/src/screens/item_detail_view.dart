@@ -56,7 +56,7 @@ class _ItemDetailViewState extends State<ItemDetailView> {
     setState(() => _item = updated);
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(updated.isFavorite ? 'Pinned to the rotation' : 'Removed from the rotation'),
+        content: Text(updated.isFavorite ? 'Pinned to the current project' : 'Removed from the current project'),
         duration: const Duration(seconds: 1),
       ));
     }
@@ -66,15 +66,11 @@ class _ItemDetailViewState extends State<ItemDetailView> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('Remove this pressing?'),
-        content: const Text('It will leave the folio.'),
+        title: const Text('Remove this skein?'),
+        content: const Text('It will leave the stash.'),
         actions: [
           TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Keep')),
-          FilledButton(
-            onPressed: () => Navigator.pop(context, true),
-            style: FilledButton.styleFrom(backgroundColor: Colors.red),
-            child: const Text('Remove'),
-          ),
+          FilledButton(onPressed: () => Navigator.pop(context, true), style: FilledButton.styleFrom(backgroundColor: Colors.red), child: const Text('Remove')),
         ],
       ),
     );
@@ -86,12 +82,8 @@ class _ItemDetailViewState extends State<ItemDetailView> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
-      return Scaffold(appBar: AppBar(), body: const Center(child: CircularProgressIndicator()));
-    }
-    if (_item == null) {
-      return Scaffold(appBar: AppBar(), body: const Center(child: Text('Pressing not found')));
-    }
+    if (_isLoading) return Scaffold(appBar: AppBar(), body: const Center(child: CircularProgressIndicator()));
+    if (_item == null) return Scaffold(appBar: AppBar(), body: const Center(child: Text('Skein not found')));
 
     return Scaffold(
       appBar: AppBar(
@@ -99,26 +91,21 @@ class _ItemDetailViewState extends State<ItemDetailView> {
         actions: [
           IconButton(
             key: const ValueKey('favorite_toggle'),
-            icon: Icon(
-              _item!.isFavorite ? Icons.favorite : Icons.favorite_border,
-              color: _item!.isFavorite ? VisualTheme.primaryColor : null,
-            ),
+            icon: Icon(_item!.isFavorite ? Icons.favorite : Icons.favorite_border, color: _item!.isFavorite ? VisualTheme.secondaryColor : null),
             onPressed: _toggleFavorite,
           ),
           PopupMenuButton(
             itemBuilder: (_) => const [
-              PopupMenuItem(value: 'move', child: Text('Move to another crate')),
-              PopupMenuItem(value: 'edit', child: Text('Edit pressing')),
-              PopupMenuItem(value: 'delete', child: Text('Remove pressing')),
+              PopupMenuItem(value: 'move', child: Text('Move to another basket')),
+              PopupMenuItem(value: 'edit', child: Text('Edit skein')),
+              PopupMenuItem(value: 'delete', child: Text('Remove skein')),
             ],
-            onSelected: (value) {
-              if (value == 'move') {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => MoveItemView(item: _item!)))
-                    .then((r) { if (r == true) _loadData(); });
-              } else if (value == 'edit') {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => ItemFormView(item: _item)))
-                    .then((r) { if (r == true) _loadData(); });
-              } else if (value == 'delete') {
+            onSelected: (v) {
+              if (v == 'move') {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => MoveItemView(item: _item!))).then((r) { if (r == true) _loadData(); });
+              } else if (v == 'edit') {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => ItemFormView(item: _item))).then((r) { if (r == true) _loadData(); });
+              } else if (v == 'delete') {
                 _deleteItem();
               }
             },
@@ -136,39 +123,27 @@ class _ItemDetailViewState extends State<ItemDetailView> {
                 children: [
                   if (_item!.photoPath != null && _item!.photoPath!.isNotEmpty) ...[
                     ClipRRect(
-                      borderRadius: BorderRadius.circular(14),
+                      borderRadius: BorderRadius.circular(20),
                       child: Image.file(
                         File(_item!.photoPath!),
                         height: 200,
                         width: double.infinity,
                         fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => Container(
-                          height: 140,
-                          color: VisualTheme.linen,
-                          child: const Center(child: Icon(Icons.broken_image)),
-                        ),
+                        errorBuilder: (_, __, ___) => Container(height: 140, color: VisualTheme.blush, child: const Center(child: Icon(Icons.broken_image))),
                       ),
                     ),
                     const SizedBox(height: 14),
                   ],
-                  Text(
-                    _item!.category.toUpperCase(),
-                    style: TextStyle(
-                      color: VisualTheme.getCategoryColor(_item!.category),
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 1.2,
-                      fontSize: 11,
-                    ),
-                  ),
+                  Text(_item!.category.toUpperCase(), style: TextStyle(color: VisualTheme.getCategoryColor(_item!.category), fontWeight: FontWeight.w800, letterSpacing: 1.1, fontSize: 11)),
                   const SizedBox(height: 6),
-                  Text(_item!.name, style: GoogleFonts.playfairDisplay(fontSize: 28, fontWeight: FontWeight.w600)),
+                  Text(_item!.name, style: GoogleFonts.newsreader(fontSize: 28, fontWeight: FontWeight.w600)),
                   const SizedBox(height: 14),
-                  _row('Copies', _item!.quantity.toString()),
-                  _row('Grade', _item!.condition),
-                  if (_item!.estimatedValue != null) _row('Value', '\$${_item!.estimatedValue}'),
+                  _row('Count', _item!.quantity.toString()),
+                  _row('State', _item!.condition),
+                  if (_item!.estimatedValue != null) _row('Cost', '\$${_item!.estimatedValue}'),
                   if (_item!.notes != null && _item!.notes!.isNotEmpty) ...[
                     const SizedBox(height: 10),
-                    const Text('Sleeve note', style: TextStyle(fontWeight: FontWeight.w800)),
+                    const Text('Project note', style: TextStyle(fontWeight: FontWeight.w800)),
                     const SizedBox(height: 4),
                     Text(_item!.notes!),
                   ],
@@ -179,21 +154,12 @@ class _ItemDetailViewState extends State<ItemDetailView> {
           const SizedBox(height: 12),
           Card(
             child: ListTile(
-              leading: const Icon(Icons.album_outlined),
-              title: Text(_container?.name ?? 'Unknown crate'),
-              subtitle: _container != null
-                  ? Text('${_container!.room} · ${_container!.shelf}\nMark: ${_container!.code}')
-                  : null,
+              leading: const Icon(Icons.shopping_basket_outlined),
+              title: Text(_container?.name ?? 'Unknown basket'),
+              subtitle: _container != null ? Text('${_container!.room} · ${_container!.shelf}\nTag: ${_container!.code}') : null,
               isThreeLine: _container != null,
               trailing: const Icon(Icons.chevron_right),
-              onTap: _container == null
-                  ? null
-                  : () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => ContainerDetailView(containerId: _container!.id!),
-                        ),
-                      ),
+              onTap: _container == null ? null : () => Navigator.push(context, MaterialPageRoute(builder: (_) => ContainerDetailView(containerId: _container!.id!))),
             ),
           ),
         ],
@@ -204,12 +170,7 @@ class _ItemDetailViewState extends State<ItemDetailView> {
   Widget _row(String label, String value) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 6),
-      child: Row(
-        children: [
-          SizedBox(width: 80, child: Text(label)),
-          Text(value, style: const TextStyle(fontWeight: FontWeight.w800)),
-        ],
-      ),
+      child: Row(children: [SizedBox(width: 80, child: Text(label)), Text(value, style: const TextStyle(fontWeight: FontWeight.w800))]),
     );
   }
 }

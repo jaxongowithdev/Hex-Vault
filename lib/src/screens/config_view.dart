@@ -48,16 +48,12 @@ class _ConfigViewState extends State<ConfigView> {
       final data = await _storage.exportData();
       final jsonString = const JsonEncoder.withIndent('  ').convert(data);
       await Share.shareXFiles(
-        [XFile.fromData(Uint8List.fromList(jsonString.codeUnits), mimeType: 'application/json', name: 'vinyl_folio_${DateTime.now().millisecondsSinceEpoch}.json')],
-        text: 'Vinyl Folio catalog',
+        [XFile.fromData(Uint8List.fromList(jsonString.codeUnits), mimeType: 'application/json', name: 'stash_loom_${DateTime.now().millisecondsSinceEpoch}.json')],
+        text: 'Stash Loom catalog',
       );
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Folio exported')));
-      }
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Stash exported')));
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Could not export: $e')));
-      }
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Could not export: $e')));
     }
   }
 
@@ -65,8 +61,8 @@ class _ConfigViewState extends State<ConfigView> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('Restore a folio?'),
-        content: const Text('The current crates will be replaced by the file you pick.'),
+        title: const Text('Restore a stash?'),
+        content: const Text('The current baskets will be replaced by the file you pick.'),
         actions: [
           TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Cancel')),
           FilledButton(onPressed: () => Navigator.pop(context, true), child: const Text('Restore')),
@@ -79,22 +75,18 @@ class _ConfigViewState extends State<ConfigView> {
       if (result == null || result.files.isEmpty || result.files.first.bytes == null) return;
       final data = jsonDecode(String.fromCharCodes(result.files.first.bytes!)) as Map<String, dynamic>;
       await _storage.importData(data);
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Folio restored')));
-      }
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Stash restored')));
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Could not restore: $e')));
-      }
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Could not restore: $e')));
     }
   }
 
   String _themeLabel(String theme) {
     switch (theme) {
       case 'light':
-        return 'Listening light';
+        return 'Daylight studio';
       case 'dark':
-        return 'After hours';
+        return 'Evening knit';
       default:
         return 'Match the phone';
     }
@@ -103,19 +95,19 @@ class _ConfigViewState extends State<ConfigView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Booth')),
+      appBar: AppBar(title: const Text('Bench')),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 28),
         children: [
           Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(color: VisualTheme.primaryColor, borderRadius: BorderRadius.circular(20)),
+            padding: const EdgeInsets.all(22),
+            decoration: BoxDecoration(color: VisualTheme.primaryColor, borderRadius: BorderRadius.circular(28)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Vinyl Folio', style: GoogleFonts.playfairDisplay(color: Colors.white, fontSize: 28, fontWeight: FontWeight.w600)),
+                Text('Stash Loom', style: GoogleFonts.newsreader(color: Colors.white, fontSize: 28, fontWeight: FontWeight.w600)),
                 const SizedBox(height: 6),
-                const Text('A private record catalog. Nothing leaves this phone.', style: TextStyle(color: Colors.white70)),
+                const Text('A private yarn catalog. Nothing leaves this phone.', style: TextStyle(color: Colors.white70)),
               ],
             ),
           ),
@@ -127,11 +119,11 @@ class _ConfigViewState extends State<ConfigView> {
             onTap: () => showDialog(
               context: context,
               builder: (_) => AlertDialog(
-                title: const Text('Booth light'),
+                title: const Text('Studio light'),
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    for (final e in const [('light', 'Listening light'), ('dark', 'After hours'), ('system', 'Match the phone')])
+                    for (final e in const [('light', 'Daylight studio'), ('dark', 'Evening knit'), ('system', 'Match the phone')])
                       RadioListTile<String>(
                         title: Text(e.$2),
                         value: e.$1,
@@ -148,30 +140,10 @@ class _ConfigViewState extends State<ConfigView> {
               ),
             ),
           ),
-          ListTile(
-            key: const ValueKey('backup_button'),
-            leading: const Icon(Icons.ios_share),
-            title: const Text('Export folio'),
-            subtitle: const Text('Share a JSON snapshot'),
-            onTap: _exportData,
-          ),
-          ListTile(
-            key: const ValueKey('import_button'),
-            leading: const Icon(Icons.file_open_outlined),
-            title: const Text('Restore folio'),
-            subtitle: const Text('Replace from a JSON file'),
-            onTap: _importData,
-          ),
-          const ListTile(
-            leading: Icon(Icons.info_outline),
-            title: Text('Version 1.0.0'),
-            subtitle: Text('Offline record catalog'),
-          ),
-          const ListTile(
-            leading: Icon(Icons.lock_outline),
-            title: Text('Privacy'),
-            subtitle: Text('No account. No tracking. Local only.'),
-          ),
+          ListTile(key: const ValueKey('backup_button'), leading: const Icon(Icons.ios_share), title: const Text('Export stash'), subtitle: const Text('Share a JSON snapshot'), onTap: _exportData),
+          ListTile(key: const ValueKey('import_button'), leading: const Icon(Icons.file_open_outlined), title: const Text('Restore stash'), subtitle: const Text('Replace from a JSON file'), onTap: _importData),
+          const ListTile(leading: Icon(Icons.info_outline), title: Text('Version 1.0.0'), subtitle: Text('Offline yarn catalog')),
+          const ListTile(leading: Icon(Icons.lock_outline), title: Text('Privacy'), subtitle: Text('No account. No tracking. Local only.')),
         ],
       ),
     );

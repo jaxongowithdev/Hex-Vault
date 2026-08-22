@@ -32,8 +32,8 @@ class _FavoritesViewState extends State<FavoritesView> {
       final containers = <int, ContainerModel>{};
       for (final item in favorites) {
         if (!containers.containsKey(item.containerId)) {
-          final container = await _storage.getContainer(item.containerId);
-          if (container != null) containers[item.containerId] = container;
+          final c = await _storage.getContainer(item.containerId);
+          if (c != null) containers[item.containerId] = c;
         }
       }
       setState(() {
@@ -50,7 +50,7 @@ class _FavoritesViewState extends State<FavoritesView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('The rotation')),
+      appBar: AppBar(title: const Text('Current project')),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _favoriteItems == null || _favoriteItems!.isEmpty
@@ -62,9 +62,9 @@ class _FavoritesViewState extends State<FavoritesView> {
                       children: [
                         const Icon(Icons.favorite_border, size: 48),
                         const SizedBox(height: 14),
-                        Text('No rotation yet', style: GoogleFonts.playfairDisplay(fontSize: 24, fontWeight: FontWeight.w600)),
+                        Text('Nothing on the needles', style: GoogleFonts.newsreader(fontSize: 24, fontWeight: FontWeight.w600)),
                         const SizedBox(height: 8),
-                        const Text('Pin the pressings you reach for every week.', textAlign: TextAlign.center),
+                        const Text('Pin the skeins you are knitting with right now.', textAlign: TextAlign.center),
                       ],
                     ),
                   ),
@@ -76,33 +76,24 @@ class _FavoritesViewState extends State<FavoritesView> {
                     itemCount: _favoriteItems!.length,
                     itemBuilder: (_, i) {
                       final item = _favoriteItems![i];
-                      final crate = _containersCache[item.containerId];
+                      final basket = _containersCache[item.containerId];
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 8),
                         child: Card(
                           child: ListTile(
                             title: Text(item.name, style: const TextStyle(fontWeight: FontWeight.w800)),
-                            subtitle: Text(
-                              '${item.category} · ${item.quantity}'
-                              '${crate != null ? '\n${crate.name} · ${crate.room}' : ''}',
-                            ),
-                            isThreeLine: crate != null,
+                            subtitle: Text('${item.category} · ${item.quantity}${basket != null ? '\n${basket.name} · ${basket.room}' : ''}'),
+                            isThreeLine: basket != null,
                             trailing: IconButton(
                               key: ValueKey('favorite_toggle_${item.id}'),
-                              icon: Icon(
-                                item.isFavorite ? Icons.favorite : Icons.favorite_border,
-                                color: item.isFavorite ? VisualTheme.primaryColor : null,
-                              ),
+                              icon: Icon(item.isFavorite ? Icons.favorite : Icons.favorite_border, color: item.isFavorite ? VisualTheme.secondaryColor : null),
                               onPressed: () async {
                                 await _storage.updateItem(item.copyWith(isFavorite: !item.isFavorite));
                                 _loadFavorites();
                               },
                             ),
                             onTap: () async {
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (_) => ItemDetailView(itemId: item.id!)),
-                              );
+                              await Navigator.push(context, MaterialPageRoute(builder: (_) => ItemDetailView(itemId: item.id!)));
                               _loadFavorites();
                             },
                           ),

@@ -1,5 +1,5 @@
-name: vinyl_folio_example
-description: "Vinyl Folio - Record crate and pressing catalog"
+name: stash_loom_example
+description: "Stash Loom - Yarn basket and skein catalog"
 publish_to: 'none'
 version: 1.0.0+1
 environment:

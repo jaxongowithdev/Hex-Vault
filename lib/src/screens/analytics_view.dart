@@ -44,7 +44,7 @@ class _AnalyticsViewState extends State<AnalyticsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Spin')),
+      appBar: AppBar(title: const Text('Gauge')),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : RefreshIndicator(
@@ -55,13 +55,13 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                   _overview(),
                   if (_categoryStats != null && _categoryStats!.isNotEmpty) ...[
                     const SizedBox(height: 24),
-                    Text('By genre', style: GoogleFonts.playfairDisplay(fontSize: 22, fontWeight: FontWeight.w600)),
+                    Text('By fiber', style: GoogleFonts.newsreader(fontSize: 22, fontWeight: FontWeight.w600)),
                     const SizedBox(height: 10),
                     _chart(_categoryStats!, true),
                   ],
                   if (_roomStats != null && _roomStats!.isNotEmpty) ...[
                     const SizedBox(height: 24),
-                    Text('By room', style: GoogleFonts.playfairDisplay(fontSize: 22, fontWeight: FontWeight.w600)),
+                    Text('By studio corner', style: GoogleFonts.newsreader(fontSize: 22, fontWeight: FontWeight.w600)),
                     const SizedBox(height: 10),
                     _chart(_roomStats!, false),
                   ],
@@ -73,27 +73,26 @@ class _AnalyticsViewState extends State<AnalyticsView> {
 
   Widget _overview() {
     if (_stats == null) return const SizedBox.shrink();
-    final crates = _stats!['totalContainers'] ?? 0;
+    final baskets = _stats!['totalContainers'] ?? 0;
     final items = _stats!['totalItems'] ?? 0;
     final empty = _stats!['emptyContainers'] ?? 0;
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Collection snapshot', style: GoogleFonts.playfairDisplay(fontSize: 22, fontWeight: FontWeight.w600)),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                _cell('Crates', crates.toString()),
-                _cell('Pressings', items.toString()),
-                _cell('In use', (crates - empty).toString()),
-                _cell('Empty', empty.toString()),
-              ],
-            ),
-          ],
-        ),
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(color: VisualTheme.blush, borderRadius: BorderRadius.circular(28)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Stash snapshot', style: GoogleFonts.newsreader(fontSize: 22, fontWeight: FontWeight.w600)),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              _cell('Baskets', baskets.toString()),
+              _cell('Skeins', items.toString()),
+              _cell('In use', (baskets - empty).toString()),
+              _cell('Empty', empty.toString()),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -102,14 +101,14 @@ class _AnalyticsViewState extends State<AnalyticsView> {
     return Expanded(
       child: Column(
         children: [
-          Text(value, style: GoogleFonts.playfairDisplay(fontSize: 22, fontWeight: FontWeight.w600)),
+          Text(value, style: GoogleFonts.newsreader(fontSize: 22, fontWeight: FontWeight.w600)),
           Text(label, style: const TextStyle(fontSize: 12)),
         ],
       ),
     );
   }
 
-  Widget _chart(Map<String, int> data, bool genre) {
+  Widget _chart(Map<String, int> data, bool fiber) {
     final sorted = data.entries.toList()..sort((a, b) => b.value.compareTo(a.value));
     final total = _stats?['totalItems'] ?? 1;
     return Card(
@@ -134,8 +133,9 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                   LinearProgressIndicator(
                     value: e.value / total,
                     minHeight: 7,
-                    backgroundColor: VisualTheme.linen,
-                    color: genre ? VisualTheme.getCategoryColor(e.key) : VisualTheme.primaryColor,
+                    backgroundColor: VisualTheme.blush,
+                    color: fiber ? VisualTheme.getCategoryColor(e.key) : VisualTheme.primaryColor,
+                    borderRadius: BorderRadius.circular(8),
                   ),
                 ],
               ),

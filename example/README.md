@@ -1,4 +1,4 @@
-# Vinyl Folio
+# Stash Loom
 
 ```bash
 flutter run

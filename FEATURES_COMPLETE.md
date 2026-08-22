@@ -1,3 +1,3 @@
-# Vinyl Folio — feature set
+# Stash Loom — feature set
 
-Lounge / Crates / Spin / Booth navigation, pressing catalog with sleeve photos, search, rotation pins, reshelve history, JSON backup, offline SQLite (`vinyl_folio.db`).
+Studio / Baskets / Gauge / Bench navigation, skein catalog with fiber photos, search, current-project pins, rewind history, JSON backup, offline SQLite (`stash_loom.db`).

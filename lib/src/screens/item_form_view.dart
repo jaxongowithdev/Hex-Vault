@@ -26,14 +26,11 @@ class _ItemFormViewState extends State<ItemFormView> {
   late TextEditingController _valueController;
   List<ContainerModel>? _containers;
   int? _selectedContainerId;
-  String _selectedCondition = 'Mint';
+  String _selectedCondition = 'New';
   String? _photoPath;
-  final ImagePicker _imagePicker = ImagePicker();
-  final _conditions = ['Mint', 'Near mint', 'Played', 'Worn'];
-  final _categories = [
-    'Jazz', 'Rock', 'Soul', 'Classical', 'Hip-Hop',
-    'Electronic', 'Folk', 'Soundtrack', 'World', 'Other',
-  ];
+  final _imagePicker = ImagePicker();
+  final _conditions = ['New', 'Wound', 'Partial', 'Scrap'];
+  final _categories = ['Wool', 'Cotton', 'Alpaca', 'Silk', 'Blends', 'Tools', 'Patterns', 'Notions', 'Other'];
 
   @override
   void initState() {
@@ -43,7 +40,7 @@ class _ItemFormViewState extends State<ItemFormView> {
     _quantityController = TextEditingController(text: widget.item?.quantity.toString() ?? '1');
     _notesController = TextEditingController(text: widget.item?.notes);
     _valueController = TextEditingController(text: widget.item?.estimatedValue?.toString());
-    _selectedCondition = widget.item?.condition ?? 'Mint';
+    _selectedCondition = widget.item?.condition ?? 'New';
     _selectedContainerId = widget.item?.containerId ?? widget.preselectedContainerId;
     _photoPath = widget.item?.photoPath;
     _loadContainers();
@@ -61,6 +58,7 @@ class _ItemFormViewState extends State<ItemFormView> {
 
   Future<void> _loadContainers() async {
     try {
+      setState(() => _containers = null);
       final containers = await _storage.getAllContainers();
       setState(() => _containers = containers);
     } catch (e) {
@@ -73,15 +71,13 @@ class _ItemFormViewState extends State<ItemFormView> {
       final photo = await _imagePicker.pickImage(source: source, maxWidth: 1024, maxHeight: 1024, imageQuality: 85);
       if (photo == null) return;
       final appDir = await getApplicationDocumentsDirectory();
-      final fileName = 'pressing_${DateTime.now().millisecondsSinceEpoch}${path_pkg.extension(photo.path)}';
+      final fileName = 'skein_${DateTime.now().millisecondsSinceEpoch}${path_pkg.extension(photo.path)}';
       final savedPath = path_pkg.join(appDir.path, 'photos', fileName);
       await Directory(path_pkg.join(appDir.path, 'photos')).create(recursive: true);
       await File(photo.path).copy(savedPath);
       setState(() => _photoPath = savedPath);
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Could not add photo: $e')));
-      }
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Could not add photo: $e')));
     }
   }
 
@@ -100,39 +96,33 @@ class _ItemFormViewState extends State<ItemFormView> {
   Future<void> _saveItem() async {
     if (!_formKey.currentState!.validate()) return;
     if (_selectedContainerId == null) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Choose a crate first')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Choose a basket first')));
       return;
     }
-    try {
-      final item = InventoryItemModel(
-        id: widget.item?.id,
-        containerId: _selectedContainerId!,
-        name: _nameController.text.trim(),
-        category: _categoryController.text.trim(),
-        quantity: int.parse(_quantityController.text.trim()),
-        condition: _selectedCondition,
-        notes: _notesController.text.trim().isEmpty ? null : _notesController.text.trim(),
-        estimatedValue: _valueController.text.trim().isEmpty ? null : double.tryParse(_valueController.text.trim()),
-        photoPath: _photoPath,
-      );
-      if (widget.item == null) {
-        await _storage.createItem(item);
-      } else {
-        await _storage.updateItem(item);
-      }
-      if (mounted) Navigator.pop(context, true);
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
-      }
+    final item = InventoryItemModel(
+      id: widget.item?.id,
+      containerId: _selectedContainerId!,
+      name: _nameController.text.trim(),
+      category: _categoryController.text.trim(),
+      quantity: int.parse(_quantityController.text.trim()),
+      condition: _selectedCondition,
+      notes: _notesController.text.trim().isEmpty ? null : _notesController.text.trim(),
+      estimatedValue: _valueController.text.trim().isEmpty ? null : double.tryParse(_valueController.text.trim()),
+      photoPath: _photoPath,
+    );
+    if (widget.item == null) {
+      await _storage.createItem(item);
+    } else {
+      await _storage.updateItem(item);
     }
+    if (mounted) Navigator.pop(context, true);
   }
 
   @override
   Widget build(BuildContext context) {
     final isEditing = widget.item != null;
     return Scaffold(
-      appBar: AppBar(title: Text(isEditing ? 'Edit pressing' : 'Log pressing')),
+      appBar: AppBar(title: Text(isEditing ? 'Edit skein' : 'Log skein')),
       body: Form(
         key: _formKey,
         child: ListView(
@@ -144,13 +134,13 @@ class _ItemFormViewState extends State<ItemFormView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Sleeve photo', style: Theme.of(context).textTheme.titleMedium),
+                    Text('Fiber photo', style: Theme.of(context).textTheme.titleMedium),
                     const SizedBox(height: 12),
                     if (_photoPath != null)
                       Stack(
                         children: [
                           ClipRRect(
-                            borderRadius: BorderRadius.circular(14),
+                            borderRadius: BorderRadius.circular(20),
                             child: Image.file(File(_photoPath!), height: 200, width: double.infinity, fit: BoxFit.cover),
                           ),
                           Positioned(
@@ -167,23 +157,9 @@ class _ItemFormViewState extends State<ItemFormView> {
                     else
                       Row(
                         children: [
-                          Expanded(
-                            child: OutlinedButton.icon(
-                              key: const ValueKey('camera_button'),
-                              onPressed: () => _pickPhoto(ImageSource.camera),
-                              icon: const Icon(Icons.photo_camera_outlined),
-                              label: const Text('Snap'),
-                            ),
-                          ),
+                          Expanded(child: OutlinedButton.icon(key: const ValueKey('camera_button'), onPressed: () => _pickPhoto(ImageSource.camera), icon: const Icon(Icons.photo_camera_outlined), label: const Text('Snap'))),
                           const SizedBox(width: 10),
-                          Expanded(
-                            child: OutlinedButton.icon(
-                              key: const ValueKey('gallery_button'),
-                              onPressed: () => _pickPhoto(ImageSource.gallery),
-                              icon: const Icon(Icons.photo_library_outlined),
-                              label: const Text('Album'),
-                            ),
-                          ),
+                          Expanded(child: OutlinedButton.icon(key: const ValueKey('gallery_button'), onPressed: () => _pickPhoto(ImageSource.gallery), icon: const Icon(Icons.photo_library_outlined), label: const Text('Album'))),
                         ],
                       ),
                   ],
@@ -194,30 +170,26 @@ class _ItemFormViewState extends State<ItemFormView> {
             TextFormField(
               key: const ValueKey('item_name_field'),
               controller: _nameController,
-              decoration: const InputDecoration(
-                labelText: 'Artist — title',
-                hintText: 'e.g., Coltrane — Blue Train',
-                prefixIcon: Icon(Icons.album_outlined),
-              ),
-              validator: (v) => (v == null || v.trim().isEmpty) ? 'Name this pressing' : null,
+              decoration: const InputDecoration(labelText: 'Skein name', hintText: 'e.g., Soft merino fingering', prefixIcon: Icon(Icons.volunteer_activism)),
+              validator: (v) => (v == null || v.trim().isEmpty) ? 'Name this skein' : null,
             ),
             const SizedBox(height: 14),
             DropdownButtonFormField<String>(
               key: const ValueKey('category_dropdown'),
               value: _categories.contains(_categoryController.text) ? _categoryController.text : null,
-              decoration: const InputDecoration(labelText: 'Genre', prefixIcon: Icon(Icons.category_outlined)),
+              decoration: const InputDecoration(labelText: 'Fiber', prefixIcon: Icon(Icons.category_outlined)),
               items: _categories.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
               onChanged: (v) { if (v != null) _categoryController.text = v; },
-              validator: (_) => _categoryController.text.isEmpty ? 'Pick a genre' : null,
+              validator: (_) => _categoryController.text.isEmpty ? 'Pick a fiber' : null,
             ),
             const SizedBox(height: 14),
             DropdownButtonFormField<int>(
               key: const ValueKey('container_dropdown'),
               value: _selectedContainerId,
-              decoration: const InputDecoration(labelText: 'Crate', prefixIcon: Icon(Icons.inventory_2_outlined)),
+              decoration: const InputDecoration(labelText: 'Basket', prefixIcon: Icon(Icons.shopping_basket_outlined)),
               items: _containers?.map((c) => DropdownMenuItem(value: c.id, child: Text('${c.name} (${c.code})'))).toList(),
               onChanged: (v) => setState(() => _selectedContainerId = v),
-              validator: (v) => v == null ? 'Choose a crate' : null,
+              validator: (v) => v == null ? 'Choose a basket' : null,
             ),
             const SizedBox(height: 14),
             Row(
@@ -226,7 +198,7 @@ class _ItemFormViewState extends State<ItemFormView> {
                   child: TextFormField(
                     key: const ValueKey('quantity_field'),
                     controller: _quantityController,
-                    decoration: const InputDecoration(labelText: 'Copies', prefixIcon: Icon(Icons.numbers)),
+                    decoration: const InputDecoration(labelText: 'Count', prefixIcon: Icon(Icons.numbers)),
                     keyboardType: TextInputType.number,
                     validator: (v) => int.tryParse(v?.trim() ?? '') == null ? 'Invalid' : null,
                   ),
@@ -236,7 +208,7 @@ class _ItemFormViewState extends State<ItemFormView> {
                   child: DropdownButtonFormField<String>(
                     key: const ValueKey('condition_dropdown'),
                     value: _selectedCondition,
-                    decoration: const InputDecoration(labelText: 'Grade', prefixIcon: Icon(Icons.auto_awesome_outlined)),
+                    decoration: const InputDecoration(labelText: 'State', prefixIcon: Icon(Icons.spa_outlined)),
                     items: _conditions.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
                     onChanged: (v) { if (v != null) setState(() => _selectedCondition = v); },
                   ),
@@ -247,25 +219,21 @@ class _ItemFormViewState extends State<ItemFormView> {
             TextFormField(
               key: const ValueKey('value_field'),
               controller: _valueController,
-              decoration: const InputDecoration(labelText: 'Typical value (optional)', prefixIcon: Icon(Icons.payments_outlined)),
+              decoration: const InputDecoration(labelText: 'Typical cost (optional)', prefixIcon: Icon(Icons.payments_outlined)),
               keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 14),
             TextFormField(
               key: const ValueKey('notes_field'),
               controller: _notesController,
-              decoration: const InputDecoration(
-                labelText: 'Sleeve note',
-                hintText: 'Label, matrix, or where you found it',
-                prefixIcon: Icon(Icons.notes),
-              ),
+              decoration: const InputDecoration(labelText: 'Project note', hintText: 'Dye lot, yardage, or the sweater it belongs to', prefixIcon: Icon(Icons.notes)),
               maxLines: 3,
             ),
             const SizedBox(height: 24),
             FilledButton(
               key: const ValueKey('save_item_button'),
               onPressed: _saveItem,
-              child: Text(isEditing ? 'Save pressing' : 'File pressing'),
+              child: Text(isEditing ? 'Save skein' : 'File skein'),
             ),
           ],
         ),

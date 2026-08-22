@@ -1,37 +1,37 @@
 APP NAME
-Vinyl Folio
+Stash Loom
 
 SUBTITLE
-Catalog every pressing
+Map your yarn stash
 
 KEYWORDS
-vinyl,record,album,lp,collection,jazz,crate,pressing,music,shelf,catalog,offline
+yarn,knit,stash,skein,wool,fiber,basket,craft,merino,pattern,offline,studio
 
 PROMOTION
-Map crates, log pressings, and find any album on the shelf. A private record folio — fully offline.
+Map baskets, log skeins, and find any fiber in the studio. A private yarn catalog — fully offline.
 
 DESCRIPTION
-Vinyl Folio is a quiet catalog for people who collect records, not playlists.
+Stash Loom is a quiet catalog for knitters and crocheters who already own more yarn than they remember.
 
-Map every crate in the house — the jazz wall, the 7-inch cube, the overflow under the turntable — then file each pressing where it actually lives. When you wonder whether you already own that Blue Note reissue, search once instead of flipping a whole bay.
+Map every basket in the studio — the sock leftovers, the sweater wool, the notions tin — then file each skein where it actually lives. When you wonder whether you still have that merino dye lot, search once instead of emptying three drawers.
 
 What you can do
-• Create named crates with a spine mark, listening room, and bay
-• File pressings by genre: jazz, rock, soul, classical, hip-hop, electronic, folk, soundtrack, world
-• Grade condition as Mint, Near mint, Played, or Worn
-• Attach a sleeve photo from the camera or your album
-• Pin a weekly rotation of records you keep reaching for
-• Reshelve a pressing from one crate to another and keep a short note
-• See a collection snapshot: how many crates are in use, which genres run deepest
-• Export or restore the whole folio as a JSON file
+• Create named baskets with a tag, studio corner, and drawer or hook
+• File skeins by fiber: wool, cotton, alpaca, silk, blends, plus tools, patterns, and notions
+• Mark state as New, Wound, Partial, or Scrap
+• Attach a fiber photo from the camera or your album
+• Pin the skeins on your current project
+• Rewind a skein from one basket to another and keep a short note
+• See a stash snapshot: how many baskets are in use, which fibers run deepest
+• Export or restore the whole stash as a JSON file
 
 Why it is different
-Vinyl Folio is not a streaming library and not a generic storage box. It is a listening-room map. The language, layout, and grades are written for collectors: crates instead of bins, pressings instead of items, sleeve notes instead of packing labels.
+Stash Loom is not a shopping list and not a generic storage box. It is a studio map. The language, layout, and states are written for makers: baskets instead of bins, skeins instead of items, dye lots and project notes instead of packing labels.
 
 Private by design
-Everything stays on your iPhone. There is no account, no cloud sync, and no marketplace. Open the app offline and the same shelves are still there.
+Everything stays on your iPhone. There is no account, no cloud sync, and no yarn marketplace. Open the app offline and the same baskets are still there.
 
 Who it is for
-New collectors building a first wall, long-time crate diggers with more than one room, anyone tired of buying a second copy of an album they already own.
+New knitters building a first stash, long-time makers with more than one closet, anyone tired of buying a third ball of the same sock yarn.
 
-Vinyl Folio — know the crate before you flip.
+Stash Loom — know the basket before you cast on.

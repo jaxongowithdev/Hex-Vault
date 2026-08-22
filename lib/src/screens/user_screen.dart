@@ -26,7 +26,7 @@ class _UserScreenState extends State<UserScreen> {
 
   Future<void> _initializeApp() async {
     try {
-      debugPrint('Starting Vinyl Folio initialization...');
+      debugPrint('Starting Stash Loom initialization...');
       await _storage.database;
       final prefs = await _storage.getPreferences();
       setState(() {
@@ -70,7 +70,7 @@ class _UserScreenState extends State<UserScreen> {
     }
 
     return MaterialApp(
-      title: 'Vinyl Folio',
+      title: 'Stash Loom',
       debugShowCheckedModeBanner: false,
       theme: VisualTheme.lightTheme,
       darkTheme: VisualTheme.darkTheme,
@@ -79,22 +79,22 @@ class _UserScreenState extends State<UserScreen> {
         builder: (context) {
           if (!_isInitialized || _preferences == null) {
             return Scaffold(
-              backgroundColor: VisualTheme.ivory,
+              backgroundColor: VisualTheme.fog,
               body: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      width: 72,
-                      height: 72,
+                      width: 76,
+                      height: 76,
                       decoration: const BoxDecoration(
-                        color: VisualTheme.primaryColor,
+                        color: VisualTheme.blush,
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(Icons.album, color: VisualTheme.secondaryColor, size: 36),
+                      child: const Icon(Icons.volunteer_activism, color: VisualTheme.secondaryColor, size: 36),
                     ),
-                    const SizedBox(height: 18),
-                    const Text('Cueing the folio…'),
+                    const SizedBox(height: 16),
+                    const Text('Winding the stash…'),
                     if (_errorMessage != null) ...[
                       const SizedBox(height: 20),
                       Text('Error: $_errorMessage', textAlign: TextAlign.center),
@@ -104,15 +104,13 @@ class _UserScreenState extends State<UserScreen> {
               ),
             );
           }
-
           return _preferences!.showOnboarding
               ? const WelcomeView()
               : DashboardView(onSettingsChanged: _reloadPreferences);
         },
       ),
       routes: {
-        '/dashboard': (context) =>
-            DashboardView(onSettingsChanged: _reloadPreferences),
+        '/dashboard': (context) => DashboardView(onSettingsChanged: _reloadPreferences),
       },
     );
   }

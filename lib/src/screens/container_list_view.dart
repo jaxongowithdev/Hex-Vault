@@ -19,7 +19,7 @@ class _ContainerListViewState extends State<ContainerListView> {
   Map<int, int> _itemCounts = {};
   bool _isLoading = true;
   String _sortBy = 'updated';
-  bool _isGridView = false;
+  bool _isGridView = true;
 
   @override
   void initState() {
@@ -32,8 +32,8 @@ class _ContainerListViewState extends State<ContainerListView> {
     try {
       final containers = await _storage.getAllContainers(sortBy: _sortBy);
       final counts = <int, int>{};
-      for (final container in containers) {
-        counts[container.id!] = await _storage.getItemCountInContainer(container.id!);
+      for (final c in containers) {
+        counts[c.id!] = await _storage.getItemCountInContainer(c.id!);
       }
       setState(() {
         _containers = containers;
@@ -46,11 +46,8 @@ class _ContainerListViewState extends State<ContainerListView> {
     }
   }
 
-  Future<void> _open(ContainerModel container) async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => ContainerDetailView(containerId: container.id!)),
-    );
+  Future<void> _open(ContainerModel c) async {
+    await Navigator.push(context, MaterialPageRoute(builder: (_) => ContainerDetailView(containerId: c.id!)));
     _loadContainers();
   }
 
@@ -58,21 +55,21 @@ class _ContainerListViewState extends State<ContainerListView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Crates'),
+        title: const Text('Baskets'),
         actions: [
           IconButton(
             icon: Icon(_isGridView ? Icons.view_agenda_outlined : Icons.grid_view),
             onPressed: () => setState(() => _isGridView = !_isGridView),
           ),
           PopupMenuButton<String>(
-            onSelected: (value) {
-              setState(() => _sortBy = value);
+            onSelected: (v) {
+              setState(() => _sortBy = v);
               _loadContainers();
             },
             itemBuilder: (_) => const [
               PopupMenuItem(value: 'name', child: Text('By name')),
-              PopupMenuItem(value: 'room', child: Text('By room')),
-              PopupMenuItem(value: 'updated', child: Text('Recently filed')),
+              PopupMenuItem(value: 'room', child: Text('By studio')),
+              PopupMenuItem(value: 'updated', child: Text('Recently wound')),
             ],
           ),
         ],
@@ -86,11 +83,11 @@ class _ContainerListViewState extends State<ContainerListView> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.album_outlined, size: 52),
-                        const SizedBox(height: 14),
-                        Text('No crates yet', style: GoogleFonts.playfairDisplay(fontSize: 24, fontWeight: FontWeight.w600)),
+                        const Icon(Icons.shopping_basket_outlined, size: 52),
+                        const SizedBox(height: 12),
+                        Text('No baskets yet', style: GoogleFonts.newsreader(fontSize: 26, fontWeight: FontWeight.w600)),
                         const SizedBox(height: 8),
-                        const Text('Start a jazz wall, a 7-inch box, or the overflow cube.', textAlign: TextAlign.center),
+                        const Text('Start a sock drawer, a leftover bin, or the project tote.', textAlign: TextAlign.center),
                       ],
                     ),
                   ),
@@ -102,14 +99,11 @@ class _ContainerListViewState extends State<ContainerListView> {
       floatingActionButton: FloatingActionButton.extended(
         key: const ValueKey('fab_add_container'),
         onPressed: () async {
-          final result = await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => const ContainerFormView()),
-          );
-          if (result == true) _loadContainers();
+          final r = await Navigator.push(context, MaterialPageRoute(builder: (_) => const ContainerFormView()));
+          if (r == true) _loadContainers();
         },
         icon: const Icon(Icons.add),
-        label: const Text('Crate'),
+        label: const Text('Basket'),
       ),
     );
   }
@@ -118,10 +112,7 @@ class _ContainerListViewState extends State<ContainerListView> {
     return GridView.builder(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 100),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 0.88,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
+        crossAxisCount: 2, childAspectRatio: 0.86, crossAxisSpacing: 12, mainAxisSpacing: 12,
       ),
       itemCount: _containers!.length,
       itemBuilder: (_, i) {
@@ -131,26 +122,24 @@ class _ContainerListViewState extends State<ContainerListView> {
         return Card(
           child: InkWell(
             onTap: () => _open(c),
-            borderRadius: BorderRadius.circular(18),
+            borderRadius: BorderRadius.circular(28),
             child: Padding(
-              padding: const EdgeInsets.all(14),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(c.code, style: const TextStyle(color: VisualTheme.secondaryColor, fontWeight: FontWeight.w800)),
-                  const SizedBox(height: 8),
-                  Text(c.name, style: GoogleFonts.playfairDisplay(fontSize: 18, fontWeight: FontWeight.w600), maxLines: 2),
+                  CircleAvatar(
+                    backgroundColor: VisualTheme.blush,
+                    child: Text(c.code.substring(0, 1), style: const TextStyle(color: VisualTheme.secondaryColor, fontWeight: FontWeight.w800)),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(c.name, style: GoogleFonts.newsreader(fontSize: 20, fontWeight: FontWeight.w600), maxLines: 2),
                   const Spacer(),
                   Text('${c.room} · ${c.shelf}', maxLines: 1, overflow: TextOverflow.ellipsis),
                   const SizedBox(height: 8),
-                  LinearProgressIndicator(
-                    value: pct / 100,
-                    minHeight: 6,
-                    backgroundColor: VisualTheme.linen,
-                    color: VisualTheme.primaryColor,
-                  ),
+                  LinearProgressIndicator(value: pct / 100, minHeight: 6, backgroundColor: VisualTheme.blush, color: VisualTheme.primaryColor, borderRadius: BorderRadius.circular(8)),
                   const SizedBox(height: 6),
-                  Text('$count / ${c.capacity} pressings'),
+                  Text('$count / ${c.capacity} skeins'),
                 ],
               ),
             ),
@@ -167,28 +156,16 @@ class _ContainerListViewState extends State<ContainerListView> {
       itemBuilder: (_, i) {
         final c = _containers![i];
         final count = _itemCounts[c.id] ?? 0;
-        final pct = c.capacity > 0 ? (count / c.capacity * 100).round() : 0;
         return Padding(
           padding: const EdgeInsets.only(bottom: 10),
           child: Card(
-            clipBehavior: Clip.antiAlias,
-            child: InkWell(
+            child: ListTile(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              title: Text(c.name, style: const TextStyle(fontWeight: FontWeight.w800)),
+              subtitle: Text('${c.room} · ${c.shelf}\n$count / ${c.capacity} skeins'),
+              isThreeLine: true,
+              trailing: const Icon(Icons.chevron_right),
               onTap: () => _open(c),
-              child: IntrinsicHeight(
-                child: Row(
-                  children: [
-                    Container(width: 8, color: VisualTheme.secondaryColor),
-                    Expanded(
-                      child: ListTile(
-                        title: Text(c.name, style: const TextStyle(fontWeight: FontWeight.w800)),
-                        subtitle: Text('${c.room} · ${c.shelf}\n$count / ${c.capacity}  ·  $pct%'),
-                        isThreeLine: true,
-                        trailing: const Icon(Icons.chevron_right),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
             ),
           ),
         );

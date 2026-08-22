@@ -1,19 +1,19 @@
-# Vinyl Folio
+# Stash Loom
 
-A private record catalog. Map crates, log pressings, and find any album on the shelf — fully offline.
+A private yarn catalog. Map baskets, log skeins, and find any fiber in the studio — fully offline.
 
-**App Name:** Vinyl Folio
-**Subtitle:** Catalog every pressing
-**Category:** Music / Lifestyle
-**Bundle ID:** com.app.vinylfolio.build
-**Database:** `vinyl_folio.db`
+**App Name:** Stash Loom
+**Subtitle:** Map your yarn stash
+**Category:** Lifestyle
+**Bundle ID:** com.app.stashloom.build
+**Database:** `stash_loom.db`
 
 ## Navigation
 
-- Lounge — collection pulse and quick actions
-- Crates — all shelves
-- Spin — genre and room snapshot
-- Booth — look and backup
+- Studio — stash pulse and quick actions
+- Baskets — all corners
+- Gauge — fiber and studio snapshot
+- Bench — look and backup
 
 Listing copy lives in `meta-data-apple-store.txt`.
 

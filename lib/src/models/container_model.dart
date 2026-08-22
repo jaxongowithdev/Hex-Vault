@@ -1,4 +1,4 @@
-// Record crate / listening-room shelf model
+// Yarn basket / studio stash model
 class ContainerModel {
   final int? id;
   final String name;

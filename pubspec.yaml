@@ -1,5 +1,5 @@
 name: user_screen
-description: "Vinyl Folio - Catalog record crates, log pressings, and find any album on the shelf. Completely offline."
+description: "Stash Loom - Map yarn baskets, log skeins, and find any fiber in the studio. Completely offline."
 version: 1.0.0+2
 
 environment:

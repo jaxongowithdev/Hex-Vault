@@ -26,7 +26,7 @@ class _ContainerFormViewState extends State<ContainerFormView> {
     _codeController = TextEditingController(text: widget.container?.code);
     _roomController = TextEditingController(text: widget.container?.room);
     _shelfController = TextEditingController(text: widget.container?.shelf);
-    _capacityController = TextEditingController(text: widget.container?.capacity.toString() ?? '40');
+    _capacityController = TextEditingController(text: widget.container?.capacity.toString() ?? '18');
   }
 
   @override
@@ -41,33 +41,27 @@ class _ContainerFormViewState extends State<ContainerFormView> {
 
   Future<void> _saveContainer() async {
     if (!_formKey.currentState!.validate()) return;
-    try {
-      final container = ContainerModel(
-        id: widget.container?.id,
-        name: _nameController.text.trim(),
-        code: _codeController.text.trim().toUpperCase(),
-        room: _roomController.text.trim(),
-        shelf: _shelfController.text.trim(),
-        capacity: int.parse(_capacityController.text.trim()),
-      );
-      if (widget.container == null) {
-        await _storage.createContainer(container);
-      } else {
-        await _storage.updateContainer(container);
-      }
-      if (mounted) Navigator.pop(context, true);
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
-      }
+    final container = ContainerModel(
+      id: widget.container?.id,
+      name: _nameController.text.trim(),
+      code: _codeController.text.trim().toUpperCase(),
+      room: _roomController.text.trim(),
+      shelf: _shelfController.text.trim(),
+      capacity: int.parse(_capacityController.text.trim()),
+    );
+    if (widget.container == null) {
+      await _storage.createContainer(container);
+    } else {
+      await _storage.updateContainer(container);
     }
+    if (mounted) Navigator.pop(context, true);
   }
 
   @override
   Widget build(BuildContext context) {
     final isEditing = widget.container != null;
     return Scaffold(
-      appBar: AppBar(title: Text(isEditing ? 'Edit crate' : 'New crate')),
+      appBar: AppBar(title: Text(isEditing ? 'Edit basket' : 'New basket')),
       body: Form(
         key: _formKey,
         child: ListView(
@@ -76,55 +70,36 @@ class _ContainerFormViewState extends State<ContainerFormView> {
             TextFormField(
               key: const ValueKey('name_field'),
               controller: _nameController,
-              decoration: const InputDecoration(
-                labelText: 'Crate name',
-                hintText: 'e.g., Jazz wall, 7-inch cube',
-                prefixIcon: Icon(Icons.album_outlined),
-              ),
-              validator: (v) => (v == null || v.trim().isEmpty) ? 'Name this crate' : null,
+              decoration: const InputDecoration(labelText: 'Basket name', hintText: 'e.g., Sock leftovers', prefixIcon: Icon(Icons.shopping_basket_outlined)),
+              validator: (v) => (v == null || v.trim().isEmpty) ? 'Name this basket' : null,
             ),
             const SizedBox(height: 14),
             TextFormField(
               key: const ValueKey('code_field'),
               controller: _codeController,
-              decoration: const InputDecoration(
-                labelText: 'Spine mark',
-                hintText: 'e.g., VIN-01, JAZZ',
-                prefixIcon: Icon(Icons.tag),
-              ),
+              decoration: const InputDecoration(labelText: 'Tag', hintText: 'e.g., YRN-01, SOCK', prefixIcon: Icon(Icons.tag)),
               textCapitalization: TextCapitalization.characters,
-              validator: (v) => (v == null || v.trim().isEmpty) ? 'Add a spine mark' : null,
+              validator: (v) => (v == null || v.trim().isEmpty) ? 'Add a tag' : null,
             ),
             const SizedBox(height: 14),
             TextFormField(
               key: const ValueKey('room_field'),
               controller: _roomController,
-              decoration: const InputDecoration(
-                labelText: 'Listening room',
-                hintText: 'e.g., Den, Hall, Studio',
-                prefixIcon: Icon(Icons.weekend_outlined),
-              ),
-              validator: (v) => (v == null || v.trim().isEmpty) ? 'Where does this crate live?' : null,
+              decoration: const InputDecoration(labelText: 'Studio corner', hintText: 'e.g., Closet, Desk, Hall', prefixIcon: Icon(Icons.chair_outlined)),
+              validator: (v) => (v == null || v.trim().isEmpty) ? 'Where does this basket live?' : null,
             ),
             const SizedBox(height: 14),
             TextFormField(
               key: const ValueKey('shelf_field'),
               controller: _shelfController,
-              decoration: const InputDecoration(
-                labelText: 'Bay / row',
-                hintText: 'e.g., Eye level, Bottom cube',
-                prefixIcon: Icon(Icons.view_week_outlined),
-              ),
-              validator: (v) => (v == null || v.trim().isEmpty) ? 'Add a bay or row' : null,
+              decoration: const InputDecoration(labelText: 'Drawer / hook', hintText: 'e.g., Top drawer, Wall hook', prefixIcon: Icon(Icons.view_week_outlined)),
+              validator: (v) => (v == null || v.trim().isEmpty) ? 'Add a drawer or hook' : null,
             ),
             const SizedBox(height: 14),
             TextFormField(
               key: const ValueKey('capacity_field'),
               controller: _capacityController,
-              decoration: const InputDecoration(
-                labelText: 'How many pressings fit',
-                prefixIcon: Icon(Icons.stacked_bar_chart),
-              ),
+              decoration: const InputDecoration(labelText: 'How many skeins fit', prefixIcon: Icon(Icons.stacked_bar_chart)),
               keyboardType: TextInputType.number,
               validator: (v) {
                 final n = int.tryParse(v?.trim() ?? '');
@@ -136,7 +111,7 @@ class _ContainerFormViewState extends State<ContainerFormView> {
             FilledButton(
               key: const ValueKey('save_button'),
               onPressed: _saveContainer,
-              child: Text(isEditing ? 'Save crate' : 'Create crate'),
+              child: Text(isEditing ? 'Save basket' : 'Create basket'),
             ),
           ],
         ),

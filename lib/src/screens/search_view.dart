@@ -40,8 +40,8 @@ class _SearchViewState extends State<SearchView> {
       final containers = <int, ContainerModel>{};
       for (final item in results) {
         if (!containers.containsKey(item.containerId)) {
-          final container = await _storage.getContainer(item.containerId);
-          if (container != null) containers[item.containerId] = container;
+          final c = await _storage.getContainer(item.containerId);
+          if (c != null) containers[item.containerId] = c;
         }
       }
       setState(() {
@@ -63,24 +63,12 @@ class _SearchViewState extends State<SearchView> {
           key: const ValueKey('search_field'),
           controller: _searchController,
           autofocus: true,
-          decoration: const InputDecoration(
-            hintText: 'Coltrane, Blue Note, soul…',
-            border: InputBorder.none,
-            enabledBorder: InputBorder.none,
-            focusedBorder: InputBorder.none,
-            filled: false,
-          ),
+          decoration: const InputDecoration(hintText: 'Merino, sock, dye lot…', border: InputBorder.none, enabledBorder: InputBorder.none, focusedBorder: InputBorder.none, filled: false),
           onChanged: _performSearch,
         ),
         actions: [
           if (_searchController.text.isNotEmpty)
-            IconButton(
-              icon: const Icon(Icons.clear),
-              onPressed: () {
-                _searchController.clear();
-                _performSearch('');
-              },
-            ),
+            IconButton(icon: const Icon(Icons.clear), onPressed: () { _searchController.clear(); _performSearch(''); }),
         ],
       ),
       body: _buildBody(),
@@ -89,29 +77,22 @@ class _SearchViewState extends State<SearchView> {
 
   Widget _buildBody() {
     if (_isSearching) return const Center(child: CircularProgressIndicator());
-    if (_searchController.text.isEmpty) {
-      return _hint(Icons.search, 'Search the folio', 'Try an artist, genre, or sleeve note.');
-    }
-    if (_results == null || _results!.isEmpty) {
-      return _hint(Icons.search_off, 'No match', 'Try a shorter word or another genre.');
-    }
+    if (_searchController.text.isEmpty) return _hint(Icons.search, 'Search the stash', 'Try a fiber, a project, or a note.');
+    if (_results == null || _results!.isEmpty) return _hint(Icons.search_off, 'No match', 'Try a shorter word or another fiber.');
     return ListView.builder(
       padding: const EdgeInsets.all(16),
       itemCount: _results!.length,
       itemBuilder: (_, i) {
         final item = _results![i];
-        final crate = _containersCache[item.containerId];
+        final basket = _containersCache[item.containerId];
         return Padding(
           padding: const EdgeInsets.only(bottom: 8),
           child: Card(
             child: ListTile(
-              leading: Icon(Icons.album, color: VisualTheme.getCategoryColor(item.category)),
+              leading: Icon(Icons.volunteer_activism, color: VisualTheme.getCategoryColor(item.category)),
               title: Text(item.name, style: const TextStyle(fontWeight: FontWeight.w800)),
-              subtitle: Text(
-                '${item.category} · ${item.quantity}'
-                '${crate != null ? '\n${crate.name} · ${crate.room}' : ''}',
-              ),
-              isThreeLine: crate != null,
+              subtitle: Text('${item.category} · ${item.quantity}${basket != null ? '\n${basket.name} · ${basket.room}' : ''}'),
+              isThreeLine: basket != null,
               trailing: const Icon(Icons.chevron_right),
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (_) => ItemDetailView(itemId: item.id!)))
@@ -133,7 +114,7 @@ class _SearchViewState extends State<SearchView> {
           children: [
             Icon(icon, size: 48, color: VisualTheme.primaryColor),
             const SizedBox(height: 14),
-            Text(title, style: GoogleFonts.playfairDisplay(fontSize: 24, fontWeight: FontWeight.w600)),
+            Text(title, style: GoogleFonts.newsreader(fontSize: 24, fontWeight: FontWeight.w600)),
             const SizedBox(height: 8),
             Text(subtitle, textAlign: TextAlign.center),
           ],

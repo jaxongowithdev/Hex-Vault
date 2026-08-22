@@ -58,48 +58,40 @@ class _HomeViewState extends State<HomeView> {
                     Row(
                       children: [
                         Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'VINYL FOLIO',
-                                style: GoogleFonts.figtree(
-                                  letterSpacing: 2,
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 11,
-                                  color: VisualTheme.primaryColor,
-                                ),
-                              ),
-                              Text(
-                                'The listening room',
-                                style: GoogleFonts.playfairDisplay(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
+                          child: Text(
+                            'Stash Loom',
+                            style: GoogleFonts.newsreader(fontSize: 32, fontWeight: FontWeight.w600),
                           ),
                         ),
                         IconButton(
                           key: const ValueKey('favorites_button'),
                           icon: const Icon(Icons.favorite_border),
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (_) => const FavoritesView()),
-                            ).then((_) => _loadData());
+                            Navigator.push(context, MaterialPageRoute(builder: (_) => const FavoritesView()))
+                                .then((_) => _loadData());
                           },
                         ),
                         IconButton(
                           key: const ValueKey('search_button'),
                           icon: const Icon(Icons.search),
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (_) => const SearchView()),
-                            );
+                            Navigator.push(context, MaterialPageRoute(builder: (_) => const SearchView()));
                           },
                         ),
+                      ],
+                    ),
+                    Text(
+                      'A calmer map of the yarn you already own.',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    const SizedBox(height: 18),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        _chip('Baskets', _stats?['totalContainers']?.toString() ?? '0', VisualTheme.primaryColor),
+                        _chip('Skeins', _stats?['totalItems']?.toString() ?? '0', VisualTheme.secondaryColor),
+                        _chip('Empty', _stats?['emptyContainers']?.toString() ?? '0', VisualTheme.accentColor),
                       ],
                     ),
                     const SizedBox(height: 18),
@@ -107,57 +99,26 @@ class _HomeViewState extends State<HomeView> {
                       padding: const EdgeInsets.all(22),
                       decoration: BoxDecoration(
                         color: VisualTheme.primaryColor,
-                        borderRadius: BorderRadius.circular(22),
+                        borderRadius: BorderRadius.circular(28),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'ON THE SHELF',
-                            style: GoogleFonts.figtree(
-                              color: VisualTheme.secondaryColor,
-                              letterSpacing: 1.6,
-                              fontWeight: FontWeight.w800,
-                              fontSize: 11,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            (_stats?['totalItems'] ?? 0) == 0
-                                ? 'The crates are still quiet.'
-                                : '${_stats!['totalItems']} pressings across ${_stats!['totalContainers']} crates.',
-                            style: GoogleFonts.playfairDisplay(
-                              color: Colors.white,
-                              fontSize: 26,
-                              height: 1.2,
-                            ),
-                          ),
-                        ],
+                      child: Text(
+                        (_stats?['totalItems'] ?? 0) == 0
+                            ? 'The baskets are still empty. Start with one drawer.'
+                            : '${_stats!['totalItems']} skeins waiting across ${_stats!['totalContainers']} baskets.',
+                        style: GoogleFonts.newsreader(color: Colors.white, fontSize: 24, height: 1.25),
                       ),
                     ),
-                    const SizedBox(height: 14),
-                    Row(
-                      children: [
-                        _metric('Crates', _stats?['totalContainers']?.toString() ?? '0'),
-                        const SizedBox(width: 10),
-                        _metric('Pressings', _stats?['totalItems']?.toString() ?? '0'),
-                        const SizedBox(width: 10),
-                        _metric('Empty', _stats?['emptyContainers']?.toString() ?? '0'),
-                      ],
-                    ),
-                    const SizedBox(height: 22),
+                    const SizedBox(height: 16),
                     Row(
                       children: [
                         Expanded(
                           child: _cta(
                             key: const ValueKey('add_box_button'),
-                            label: 'New crate',
+                            label: 'New basket',
+                            color: VisualTheme.secondaryColor,
                             onTap: () async {
-                              final result = await Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (_) => const ContainerFormView()),
-                              );
-                              if (result == true) _loadData();
+                              final r = await Navigator.push(context, MaterialPageRoute(builder: (_) => const ContainerFormView()));
+                              if (r == true) _loadData();
                             },
                           ),
                         ),
@@ -165,14 +126,11 @@ class _HomeViewState extends State<HomeView> {
                         Expanded(
                           child: _cta(
                             key: const ValueKey('add_item_button'),
-                            label: 'Log pressing',
-                            gold: true,
+                            label: 'Log skein',
+                            color: VisualTheme.accentColor,
                             onTap: () async {
-                              final result = await Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (_) => const ItemFormView()),
-                              );
-                              if (result == true) _loadData();
+                              final r = await Navigator.push(context, MaterialPageRoute(builder: (_) => const ItemFormView()));
+                              if (r == true) _loadData();
                             },
                           ),
                         ),
@@ -180,35 +138,21 @@ class _HomeViewState extends State<HomeView> {
                     ),
                     if (_recentContainers != null && _recentContainers!.isNotEmpty) ...[
                       const SizedBox(height: 28),
-                      Text(
-                        'Recently filed',
-                        style: GoogleFonts.playfairDisplay(fontSize: 22, fontWeight: FontWeight.w600),
-                      ),
+                      Text('Recently wound', style: GoogleFonts.newsreader(fontSize: 24, fontWeight: FontWeight.w600)),
                       const SizedBox(height: 10),
                       ..._recentContainers!.map((c) => Padding(
                             padding: const EdgeInsets.only(bottom: 8),
                             child: Card(
                               child: ListTile(
                                 leading: CircleAvatar(
-                                  backgroundColor: VisualTheme.linen,
-                                  child: Text(
-                                    c.code.substring(0, 1),
-                                    style: const TextStyle(
-                                      color: VisualTheme.primaryColor,
-                                      fontWeight: FontWeight.w800,
-                                    ),
-                                  ),
+                                  backgroundColor: VisualTheme.blush,
+                                  child: Text(c.code.substring(0, 1), style: const TextStyle(color: VisualTheme.secondaryColor, fontWeight: FontWeight.w800)),
                                 ),
                                 title: Text(c.name, style: const TextStyle(fontWeight: FontWeight.w800)),
                                 subtitle: Text('${c.room} · ${c.shelf}'),
                                 trailing: const Icon(Icons.chevron_right),
                                 onTap: () async {
-                                  await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => ContainerDetailView(containerId: c.id!),
-                                    ),
-                                  );
+                                  await Navigator.push(context, MaterialPageRoute(builder: (_) => ContainerDetailView(containerId: c.id!)));
                                   _loadData();
                                 },
                               ),
@@ -222,45 +166,25 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  Widget _metric(String label, String value) {
-    return Expanded(
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          child: Column(
-            children: [
-              Text(value, style: GoogleFonts.playfairDisplay(fontSize: 22, fontWeight: FontWeight.w600)),
-              Text(label, style: Theme.of(context).textTheme.bodySmall),
-            ],
-          ),
-        ),
-      ),
+  Widget _chip(String label, String value, Color color) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      decoration: BoxDecoration(color: color.withValues(alpha: 0.14), borderRadius: BorderRadius.circular(24)),
+      child: Text('$value  $label', style: TextStyle(color: color, fontWeight: FontWeight.w800)),
     );
   }
 
-  Widget _cta({
-    required Key key,
-    required String label,
-    required VoidCallback onTap,
-    bool gold = false,
-  }) {
+  Widget _cta({required Key key, required String label, required Color color, required VoidCallback onTap}) {
     return Material(
-      color: gold ? VisualTheme.secondaryColor : VisualTheme.primaryColor,
-      borderRadius: BorderRadius.circular(16),
+      color: color,
+      borderRadius: BorderRadius.circular(24),
       child: InkWell(
         key: key,
         onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(24),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 16),
-          child: Text(
-            label,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: gold ? VisualTheme.ink : Colors.white,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
+          child: Text(label, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800)),
         ),
       ),
     );
