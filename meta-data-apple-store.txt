@@ -1,37 +1,37 @@
 APP NAME
-Reel Bay
+Canister Press
 
 SUBTITLE
-Map your tackle trays
+Map your film rolls
 
 KEYWORDS
-fishing,tackle,lure,hook,reel,fly,bay,gear,rod,tray,jig,offline
+film,35mm,roll,camera,darkroom,analog,canister,stock,photo,offline
 
 PROMOTION
-Stage trays, log lures, and find any rig before you launch. Private, offline.
+Log cans, file rolls, and find any stock before you load. Private, offline.
 
 DESCRIPTION
-Reel Bay is a tackle map for anglers who already own more lures than they can keep in their head.
+Canister Press is a darkroom catalog for analog shooters who already own more film than they can keep in their head.
 
-Name every tray in the boat — the jig box, the fly book, the spare-leader tin — then file each lure where it actually lives. When you wonder if that gold spoon is still in the dock bag, search once instead of emptying three compartments.
+Name every can in the fridge — the Portra tin, the travel pouch, the expired-box drawer — then file each roll where it actually lives. When you wonder if that last HP5 is still in the bag, search once instead of emptying three tins.
 
 What you can do
-• Create named bays with a mark, dock, and tray slot
-• File gear by class: lures, flies, line, hooks, sinkers, rods, reels, tools, and apparel
-• Mark condition as Fresh, Fished, Rusted, or Spare
-• Attach a photo from the camera or your album
-• Bookmark the lures that always go in the boat first
-• Move a lure from one bay to another and keep a short note
-• See a kit snapshot: how many bays are in use, which classes run deepest
-• Export or restore the whole kit as a JSON file
+• Create named cans with a mark, room, and rack or slot
+• File stock by format: 35mm, 120, instant, sheet, plus cameras, lenses, chemistry, paper, and filters
+• Mark state as Unshot, Loaded, Developed, or Expired
+• Attach a box photo from the camera or your album
+• Bookmark the rolls you want in the next camera
+• Move a roll from one can to another and keep a short note
+• See a stock snapshot: how many cans are in use, which formats run deepest
+• Export or restore the whole list as a JSON file
 
 Why it is different
-Reel Bay is not a fish-finder and not a generic storage box. It is a dock-side catalog. The language, layout, and states are written for anglers: bays instead of bins, lures instead of items, water notes instead of packing labels.
+Canister Press is not a camera remote and not a generic storage box. It is a lab map. The language, layout, and states are written for film shooters: cans instead of bins, rolls instead of items, lab notes instead of packing labels.
 
 Private by design
-Everything stays on your iPhone. There is no account, no cloud sync, and no tackle shop. Open the app at the ramp with no signal and the same trays are still there.
+Everything stays on your iPhone. There is no account, no cloud sync, and no film shop. Open the app in the darkroom with no signal and the same cans are still there.
 
 Who it is for
-Weekend bass anglers, fly fishers with more than one book, anyone tired of buying a third pack of the same jig.
+Weekend 35mm shooters, medium-format travelers, anyone tired of buying a third brick of the same stock.
 
-Reel Bay — know the tray before you launch.
+Canister Press — know the can before you load.

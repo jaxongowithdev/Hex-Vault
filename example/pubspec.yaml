@@ -1,5 +1,5 @@
-name: reel_bay_example
-description: "Reel Bay - Tackle tray and lure catalog"
+name: canister_press_example
+description: "Canister Press - Analog film and darkroom catalog"
 publish_to: 'none'
 version: 1.0.0+1
 environment:

@@ -26,11 +26,11 @@ class _ItemFormViewState extends State<ItemFormView> {
   late TextEditingController _valueController;
   List<ContainerModel>? _containers;
   int? _selectedContainerId;
-  String _selectedCondition = 'Fresh';
+  String _selectedCondition = 'Unshot';
   String? _photoPath;
   final _imagePicker = ImagePicker();
-  final _conditions = ['Fresh', 'Fished', 'Rusted', 'Spare'];
-  final _categories = ['Lures', 'Flies', 'Line', 'Hooks', 'Sinkers', 'Rods', 'Reels', 'Tools', 'Apparel', 'Other'];
+  final _conditions = ['Unshot', 'Loaded', 'Developed', 'Expired'];
+  final _categories = ['35mm', '120', 'Instant', 'Sheet', 'Camera', 'Lens', 'Chem', 'Paper', 'Filter', 'Other'];
 
   @override
   void initState() {
@@ -40,7 +40,7 @@ class _ItemFormViewState extends State<ItemFormView> {
     _quantityController = TextEditingController(text: widget.item?.quantity.toString() ?? '1');
     _notesController = TextEditingController(text: widget.item?.notes);
     _valueController = TextEditingController(text: widget.item?.estimatedValue?.toString());
-    _selectedCondition = widget.item?.condition ?? 'Fresh';
+    _selectedCondition = widget.item?.condition ?? 'Unshot';
     _selectedContainerId = widget.item?.containerId ?? widget.preselectedContainerId;
     _photoPath = widget.item?.photoPath;
     _loadContainers();
@@ -70,7 +70,7 @@ class _ItemFormViewState extends State<ItemFormView> {
       final photo = await _imagePicker.pickImage(source: source, maxWidth: 1024, maxHeight: 1024, imageQuality: 85);
       if (photo == null) return;
       final appDir = await getApplicationDocumentsDirectory();
-      final fileName = 'lure_${DateTime.now().millisecondsSinceEpoch}${path_pkg.extension(photo.path)}';
+      final fileName = 'roll_${DateTime.now().millisecondsSinceEpoch}${path_pkg.extension(photo.path)}';
       final savedPath = path_pkg.join(appDir.path, 'photos', fileName);
       await Directory(path_pkg.join(appDir.path, 'photos')).create(recursive: true);
       await File(photo.path).copy(savedPath);
@@ -95,7 +95,7 @@ class _ItemFormViewState extends State<ItemFormView> {
   Future<void> _saveItem() async {
     if (!_formKey.currentState!.validate()) return;
     if (_selectedContainerId == null) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Choose a bay first')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Choose a can first')));
       return;
     }
     final item = InventoryItemModel(
@@ -121,7 +121,7 @@ class _ItemFormViewState extends State<ItemFormView> {
   Widget build(BuildContext context) {
     final isEditing = widget.item != null;
     return Scaffold(
-      appBar: AppBar(title: Text(isEditing ? 'Edit lure' : 'Log lure')),
+      appBar: AppBar(title: Text(isEditing ? 'Edit roll' : 'Log roll')),
       body: Form(
         key: _formKey,
         child: ListView(
@@ -133,12 +133,12 @@ class _ItemFormViewState extends State<ItemFormView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Field photo', style: Theme.of(context).textTheme.titleMedium),
+                    Text('Box photo', style: Theme.of(context).textTheme.titleMedium),
                     const SizedBox(height: 12),
                     if (_photoPath != null)
                       Stack(
                         children: [
-                          ClipRRect(borderRadius: BorderRadius.circular(6), child: Image.file(File(_photoPath!), height: 200, width: double.infinity, fit: BoxFit.cover)),
+                          ClipRRect(borderRadius: BorderRadius.circular(2), child: Image.file(File(_photoPath!), height: 200, width: double.infinity, fit: BoxFit.cover)),
                           Positioned(top: 8, right: 8, child: IconButton(icon: const Icon(Icons.delete, color: Colors.white), style: IconButton.styleFrom(backgroundColor: Colors.red), onPressed: _removePhoto)),
                         ],
                       )
@@ -147,7 +147,7 @@ class _ItemFormViewState extends State<ItemFormView> {
                         children: [
                           Expanded(child: OutlinedButton.icon(key: const ValueKey('camera_button'), onPressed: () => _pickPhoto(ImageSource.camera), icon: const Icon(Icons.photo_camera_outlined), label: const Text('Snap'))),
                           const SizedBox(width: 10),
-                          Expanded(child: OutlinedButton.icon(key: const ValueKey('gallery_button'), onPressed: () => _pickPhoto(ImageSource.gallery), icon: const Icon(Icons.photo_library_outlined), label: const Text('Roll'))),
+                          Expanded(child: OutlinedButton.icon(key: const ValueKey('gallery_button'), onPressed: () => _pickPhoto(ImageSource.gallery), icon: const Icon(Icons.photo_library_outlined), label: const Text('Album'))),
                         ],
                       ),
                   ],
@@ -155,25 +155,25 @@ class _ItemFormViewState extends State<ItemFormView> {
               ),
             ),
             const SizedBox(height: 12),
-            TextFormField(key: const ValueKey('item_name_field'), controller: _nameController, decoration: const InputDecoration(labelText: 'Lure name', hintText: 'e.g., Chartreuse jig', prefixIcon: Icon(Icons.phishing)), validator: (v) => (v == null || v.trim().isEmpty) ? 'Name this lure' : null),
+            TextFormField(key: const ValueKey('item_name_field'), controller: _nameController, decoration: const InputDecoration(labelText: 'Roll name', hintText: 'e.g., Portra 400', prefixIcon: Icon(Icons.camera_roll_outlined)), validator: (v) => (v == null || v.trim().isEmpty) ? 'Name this roll' : null),
             const SizedBox(height: 12),
-            DropdownButtonFormField<String>(key: const ValueKey('category_dropdown'), value: _categories.contains(_categoryController.text) ? _categoryController.text : null, decoration: const InputDecoration(labelText: 'Class', prefixIcon: Icon(Icons.category_outlined)), items: _categories.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(), onChanged: (v) { if (v != null) _categoryController.text = v; }, validator: (_) => _categoryController.text.isEmpty ? 'Pick a class' : null),
+            DropdownButtonFormField<String>(key: const ValueKey('category_dropdown'), value: _categories.contains(_categoryController.text) ? _categoryController.text : null, decoration: const InputDecoration(labelText: 'Format', prefixIcon: Icon(Icons.category_outlined)), items: _categories.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(), onChanged: (v) { if (v != null) _categoryController.text = v; }, validator: (_) => _categoryController.text.isEmpty ? 'Pick a format' : null),
             const SizedBox(height: 12),
-            DropdownButtonFormField<int>(key: const ValueKey('container_dropdown'), value: _selectedContainerId, decoration: const InputDecoration(labelText: 'Bay', prefixIcon: Icon(Icons.inventory_2_outlined)), items: _containers?.map((c) => DropdownMenuItem(value: c.id, child: Text('${c.name} (${c.code})'))).toList(), onChanged: (v) => setState(() => _selectedContainerId = v), validator: (v) => v == null ? 'Choose a bay' : null),
+            DropdownButtonFormField<int>(key: const ValueKey('container_dropdown'), value: _selectedContainerId, decoration: const InputDecoration(labelText: 'Can', prefixIcon: Icon(Icons.inventory_2_outlined)), items: _containers?.map((c) => DropdownMenuItem(value: c.id, child: Text('${c.name} (${c.code})'))).toList(), onChanged: (v) => setState(() => _selectedContainerId = v), validator: (v) => v == null ? 'Choose a can' : null),
             const SizedBox(height: 12),
             Row(
               children: [
                 Expanded(child: TextFormField(key: const ValueKey('quantity_field'), controller: _quantityController, decoration: const InputDecoration(labelText: 'Count', prefixIcon: Icon(Icons.numbers)), keyboardType: TextInputType.number, validator: (v) => int.tryParse(v?.trim() ?? '') == null ? 'Invalid' : null)),
                 const SizedBox(width: 12),
-                Expanded(child: DropdownButtonFormField<String>(key: const ValueKey('condition_dropdown'), value: _selectedCondition, decoration: const InputDecoration(labelText: 'Condition', prefixIcon: Icon(Icons.health_and_safety_outlined)), items: _conditions.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(), onChanged: (v) { if (v != null) setState(() => _selectedCondition = v); })),
+                Expanded(child: DropdownButtonFormField<String>(key: const ValueKey('condition_dropdown'), value: _selectedCondition, decoration: const InputDecoration(labelText: 'State', prefixIcon: Icon(Icons.health_and_safety_outlined)), items: _conditions.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(), onChanged: (v) { if (v != null) setState(() => _selectedCondition = v); })),
               ],
             ),
             const SizedBox(height: 12),
             TextFormField(key: const ValueKey('value_field'), controller: _valueController, decoration: const InputDecoration(labelText: 'Replacement cost (optional)', prefixIcon: Icon(Icons.payments_outlined)), keyboardType: TextInputType.number),
             const SizedBox(height: 12),
-            TextFormField(key: const ValueKey('notes_field'), controller: _notesController, decoration: const InputDecoration(labelText: 'Water note', hintText: 'Depth, species, or last lake', prefixIcon: Icon(Icons.notes)), maxLines: 3),
+            TextFormField(key: const ValueKey('notes_field'), controller: _notesController, decoration: const InputDecoration(labelText: 'Lab note', hintText: 'ISO, process, or expiry', prefixIcon: Icon(Icons.notes)), maxLines: 3),
             const SizedBox(height: 22),
-            FilledButton(key: const ValueKey('save_item_button'), onPressed: _saveItem, child: Text(isEditing ? 'Save lure' : 'Rig lure')),
+            FilledButton(key: const ValueKey('save_item_button'), onPressed: _saveItem, child: Text(isEditing ? 'Save roll' : 'File roll')),
           ],
         ),
       ),

@@ -1,19 +1,19 @@
-# Reel Bay
+# Canister Press
 
-A private tackle catalog. Stage trays, log lures, and find any rig before you launch — fully offline.
+A private analog catalog. Log cans, file rolls, and find any stock before you load — fully offline.
 
-**App Name:** Reel Bay
-**Subtitle:** Map your tackle trays
-**Category:** Sports
-**Bundle ID:** com.app.reelbay.build
-**Database:** `reel_bay.db`
+**App Name:** Canister Press
+**Subtitle:** Map your film rolls
+**Category:** Photo & Video
+**Bundle ID:** com.app.canisterpress.build
+**Database:** `canister_press.db`
 
 ## Navigation
 
-- Dock — kit pulse and quick actions
-- Bays — all trays
-- Tide — class and dock snapshot
-- Cabin — look and backup
+- Bench — lab pulse and quick actions
+- Cans — all tins and pouches
+- Stock — format and room snapshot
+- Lab — look and backup
 
 Listing copy lives in `meta-data-apple-store.txt`.
 

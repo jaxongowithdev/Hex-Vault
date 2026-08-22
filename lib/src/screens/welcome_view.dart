@@ -16,10 +16,10 @@ class _WelcomeViewState extends State<WelcomeView> {
   int _currentPage = 0;
 
   final _pages = [
-    {'icon': Icons.phishing, 'title': 'Reel Bay', 'description': 'Stage every tackle tray before you launch. Know which lure lives in which bay.'},
-    {'icon': Icons.photo_camera_outlined, 'title': 'Snap the lure', 'description': 'Photograph a spoon, a fly, or a leader so you remember the exact pattern you own.'},
-    {'icon': Icons.radar, 'title': 'Find it on the water', 'description': 'Search “jig” or “fluorocarbon” and see the tray immediately.'},
-    {'icon': Icons.wifi_off, 'title': 'Works at the dock', 'description': 'No account and no signal required. The catalog stays on this phone.'},
+    {'icon': Icons.camera_roll, 'title': 'Canister Press', 'description': 'Stage every film can before you load. Know which roll lives in which canister.'},
+    {'icon': Icons.photo_camera_outlined, 'title': 'Snap the stock', 'description': 'Photograph a box, a canister, or a developing note so you remember the ISO you own.'},
+    {'icon': Icons.search, 'title': 'Find it in the fridge', 'description': 'Search “Portra” or “120” and see the can immediately.'},
+    {'icon': Icons.wifi_off, 'title': 'Works in the darkroom', 'description': 'No account and no signal required. The catalog stays on this phone.'},
   ];
 
   Future<void> _finish() async {
@@ -44,7 +44,7 @@ class _WelcomeViewState extends State<WelcomeView> {
               alignment: Alignment.centerLeft,
               child: TextButton(
                 onPressed: _finish,
-                child: Text('SKIP', style: GoogleFonts.spaceGrotesk(color: Colors.white54, letterSpacing: 1.4)),
+                child: Text('SKIP', style: GoogleFonts.dmSans(color: Colors.white54, letterSpacing: 1.4)),
               ),
             ),
             Expanded(
@@ -59,18 +59,18 @@ class _WelcomeViewState extends State<WelcomeView> {
                     child: Column(
                       children: [
                         const Spacer(),
-                        Icon(page['icon'] as IconData, size: 72, color: VisualTheme.accentColor),
+                        Icon(page['icon'] as IconData, size: 72, color: VisualTheme.secondaryColor),
                         const SizedBox(height: 24),
                         Text(
                           page['title'] as String,
                           textAlign: TextAlign.center,
-                          style: GoogleFonts.spaceGrotesk(fontSize: 34, fontWeight: FontWeight.w700, color: Colors.white),
+                          style: GoogleFonts.instrumentSerif(fontSize: 36, fontWeight: FontWeight.w600, color: Colors.white),
                         ),
                         const SizedBox(height: 14),
                         Text(
                           page['description'] as String,
                           textAlign: TextAlign.center,
-                          style: GoogleFonts.ibmPlexSans(fontSize: 16, height: 1.45, color: Colors.white70),
+                          style: GoogleFonts.dmSans(fontSize: 16, height: 1.45, color: Colors.white70),
                         ),
                         const Spacer(),
                       ],
@@ -87,8 +87,8 @@ class _WelcomeViewState extends State<WelcomeView> {
                     _pages.length,
                     (i) => Container(
                       margin: const EdgeInsets.only(right: 5),
-                      width: 10,
-                      height: 4,
+                      width: 18,
+                      height: 3,
                       color: _currentPage == i ? VisualTheme.secondaryColor : Colors.white24,
                     ),
                   ),
@@ -101,7 +101,7 @@ class _WelcomeViewState extends State<WelcomeView> {
                         _pageController.nextPage(duration: const Duration(milliseconds: 260), curve: Curves.easeOut);
                       }
                     },
-                    child: Text(_currentPage == _pages.length - 1 ? 'Launch' : 'Next'),
+                    child: Text(_currentPage == _pages.length - 1 ? 'Enter the lab' : 'Next'),
                   ),
                 ],
               ),

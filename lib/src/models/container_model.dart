@@ -1,4 +1,4 @@
-// Tackle bay / fishing tray model
+// Film canister / darkroom tray model
 class ContainerModel {
   final int? id;
   final String name;

@@ -55,15 +55,15 @@ class _ContainerListViewState extends State<ContainerListView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bays'),
+        title: const Text('Cans'),
         actions: [
           IconButton(icon: Icon(_isGridView ? Icons.view_agenda_outlined : Icons.grid_view), onPressed: () => setState(() => _isGridView = !_isGridView)),
           PopupMenuButton<String>(
             onSelected: (v) { setState(() => _sortBy = v); _loadContainers(); },
             itemBuilder: (_) => const [
               PopupMenuItem(value: 'name', child: Text('By name')),
-              PopupMenuItem(value: 'room', child: Text('By dock')),
-              PopupMenuItem(value: 'updated', child: Text('Last rigged')),
+              PopupMenuItem(value: 'room', child: Text('By room')),
+              PopupMenuItem(value: 'updated', child: Text('Last loaded')),
             ],
           ),
         ],
@@ -77,11 +77,11 @@ class _ContainerListViewState extends State<ContainerListView> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.inventory_2_outlined, size: 48),
+                        const Icon(Icons.camera_roll_outlined, size: 48),
                         const SizedBox(height: 12),
-                        Text('No bays staged', style: GoogleFonts.spaceGrotesk(fontSize: 22, fontWeight: FontWeight.w700)),
+                        Text('No cans staged', style: GoogleFonts.instrumentSerif(fontSize: 24, fontWeight: FontWeight.w600)),
                         const SizedBox(height: 8),
-                        const Text('Start a fly tray, a boat box, or the truck tailgate kit.', textAlign: TextAlign.center),
+                        const Text('Start a fridge tin, a travel pouch, or the darkroom rack.', textAlign: TextAlign.center),
                       ],
                     ),
                   ),
@@ -94,7 +94,7 @@ class _ContainerListViewState extends State<ContainerListView> {
           if (r == true) _loadContainers();
         },
         icon: const Icon(Icons.add),
-        label: const Text('Bay'),
+        label: const Text('Can'),
       ),
     );
   }
@@ -116,15 +116,15 @@ class _ContainerListViewState extends State<ContainerListView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(c.code, style: GoogleFonts.spaceGrotesk(color: VisualTheme.secondaryColor, fontWeight: FontWeight.w700, fontSize: 12)),
+                  Text(c.code, style: GoogleFonts.dmSans(color: VisualTheme.secondaryColor, fontWeight: FontWeight.w700, fontSize: 12)),
                   const SizedBox(height: 8),
-                  Text(c.name, style: GoogleFonts.spaceGrotesk(fontSize: 18, fontWeight: FontWeight.w700), maxLines: 2),
+                  Text(c.name, style: GoogleFonts.instrumentSerif(fontSize: 20, fontWeight: FontWeight.w600), maxLines: 2),
                   const Spacer(),
                   Text('${c.room} / ${c.shelf}', maxLines: 1, overflow: TextOverflow.ellipsis),
                   const SizedBox(height: 8),
-                  LinearProgressIndicator(value: pct / 100, minHeight: 5, backgroundColor: VisualTheme.mist, color: VisualTheme.secondaryColor),
+                  LinearProgressIndicator(value: pct / 100, minHeight: 4, backgroundColor: VisualTheme.mist, color: VisualTheme.secondaryColor),
                   const SizedBox(height: 6),
-                  Text('$count / ${c.capacity} lures'),
+                  Text('$count / ${c.capacity} rolls'),
                 ],
               ),
             ),
@@ -146,7 +146,7 @@ class _ContainerListViewState extends State<ContainerListView> {
           child: Card(
             child: ListTile(
               title: Text(c.name, style: const TextStyle(fontWeight: FontWeight.w700)),
-              subtitle: Text('${c.code}  ·  ${c.room} / ${c.shelf}\n$count / ${c.capacity} lures'),
+              subtitle: Text('${c.code}  ·  ${c.room} / ${c.shelf}\n$count / ${c.capacity} rolls'),
               isThreeLine: true,
               trailing: const Icon(Icons.arrow_forward),
               onTap: () => _open(c),

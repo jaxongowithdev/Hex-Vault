@@ -48,10 +48,10 @@ class _ConfigViewState extends State<ConfigView> {
       final data = await _storage.exportData();
       final jsonString = const JsonEncoder.withIndent('  ').convert(data);
       await Share.shareXFiles(
-        [XFile.fromData(Uint8List.fromList(jsonString.codeUnits), mimeType: 'application/json', name: 'reel_bay_${DateTime.now().millisecondsSinceEpoch}.json')],
-        text: 'Reel Bay kit list',
+        [XFile.fromData(Uint8List.fromList(jsonString.codeUnits), mimeType: 'application/json', name: 'canister_press_${DateTime.now().millisecondsSinceEpoch}.json')],
+        text: 'Canister Press film list',
       );
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Kit list exported')));
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Film list exported')));
     } catch (e) {
       if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Could not export: $e')));
     }
@@ -61,8 +61,8 @@ class _ConfigViewState extends State<ConfigView> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('Restore a kit list?'),
-        content: const Text('The current bays will be replaced by the file you pick.'),
+        title: const Text('Restore a film list?'),
+        content: const Text('The current cans will be replaced by the file you pick.'),
         actions: [
           TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Cancel')),
           FilledButton(onPressed: () => Navigator.pop(context, true), child: const Text('Restore')),
@@ -75,7 +75,7 @@ class _ConfigViewState extends State<ConfigView> {
       if (result == null || result.files.isEmpty || result.files.first.bytes == null) return;
       final data = jsonDecode(String.fromCharCodes(result.files.first.bytes!)) as Map<String, dynamic>;
       await _storage.importData(data);
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Kit list restored')));
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Film list restored')));
     } catch (e) {
       if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Could not restore: $e')));
     }
@@ -84,9 +84,9 @@ class _ConfigViewState extends State<ConfigView> {
   String _themeLabel(String theme) {
     switch (theme) {
       case 'light':
-        return 'Daylight';
+        return 'Paper';
       case 'dark':
-        return 'Night watch';
+        return 'Darkroom';
       default:
         return 'Match the phone';
     }
@@ -95,7 +95,7 @@ class _ConfigViewState extends State<ConfigView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Cabin')),
+      appBar: AppBar(title: const Text('Lab')),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 28),
         children: [
@@ -105,9 +105,9 @@ class _ConfigViewState extends State<ConfigView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('REEL BAY', style: GoogleFonts.spaceGrotesk(color: VisualTheme.accentColor, letterSpacing: 1.8, fontSize: 12, fontWeight: FontWeight.w700)),
+                Text('CANISTER PRESS', style: GoogleFonts.dmSans(color: VisualTheme.secondaryColor, letterSpacing: 1.8, fontSize: 12, fontWeight: FontWeight.w700)),
                 const SizedBox(height: 8),
-                Text('A private tackle list. Nothing leaves this phone.', style: GoogleFonts.spaceGrotesk(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w700)),
+                Text('A private film list. Nothing leaves this phone.', style: GoogleFonts.instrumentSerif(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w600)),
               ],
             ),
           ),
@@ -119,11 +119,11 @@ class _ConfigViewState extends State<ConfigView> {
             onTap: () => showDialog(
               context: context,
               builder: (_) => AlertDialog(
-                title: const Text('Cabin light'),
+                title: const Text('Lab light'),
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    for (final e in const [('light', 'Daylight'), ('dark', 'Night watch'), ('system', 'Match the phone')])
+                    for (final e in const [('light', 'Paper'), ('dark', 'Darkroom'), ('system', 'Match the phone')])
                       RadioListTile<String>(
                         title: Text(e.$2),
                         value: e.$1,
@@ -135,9 +135,9 @@ class _ConfigViewState extends State<ConfigView> {
               ),
             ),
           ),
-          ListTile(key: const ValueKey('backup_button'), leading: const Icon(Icons.ios_share), title: const Text('Export kit list'), subtitle: const Text('Share a JSON snapshot'), onTap: _exportData),
-          ListTile(key: const ValueKey('import_button'), leading: const Icon(Icons.file_open_outlined), title: const Text('Restore kit list'), subtitle: const Text('Replace from a JSON file'), onTap: _importData),
-          const ListTile(leading: Icon(Icons.info_outline), title: Text('Version 1.0.0'), subtitle: Text('Offline tackle inventory')),
+          ListTile(key: const ValueKey('backup_button'), leading: const Icon(Icons.ios_share), title: const Text('Export film list'), subtitle: const Text('Share a JSON snapshot'), onTap: _exportData),
+          ListTile(key: const ValueKey('import_button'), leading: const Icon(Icons.file_open_outlined), title: const Text('Restore film list'), subtitle: const Text('Replace from a JSON file'), onTap: _importData),
+          const ListTile(leading: Icon(Icons.info_outline), title: Text('Version 1.0.0'), subtitle: Text('Offline analog inventory')),
           const ListTile(leading: Icon(Icons.lock_outline), title: Text('Privacy'), subtitle: Text('No account. No tracking. Local only.')),
         ],
       ),

@@ -48,8 +48,8 @@ class _ContainerDetailViewState extends State<ContainerDetailView> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('Clear this bay?'),
-        content: const Text('Every lure filed here will be removed.'),
+        title: const Text('Clear this can?'),
+        content: const Text('Every roll filed here will be removed.'),
         actions: [
           TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Keep')),
           FilledButton(onPressed: () => Navigator.pop(context, true), style: FilledButton.styleFrom(backgroundColor: Colors.red), child: const Text('Clear')),
@@ -65,7 +65,7 @@ class _ContainerDetailViewState extends State<ContainerDetailView> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) return Scaffold(appBar: AppBar(), body: const Center(child: CircularProgressIndicator()));
-    if (_container == null) return Scaffold(appBar: AppBar(), body: const Center(child: Text('Bay not found')));
+    if (_container == null) return Scaffold(appBar: AppBar(), body: const Center(child: Text('Can not found')));
 
     final count = _items?.length ?? 0;
     final pct = _container!.capacity > 0 ? (count / _container!.capacity * 100).round() : 0;
@@ -76,8 +76,8 @@ class _ContainerDetailViewState extends State<ContainerDetailView> {
         actions: [
           PopupMenuButton(
             itemBuilder: (_) => const [
-              PopupMenuItem(value: 'edit', child: Text('Edit bay')),
-              PopupMenuItem(value: 'delete', child: Text('Clear bay')),
+              PopupMenuItem(value: 'edit', child: Text('Edit can')),
+              PopupMenuItem(value: 'delete', child: Text('Clear can')),
             ],
             onSelected: (v) {
               if (v == 'edit') {
@@ -100,22 +100,22 @@ class _ContainerDetailViewState extends State<ContainerDetailView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(_container!.code, style: GoogleFonts.spaceGrotesk(color: VisualTheme.accentColor, letterSpacing: 1.2)),
+                  Text(_container!.code, style: GoogleFonts.dmSans(color: VisualTheme.secondaryColor, letterSpacing: 1.4, fontWeight: FontWeight.w700)),
                   const SizedBox(height: 6),
-                  Text(_container!.name, style: GoogleFonts.spaceGrotesk(fontSize: 26, fontWeight: FontWeight.w700, color: Colors.white)),
+                  Text(_container!.name, style: GoogleFonts.instrumentSerif(fontSize: 28, fontWeight: FontWeight.w600, color: Colors.white)),
                   const SizedBox(height: 8),
                   Text('${_container!.room} / ${_container!.shelf}', style: const TextStyle(color: Colors.white70)),
                   const SizedBox(height: 12),
-                  LinearProgressIndicator(value: pct / 100, minHeight: 6, backgroundColor: Colors.white24, color: VisualTheme.secondaryColor),
+                  LinearProgressIndicator(value: pct / 100, minHeight: 4, backgroundColor: Colors.white24, color: VisualTheme.secondaryColor),
                   const SizedBox(height: 8),
-                  Text('$count / ${_container!.capacity} lures  ·  $pct% packed', style: const TextStyle(color: Colors.white70)),
+                  Text('$count / ${_container!.capacity} rolls  ·  $pct% packed', style: const TextStyle(color: Colors.white70)),
                 ],
               ),
             ),
             const SizedBox(height: 20),
             Row(
               children: [
-                Expanded(child: Text('Lures ($count)', style: GoogleFonts.spaceGrotesk(fontSize: 20, fontWeight: FontWeight.w700))),
+                Expanded(child: Text('Rolls ($count)', style: GoogleFonts.instrumentSerif(fontSize: 22, fontWeight: FontWeight.w600))),
                 FilledButton.icon(
                   key: const ValueKey('add_item_button'),
                   onPressed: () async {
@@ -123,19 +123,19 @@ class _ContainerDetailViewState extends State<ContainerDetailView> {
                     if (r == true) _loadData();
                   },
                   icon: const Icon(Icons.add),
-                  label: const Text('Lure'),
+                  label: const Text('Roll'),
                 ),
               ],
             ),
             const SizedBox(height: 12),
             if (_items == null || _items!.isEmpty)
-              const Card(child: Padding(padding: EdgeInsets.all(28), child: Center(child: Text('Nothing rigged here yet'))))
+              const Card(child: Padding(padding: EdgeInsets.all(28), child: Center(child: Text('Nothing filed here yet'))))
             else
               ..._items!.map((item) => Padding(
                     padding: const EdgeInsets.only(bottom: 8),
                     child: Card(
                       child: ListTile(
-                        leading: Icon(Icons.phishing, color: VisualTheme.getCategoryColor(item.category)),
+                        leading: Icon(Icons.camera_roll, color: VisualTheme.getCategoryColor(item.category)),
                         title: Text(item.name, style: const TextStyle(fontWeight: FontWeight.w700)),
                         subtitle: Text('${item.category} · ${item.quantity} · ${item.condition}'),
                         trailing: const Icon(Icons.arrow_forward, size: 18),

@@ -1,9 +1,9 @@
-# Reel Bay - Apple App Store Submission Guide
+# Canister Press - Apple App Store Submission Guide
 
-**App Name**: Reel Bay
-**Subtitle**: Map your tackle trays
-**Category**: Sports / Lifestyle
+**App Name**: Canister Press
+**Subtitle**: Map your film rolls
+**Category**: Photo & Video / Lifestyle
 **Version**: 1.0.0
-**Bundle ID**: com.app.reelbay.build
+**Bundle ID**: com.app.canisterpress.build
 
 See `meta-data-apple-store.txt` for the full listing copy.

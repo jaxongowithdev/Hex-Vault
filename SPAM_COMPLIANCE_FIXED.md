@@ -1,3 +1,3 @@
 # Listing notes
 
-This project is Reel Bay (`com.app.reelbay.build`), a fishing tackle catalog. Copy, palette, icon, bundle ID, and onboarding are original to this product.
+This project is Canister Press (`com.app.canisterpress.build`), an analog film catalog. Copy, palette, icon, bundle ID, and onboarding are original to this product.

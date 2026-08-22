@@ -1,4 +1,4 @@
-# Reel Bay
+# Canister Press
 
 ```bash
 flutter run

@@ -48,7 +48,7 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('REEL BAY', style: GoogleFonts.spaceGrotesk(letterSpacing: 2, fontSize: 16, fontWeight: FontWeight.w700, color: Colors.white)),
+        title: Text('CANISTER PRESS', style: GoogleFonts.dmSans(letterSpacing: 2.2, fontSize: 13, fontWeight: FontWeight.w700, color: Colors.white)),
         actions: [
           IconButton(
             key: const ValueKey('favorites_button'),
@@ -80,13 +80,13 @@ class _HomeViewState extends State<HomeView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('DOCK CHECK', style: GoogleFonts.spaceGrotesk(color: VisualTheme.accentColor, letterSpacing: 1.6, fontSize: 11, fontWeight: FontWeight.w700)),
+                        Text('LAB CHECK', style: GoogleFonts.dmSans(color: VisualTheme.secondaryColor, letterSpacing: 1.8, fontSize: 11, fontWeight: FontWeight.w700)),
                         const SizedBox(height: 8),
                         Text(
                           (_stats?['totalItems'] ?? 0) == 0
-                              ? 'No trays staged yet.'
-                              : '${_stats!['totalItems']} lures across ${_stats!['totalContainers']} bays.',
-                          style: GoogleFonts.spaceGrotesk(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w700),
+                              ? 'No cans staged yet.'
+                              : '${_stats!['totalItems']} rolls across ${_stats!['totalContainers']} cans.',
+                          style: GoogleFonts.instrumentSerif(color: Colors.white, fontSize: 26, fontWeight: FontWeight.w600),
                         ),
                       ],
                     ),
@@ -94,9 +94,9 @@ class _HomeViewState extends State<HomeView> {
                   const SizedBox(height: 12),
                   Row(
                     children: [
-                      _cell('BAYS', _stats?['totalContainers']?.toString() ?? '0'),
+                      _cell('CANS', _stats?['totalContainers']?.toString() ?? '0'),
                       const SizedBox(width: 8),
-                      _cell('LURES', _stats?['totalItems']?.toString() ?? '0'),
+                      _cell('ROLLS', _stats?['totalItems']?.toString() ?? '0'),
                       const SizedBox(width: 8),
                       _cell('EMPTY', _stats?['emptyContainers']?.toString() ?? '0'),
                     ],
@@ -105,14 +105,14 @@ class _HomeViewState extends State<HomeView> {
                   Row(
                     children: [
                       Expanded(
-                        child: _cta(key: const ValueKey('add_box_button'), label: 'NEW BAY', onTap: () async {
+                        child: _cta(key: const ValueKey('add_box_button'), label: 'NEW CAN', onTap: () async {
                           final r = await Navigator.push(context, MaterialPageRoute(builder: (_) => const ContainerFormView()));
                           if (r == true) _loadData();
                         }),
                       ),
                       const SizedBox(width: 8),
                       Expanded(
-                        child: _cta(key: const ValueKey('add_item_button'), label: 'LOG LURE', onTap: () async {
+                        child: _cta(key: const ValueKey('add_item_button'), label: 'LOG ROLL', onTap: () async {
                           final r = await Navigator.push(context, MaterialPageRoute(builder: (_) => const ItemFormView()));
                           if (r == true) _loadData();
                         }),
@@ -121,7 +121,7 @@ class _HomeViewState extends State<HomeView> {
                   ),
                   if (_recentContainers != null && _recentContainers!.isNotEmpty) ...[
                     const SizedBox(height: 24),
-                    Text('Last rigged', style: GoogleFonts.spaceGrotesk(fontSize: 20, fontWeight: FontWeight.w700)),
+                    Text('Last loaded', style: GoogleFonts.instrumentSerif(fontSize: 22, fontWeight: FontWeight.w600)),
                     const SizedBox(height: 10),
                     ..._recentContainers!.map((c) => Padding(
                           padding: const EdgeInsets.only(bottom: 8),
@@ -132,7 +132,7 @@ class _HomeViewState extends State<HomeView> {
                                 height: 40,
                                 alignment: Alignment.center,
                                 color: VisualTheme.mist,
-                                child: Text(c.code.substring(0, 1), style: GoogleFonts.spaceGrotesk(fontWeight: FontWeight.w700)),
+                                child: Text(c.code.substring(0, 1), style: GoogleFonts.dmSans(fontWeight: FontWeight.w700)),
                               ),
                               title: Text(c.name, style: const TextStyle(fontWeight: FontWeight.w700)),
                               subtitle: Text('${c.room} / ${c.shelf}'),
@@ -155,11 +155,11 @@ class _HomeViewState extends State<HomeView> {
     return Expanded(
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 14),
-        decoration: BoxDecoration(color: Colors.white, border: Border.all(color: const Color(0x330E4D5A))),
+        decoration: BoxDecoration(color: Colors.white, border: Border.all(color: const Color(0x331C1C1E))),
         child: Column(
           children: [
-            Text(value, style: GoogleFonts.spaceGrotesk(fontSize: 22, fontWeight: FontWeight.w700)),
-            Text(label, style: GoogleFonts.spaceGrotesk(fontSize: 10, letterSpacing: 1)),
+            Text(value, style: GoogleFonts.instrumentSerif(fontSize: 24, fontWeight: FontWeight.w600)),
+            Text(label, style: GoogleFonts.dmSans(fontSize: 10, letterSpacing: 1.2, fontWeight: FontWeight.w700)),
           ],
         ),
       ),
@@ -174,7 +174,7 @@ class _HomeViewState extends State<HomeView> {
         onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 16),
-          child: Text(label, textAlign: TextAlign.center, style: GoogleFonts.spaceGrotesk(color: Colors.white, fontWeight: FontWeight.w700)),
+          child: Text(label, textAlign: TextAlign.center, style: GoogleFonts.dmSans(color: VisualTheme.primaryColor, fontWeight: FontWeight.w700)),
         ),
       ),
     );

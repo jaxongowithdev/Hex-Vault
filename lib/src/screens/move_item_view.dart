@@ -52,7 +52,7 @@ class _MoveItemViewState extends State<MoveItemView> {
 
   Future<void> _moveItem() async {
     if (_selectedContainer == null) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Pick a destination bay')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Pick a destination can')));
       return;
     }
     final destCount = _itemCounts[_selectedContainer!.id] ?? 0;
@@ -60,11 +60,11 @@ class _MoveItemViewState extends State<MoveItemView> {
       final confirm = await showDialog<bool>(
         context: context,
         builder: (_) => AlertDialog(
-          title: const Text('That bay is full'),
-          content: Text('"${_selectedContainer!.name}" has no open slots. Rig it anyway?'),
+          title: const Text('That can is full'),
+          content: Text('"${_selectedContainer!.name}" has no open slots. File it anyway?'),
           actions: [
             TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Cancel')),
-            FilledButton(onPressed: () => Navigator.pop(context, true), child: const Text('Rig anyway')),
+            FilledButton(onPressed: () => Navigator.pop(context, true), child: const Text('File anyway')),
           ],
         ),
       );
@@ -80,7 +80,7 @@ class _MoveItemViewState extends State<MoveItemView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Rerig')),
+      appBar: AppBar(title: const Text('Reseat')),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : ListView(
@@ -92,9 +92,9 @@ class _MoveItemViewState extends State<MoveItemView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('RERIGGING', style: GoogleFonts.spaceGrotesk(color: VisualTheme.secondaryColor, letterSpacing: 1.4, fontSize: 11, fontWeight: FontWeight.w700)),
+                        Text('RESEATING', style: GoogleFonts.dmSans(color: VisualTheme.secondaryColor, letterSpacing: 1.4, fontSize: 11, fontWeight: FontWeight.w700)),
                         const SizedBox(height: 6),
-                        Text(widget.item.name, style: GoogleFonts.spaceGrotesk(fontSize: 22, fontWeight: FontWeight.w700)),
+                        Text(widget.item.name, style: GoogleFonts.instrumentSerif(fontSize: 24, fontWeight: FontWeight.w600)),
                         Text('${widget.item.category} · ${widget.item.quantity}'),
                       ],
                     ),
@@ -107,10 +107,10 @@ class _MoveItemViewState extends State<MoveItemView> {
                   child: Text('Now in ${_currentContainer?.name ?? 'unknown'}${_currentContainer != null ? ' / ${_currentContainer!.room}' : ''}', style: const TextStyle(color: Colors.white)),
                 ),
                 const SizedBox(height: 20),
-                Text('Move into', style: GoogleFonts.spaceGrotesk(fontSize: 20, fontWeight: FontWeight.w700)),
+                Text('Move into', style: GoogleFonts.instrumentSerif(fontSize: 22, fontWeight: FontWeight.w600)),
                 const SizedBox(height: 10),
                 if (_containers == null || _containers!.isEmpty)
-                  const Card(child: Padding(padding: EdgeInsets.all(28), child: Center(child: Text('No other bays yet'))))
+                  const Card(child: Padding(padding: EdgeInsets.all(28), child: Center(child: Text('No other cans yet'))))
                 else
                   ..._containers!.map((c) {
                     final count = _itemCounts[c.id] ?? 0;
@@ -129,9 +129,9 @@ class _MoveItemViewState extends State<MoveItemView> {
                     );
                   }),
                 const SizedBox(height: 16),
-                TextField(key: const ValueKey('move_notes_field'), controller: _notesController, decoration: const InputDecoration(labelText: 'Why the move?', hintText: 'e.g., Going in the boat box', prefixIcon: Icon(Icons.notes)), maxLines: 2),
+                TextField(key: const ValueKey('move_notes_field'), controller: _notesController, decoration: const InputDecoration(labelText: 'Why the move?', hintText: 'e.g., Going in the travel pouch', prefixIcon: Icon(Icons.notes)), maxLines: 2),
                 const SizedBox(height: 22),
-                FilledButton.icon(key: const ValueKey('confirm_move_button'), onPressed: _selectedContainer == null ? null : _moveItem, icon: const Icon(Icons.swap_horiz), label: const Text('Rerig lure')),
+                FilledButton.icon(key: const ValueKey('confirm_move_button'), onPressed: _selectedContainer == null ? null : _moveItem, icon: const Icon(Icons.swap_horiz), label: const Text('Reseat roll')),
               ],
             ),
     );

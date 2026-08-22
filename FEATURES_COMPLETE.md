@@ -1,3 +1,3 @@
-# Reel Bay — feature set
+# Canister Press — feature set
 
-Dock / Bays / Tide / Cabin navigation, lure catalog with tackle photos, search, go-to kit pins, rerig history, JSON backup, offline SQLite (`reel_bay.db`).
+Bench / Cans / Stock / Lab navigation, film catalog with box photos, search, next-load pins, reseat history, JSON backup, offline SQLite (`canister_press.db`).
