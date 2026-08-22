@@ -35,26 +35,10 @@ class _DashboardViewState extends State<DashboardView> {
         selectedIndex: _selectedIndex,
         onDestinationSelected: (i) => setState(() => _selectedIndex = i),
         destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.chair_outlined),
-            selectedIcon: Icon(Icons.chair),
-            label: 'Studio',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.shopping_basket_outlined),
-            selectedIcon: Icon(Icons.shopping_basket),
-            label: 'Baskets',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.straighten_outlined),
-            selectedIcon: Icon(Icons.straighten),
-            label: 'Gauge',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.carpenter_outlined),
-            selectedIcon: Icon(Icons.carpenter),
-            label: 'Bench',
-          ),
+          NavigationDestination(icon: Icon(Icons.anchor_outlined), selectedIcon: Icon(Icons.anchor), label: 'Dock'),
+          NavigationDestination(icon: Icon(Icons.inventory_2_outlined), selectedIcon: Icon(Icons.inventory_2), label: 'Bays'),
+          NavigationDestination(icon: Icon(Icons.waves_outlined), selectedIcon: Icon(Icons.waves), label: 'Tide'),
+          NavigationDestination(icon: Icon(Icons.sailing_outlined), selectedIcon: Icon(Icons.sailing), label: 'Cabin'),
         ],
       ),
     );

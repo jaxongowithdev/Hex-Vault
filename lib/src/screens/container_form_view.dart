@@ -26,7 +26,7 @@ class _ContainerFormViewState extends State<ContainerFormView> {
     _codeController = TextEditingController(text: widget.container?.code);
     _roomController = TextEditingController(text: widget.container?.room);
     _shelfController = TextEditingController(text: widget.container?.shelf);
-    _capacityController = TextEditingController(text: widget.container?.capacity.toString() ?? '18');
+    _capacityController = TextEditingController(text: widget.container?.capacity.toString() ?? '16');
   }
 
   @override
@@ -61,58 +61,23 @@ class _ContainerFormViewState extends State<ContainerFormView> {
   Widget build(BuildContext context) {
     final isEditing = widget.container != null;
     return Scaffold(
-      appBar: AppBar(title: Text(isEditing ? 'Edit basket' : 'New basket')),
+      appBar: AppBar(title: Text(isEditing ? 'Edit bay' : 'New bay')),
       body: Form(
         key: _formKey,
         child: ListView(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(16),
           children: [
-            TextFormField(
-              key: const ValueKey('name_field'),
-              controller: _nameController,
-              decoration: const InputDecoration(labelText: 'Basket name', hintText: 'e.g., Sock leftovers', prefixIcon: Icon(Icons.shopping_basket_outlined)),
-              validator: (v) => (v == null || v.trim().isEmpty) ? 'Name this basket' : null,
-            ),
-            const SizedBox(height: 14),
-            TextFormField(
-              key: const ValueKey('code_field'),
-              controller: _codeController,
-              decoration: const InputDecoration(labelText: 'Tag', hintText: 'e.g., YRN-01, SOCK', prefixIcon: Icon(Icons.tag)),
-              textCapitalization: TextCapitalization.characters,
-              validator: (v) => (v == null || v.trim().isEmpty) ? 'Add a tag' : null,
-            ),
-            const SizedBox(height: 14),
-            TextFormField(
-              key: const ValueKey('room_field'),
-              controller: _roomController,
-              decoration: const InputDecoration(labelText: 'Studio corner', hintText: 'e.g., Closet, Desk, Hall', prefixIcon: Icon(Icons.chair_outlined)),
-              validator: (v) => (v == null || v.trim().isEmpty) ? 'Where does this basket live?' : null,
-            ),
-            const SizedBox(height: 14),
-            TextFormField(
-              key: const ValueKey('shelf_field'),
-              controller: _shelfController,
-              decoration: const InputDecoration(labelText: 'Drawer / hook', hintText: 'e.g., Top drawer, Wall hook', prefixIcon: Icon(Icons.view_week_outlined)),
-              validator: (v) => (v == null || v.trim().isEmpty) ? 'Add a drawer or hook' : null,
-            ),
-            const SizedBox(height: 14),
-            TextFormField(
-              key: const ValueKey('capacity_field'),
-              controller: _capacityController,
-              decoration: const InputDecoration(labelText: 'How many skeins fit', prefixIcon: Icon(Icons.stacked_bar_chart)),
-              keyboardType: TextInputType.number,
-              validator: (v) {
-                final n = int.tryParse(v?.trim() ?? '');
-                if (n == null || n <= 0) return 'Use a positive number';
-                return null;
-              },
-            ),
-            const SizedBox(height: 24),
-            FilledButton(
-              key: const ValueKey('save_button'),
-              onPressed: _saveContainer,
-              child: Text(isEditing ? 'Save basket' : 'Create basket'),
-            ),
+            TextFormField(key: const ValueKey('name_field'), controller: _nameController, decoration: const InputDecoration(labelText: 'Bay name', hintText: 'e.g., Fly tray, Boat box', prefixIcon: Icon(Icons.inventory_2_outlined)), validator: (v) => (v == null || v.trim().isEmpty) ? 'Name this bay' : null),
+            const SizedBox(height: 12),
+            TextFormField(key: const ValueKey('code_field'), controller: _codeController, decoration: const InputDecoration(labelText: 'Bay mark', hintText: 'e.g., BAY-01, FLY', prefixIcon: Icon(Icons.tag)), textCapitalization: TextCapitalization.characters, validator: (v) => (v == null || v.trim().isEmpty) ? 'Add a bay mark' : null),
+            const SizedBox(height: 12),
+            TextFormField(key: const ValueKey('room_field'), controller: _roomController, decoration: const InputDecoration(labelText: 'Dock / shed', hintText: 'e.g., Garage, Boat, Truck', prefixIcon: Icon(Icons.anchor_outlined)), validator: (v) => (v == null || v.trim().isEmpty) ? 'Where is this bay stored?' : null),
+            const SizedBox(height: 12),
+            TextFormField(key: const ValueKey('shelf_field'), controller: _shelfController, decoration: const InputDecoration(labelText: 'Tray / slot', hintText: 'e.g., Top tray, Left slot', prefixIcon: Icon(Icons.view_week_outlined)), validator: (v) => (v == null || v.trim().isEmpty) ? 'Add a tray or slot' : null),
+            const SizedBox(height: 12),
+            TextFormField(key: const ValueKey('capacity_field'), controller: _capacityController, decoration: const InputDecoration(labelText: 'Lure slots', prefixIcon: Icon(Icons.stacked_bar_chart)), keyboardType: TextInputType.number, validator: (v) { final n = int.tryParse(v?.trim() ?? ''); return (n == null || n <= 0) ? 'Use a positive number' : null; }),
+            const SizedBox(height: 22),
+            FilledButton(key: const ValueKey('save_button'), onPressed: _saveContainer, child: Text(isEditing ? 'Save bay' : 'Stage bay')),
           ],
         ),
       ),

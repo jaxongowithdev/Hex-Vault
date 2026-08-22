@@ -48,11 +48,11 @@ class _ContainerDetailViewState extends State<ContainerDetailView> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('Empty this basket?'),
-        content: const Text('Every skein filed here will be removed.'),
+        title: const Text('Clear this bay?'),
+        content: const Text('Every lure filed here will be removed.'),
         actions: [
           TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Keep')),
-          FilledButton(onPressed: () => Navigator.pop(context, true), style: FilledButton.styleFrom(backgroundColor: Colors.red), child: const Text('Empty')),
+          FilledButton(onPressed: () => Navigator.pop(context, true), style: FilledButton.styleFrom(backgroundColor: Colors.red), child: const Text('Clear')),
         ],
       ),
     );
@@ -65,7 +65,7 @@ class _ContainerDetailViewState extends State<ContainerDetailView> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) return Scaffold(appBar: AppBar(), body: const Center(child: CircularProgressIndicator()));
-    if (_container == null) return Scaffold(appBar: AppBar(), body: const Center(child: Text('Basket not found')));
+    if (_container == null) return Scaffold(appBar: AppBar(), body: const Center(child: Text('Bay not found')));
 
     final count = _items?.length ?? 0;
     final pct = _container!.capacity > 0 ? (count / _container!.capacity * 100).round() : 0;
@@ -76,13 +76,12 @@ class _ContainerDetailViewState extends State<ContainerDetailView> {
         actions: [
           PopupMenuButton(
             itemBuilder: (_) => const [
-              PopupMenuItem(value: 'edit', child: Text('Edit basket')),
-              PopupMenuItem(value: 'delete', child: Text('Empty basket')),
+              PopupMenuItem(value: 'edit', child: Text('Edit bay')),
+              PopupMenuItem(value: 'delete', child: Text('Clear bay')),
             ],
             onSelected: (v) {
               if (v == 'edit') {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => ContainerFormView(container: _container)))
-                    .then((r) { if (r == true) _loadData(); });
+                Navigator.push(context, MaterialPageRoute(builder: (_) => ContainerFormView(container: _container))).then((r) { if (r == true) _loadData(); });
               } else if (v == 'delete') {
                 _deleteContainer();
               }
@@ -93,30 +92,30 @@ class _ContainerDetailViewState extends State<ContainerDetailView> {
       body: RefreshIndicator(
         onRefresh: _loadData,
         child: ListView(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(16),
           children: [
             Container(
-              padding: const EdgeInsets.all(22),
-              decoration: BoxDecoration(color: VisualTheme.blush, borderRadius: BorderRadius.circular(28)),
+              padding: const EdgeInsets.all(18),
+              color: VisualTheme.primaryColor,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(_container!.code, style: const TextStyle(color: VisualTheme.secondaryColor, fontWeight: FontWeight.w800)),
+                  Text(_container!.code, style: GoogleFonts.spaceGrotesk(color: VisualTheme.accentColor, letterSpacing: 1.2)),
                   const SizedBox(height: 6),
-                  Text(_container!.name, style: GoogleFonts.newsreader(fontSize: 28, fontWeight: FontWeight.w600)),
+                  Text(_container!.name, style: GoogleFonts.spaceGrotesk(fontSize: 26, fontWeight: FontWeight.w700, color: Colors.white)),
                   const SizedBox(height: 8),
-                  Text('${_container!.room} · ${_container!.shelf}'),
-                  const SizedBox(height: 14),
-                  LinearProgressIndicator(value: pct / 100, minHeight: 8, backgroundColor: Colors.white, color: VisualTheme.primaryColor, borderRadius: BorderRadius.circular(8)),
+                  Text('${_container!.room} / ${_container!.shelf}', style: const TextStyle(color: Colors.white70)),
+                  const SizedBox(height: 12),
+                  LinearProgressIndicator(value: pct / 100, minHeight: 6, backgroundColor: Colors.white24, color: VisualTheme.secondaryColor),
                   const SizedBox(height: 8),
-                  Text('$count / ${_container!.capacity} skeins · $pct% full'),
+                  Text('$count / ${_container!.capacity} lures  ·  $pct% packed', style: const TextStyle(color: Colors.white70)),
                 ],
               ),
             ),
-            const SizedBox(height: 22),
+            const SizedBox(height: 20),
             Row(
               children: [
-                Expanded(child: Text('Skeins ($count)', style: GoogleFonts.newsreader(fontSize: 24, fontWeight: FontWeight.w600))),
+                Expanded(child: Text('Lures ($count)', style: GoogleFonts.spaceGrotesk(fontSize: 20, fontWeight: FontWeight.w700))),
                 FilledButton.icon(
                   key: const ValueKey('add_item_button'),
                   onPressed: () async {
@@ -124,25 +123,22 @@ class _ContainerDetailViewState extends State<ContainerDetailView> {
                     if (r == true) _loadData();
                   },
                   icon: const Icon(Icons.add),
-                  label: const Text('Skein'),
+                  label: const Text('Lure'),
                 ),
               ],
             ),
             const SizedBox(height: 12),
             if (_items == null || _items!.isEmpty)
-              const Card(child: Padding(padding: EdgeInsets.all(28), child: Center(child: Text('Nothing wound here yet'))))
+              const Card(child: Padding(padding: EdgeInsets.all(28), child: Center(child: Text('Nothing rigged here yet'))))
             else
               ..._items!.map((item) => Padding(
                     padding: const EdgeInsets.only(bottom: 8),
                     child: Card(
                       child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: VisualTheme.getCategoryColor(item.category).withValues(alpha: 0.18),
-                          child: Icon(Icons.volunteer_activism, color: VisualTheme.getCategoryColor(item.category)),
-                        ),
-                        title: Text(item.name, style: const TextStyle(fontWeight: FontWeight.w800)),
+                        leading: Icon(Icons.phishing, color: VisualTheme.getCategoryColor(item.category)),
+                        title: Text(item.name, style: const TextStyle(fontWeight: FontWeight.w700)),
                         subtitle: Text('${item.category} · ${item.quantity} · ${item.condition}'),
-                        trailing: const Icon(Icons.chevron_right),
+                        trailing: const Icon(Icons.arrow_forward, size: 18),
                         onTap: () async {
                           await Navigator.push(context, MaterialPageRoute(builder: (_) => ItemDetailView(itemId: item.id!)));
                           _loadData();

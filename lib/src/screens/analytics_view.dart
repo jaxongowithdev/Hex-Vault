@@ -29,12 +29,7 @@ class _AnalyticsViewState extends State<AnalyticsView> {
       final stats = await _storage.getStatistics();
       final categories = await _storage.getItemsByCategory();
       final rooms = await _storage.getItemsByRoom();
-      setState(() {
-        _stats = stats;
-        _categoryStats = categories;
-        _roomStats = rooms;
-        _isLoading = false;
-      });
+      setState(() { _stats = stats; _categoryStats = categories; _roomStats = rooms; _isLoading = false; });
     } catch (e) {
       debugPrint('Error loading statistics: $e');
       setState(() => _isLoading = false);
@@ -44,24 +39,24 @@ class _AnalyticsViewState extends State<AnalyticsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Gauge')),
+      appBar: AppBar(title: const Text('Tide')),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : RefreshIndicator(
               onRefresh: _loadData,
               child: ListView(
-                padding: const EdgeInsets.fromLTRB(20, 8, 20, 28),
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 28),
                 children: [
                   _overview(),
                   if (_categoryStats != null && _categoryStats!.isNotEmpty) ...[
-                    const SizedBox(height: 24),
-                    Text('By fiber', style: GoogleFonts.newsreader(fontSize: 22, fontWeight: FontWeight.w600)),
+                    const SizedBox(height: 22),
+                    Text('By class', style: GoogleFonts.spaceGrotesk(fontSize: 20, fontWeight: FontWeight.w700)),
                     const SizedBox(height: 10),
                     _chart(_categoryStats!, true),
                   ],
                   if (_roomStats != null && _roomStats!.isNotEmpty) ...[
-                    const SizedBox(height: 24),
-                    Text('By studio corner', style: GoogleFonts.newsreader(fontSize: 22, fontWeight: FontWeight.w600)),
+                    const SizedBox(height: 22),
+                    Text('By dock', style: GoogleFonts.spaceGrotesk(fontSize: 20, fontWeight: FontWeight.w700)),
                     const SizedBox(height: 10),
                     _chart(_roomStats!, false),
                   ],
@@ -73,22 +68,22 @@ class _AnalyticsViewState extends State<AnalyticsView> {
 
   Widget _overview() {
     if (_stats == null) return const SizedBox.shrink();
-    final baskets = _stats!['totalContainers'] ?? 0;
+    final bays = _stats!['totalContainers'] ?? 0;
     final items = _stats!['totalItems'] ?? 0;
     final empty = _stats!['emptyContainers'] ?? 0;
     return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(color: VisualTheme.blush, borderRadius: BorderRadius.circular(28)),
+      padding: const EdgeInsets.all(18),
+      color: VisualTheme.primaryColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Stash snapshot', style: GoogleFonts.newsreader(fontSize: 22, fontWeight: FontWeight.w600)),
-          const SizedBox(height: 16),
+          Text('KIT SNAPSHOT', style: GoogleFonts.spaceGrotesk(color: VisualTheme.accentColor, letterSpacing: 1.4, fontSize: 11, fontWeight: FontWeight.w700)),
+          const SizedBox(height: 14),
           Row(
             children: [
-              _cell('Baskets', baskets.toString()),
-              _cell('Skeins', items.toString()),
-              _cell('In use', (baskets - empty).toString()),
+              _cell('Bays', bays.toString()),
+              _cell('Lures', items.toString()),
+              _cell('In use', (bays - empty).toString()),
               _cell('Empty', empty.toString()),
             ],
           ),
@@ -101,19 +96,19 @@ class _AnalyticsViewState extends State<AnalyticsView> {
     return Expanded(
       child: Column(
         children: [
-          Text(value, style: GoogleFonts.newsreader(fontSize: 22, fontWeight: FontWeight.w600)),
-          Text(label, style: const TextStyle(fontSize: 12)),
+          Text(value, style: GoogleFonts.spaceGrotesk(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w700)),
+          Text(label, style: const TextStyle(color: Colors.white70, fontSize: 12)),
         ],
       ),
     );
   }
 
-  Widget _chart(Map<String, int> data, bool fiber) {
+  Widget _chart(Map<String, int> data, bool klass) {
     final sorted = data.entries.toList()..sort((a, b) => b.value.compareTo(a.value));
     final total = _stats?['totalItems'] ?? 1;
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(14),
         child: Column(
           children: sorted.map((e) {
             final pct = (e.value / total * 100).round();
@@ -122,21 +117,9 @@ class _AnalyticsViewState extends State<AnalyticsView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(e.key, style: const TextStyle(fontWeight: FontWeight.w700)),
-                      Text('${e.value} · $pct%'),
-                    ],
-                  ),
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(e.key, style: const TextStyle(fontWeight: FontWeight.w700)), Text('${e.value} · $pct%')]),
                   const SizedBox(height: 5),
-                  LinearProgressIndicator(
-                    value: e.value / total,
-                    minHeight: 7,
-                    backgroundColor: VisualTheme.blush,
-                    color: fiber ? VisualTheme.getCategoryColor(e.key) : VisualTheme.primaryColor,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
+                  LinearProgressIndicator(value: e.value / total, minHeight: 6, backgroundColor: VisualTheme.mist, color: klass ? VisualTheme.getCategoryColor(e.key) : VisualTheme.secondaryColor),
                 ],
               ),
             );

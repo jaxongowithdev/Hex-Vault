@@ -26,7 +26,7 @@ class _UserScreenState extends State<UserScreen> {
 
   Future<void> _initializeApp() async {
     try {
-      debugPrint('Starting Stash Loom initialization...');
+      debugPrint('Starting Reel Bay initialization...');
       await _storage.database;
       final prefs = await _storage.getPreferences();
       setState(() {
@@ -70,7 +70,7 @@ class _UserScreenState extends State<UserScreen> {
     }
 
     return MaterialApp(
-      title: 'Stash Loom',
+      title: 'Reel Bay',
       debugShowCheckedModeBanner: false,
       theme: VisualTheme.lightTheme,
       darkTheme: VisualTheme.darkTheme,
@@ -79,25 +79,17 @@ class _UserScreenState extends State<UserScreen> {
         builder: (context) {
           if (!_isInitialized || _preferences == null) {
             return Scaffold(
-              backgroundColor: VisualTheme.fog,
+              backgroundColor: VisualTheme.primaryColor,
               body: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      width: 76,
-                      height: 76,
-                      decoration: const BoxDecoration(
-                        color: VisualTheme.blush,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(Icons.volunteer_activism, color: VisualTheme.secondaryColor, size: 36),
-                    ),
-                    const SizedBox(height: 16),
-                    const Text('Winding the stash…'),
+                    const Icon(Icons.phishing, color: VisualTheme.accentColor, size: 48),
+                    const SizedBox(height: 14),
+                    const Text('Rigging the bay…', style: TextStyle(color: Colors.white)),
                     if (_errorMessage != null) ...[
                       const SizedBox(height: 20),
-                      Text('Error: $_errorMessage', textAlign: TextAlign.center),
+                      Text('Error: $_errorMessage', textAlign: TextAlign.center, style: const TextStyle(color: Colors.redAccent)),
                     ],
                   ],
                 ),

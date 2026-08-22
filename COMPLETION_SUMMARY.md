@@ -1,3 +1,3 @@
-# Stash Loom
+# Reel Bay
 
-Offline yarn stash map. Sage / dusty rose / clay UI, Newsreader + Karla. Lifestyle App Store category. Listing copy in `meta-data-apple-store.txt`.
+Offline tackle tray map. Teal / coral / gold UI, Space Grotesk + IBM Plex Sans. Sports App Store category. Listing copy in `meta-data-apple-store.txt`.

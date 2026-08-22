@@ -1,19 +1,19 @@
-# Stash Loom
+# Reel Bay
 
-A private yarn catalog. Map baskets, log skeins, and find any fiber in the studio — fully offline.
+A private tackle catalog. Stage trays, log lures, and find any rig before you launch — fully offline.
 
-**App Name:** Stash Loom
-**Subtitle:** Map your yarn stash
-**Category:** Lifestyle
-**Bundle ID:** com.app.stashloom.build
-**Database:** `stash_loom.db`
+**App Name:** Reel Bay
+**Subtitle:** Map your tackle trays
+**Category:** Sports
+**Bundle ID:** com.app.reelbay.build
+**Database:** `reel_bay.db`
 
 ## Navigation
 
-- Studio — stash pulse and quick actions
-- Baskets — all corners
-- Gauge — fiber and studio snapshot
-- Bench — look and backup
+- Dock — kit pulse and quick actions
+- Bays — all trays
+- Tide — class and dock snapshot
+- Cabin — look and backup
 
 Listing copy lives in `meta-data-apple-store.txt`.
 

@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class VisualTheme {
-  static const Color primaryColor = Color(0xFF5B7A6A);
-  static const Color secondaryColor = Color(0xFFC47B7B);
-  static const Color accentColor = Color(0xFFC9845A);
-  static const Color fog = Color(0xFFF4F0EB);
-  static const Color blush = Color(0xFFF3E4E0);
-  static const Color night = Color(0xFF1C1A18);
-  static const Color moss = Color(0xFF1F2622);
-  static const Color ink = Color(0xFF2A2422);
+  static const Color primaryColor = Color(0xFF0E4D5A);
+  static const Color secondaryColor = Color(0xFFE07A4A);
+  static const Color accentColor = Color(0xFFF0C14A);
+  static const Color foam = Color(0xFFE8F2F4);
+  static const Color mist = Color(0xFFD4E4E8);
+  static const Color night = Color(0xFF07161A);
+  static const Color deep = Color(0xFF0B242A);
+  static const Color ink = Color(0xFF102226);
 
   static ThemeData get lightTheme {
     final colorScheme = ColorScheme.fromSeed(
@@ -18,15 +18,15 @@ class VisualTheme {
       primary: primaryColor,
       secondary: secondaryColor,
       tertiary: accentColor,
-      surface: fog,
+      surface: foam,
     );
 
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
       colorScheme: colorScheme,
-      scaffoldBackgroundColor: fog,
-      textTheme: GoogleFonts.karlaTextTheme(ThemeData.light().textTheme).apply(
+      scaffoldBackgroundColor: foam,
+      textTheme: GoogleFonts.ibmPlexSansTextTheme(ThemeData.light().textTheme).apply(
         bodyColor: ink,
         displayColor: ink,
       ),
@@ -35,60 +35,53 @@ class VisualTheme {
         color: Colors.white,
         margin: EdgeInsets.zero,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(28),
+          borderRadius: BorderRadius.circular(8),
+          side: const BorderSide(color: Color(0x330E4D5A)),
         ),
       ),
       appBarTheme: AppBarTheme(
-        centerTitle: false,
+        centerTitle: true,
         elevation: 0,
         scrolledUnderElevation: 0,
-        backgroundColor: fog,
-        foregroundColor: ink,
-        titleTextStyle: GoogleFonts.newsreader(
-          fontSize: 28,
-          fontWeight: FontWeight.w600,
-          color: ink,
+        backgroundColor: primaryColor,
+        foregroundColor: Colors.white,
+        titleTextStyle: GoogleFonts.spaceGrotesk(
+          fontSize: 20,
+          fontWeight: FontWeight.w700,
+          color: Colors.white,
         ),
       ),
-      floatingActionButtonTheme: FloatingActionButtonThemeData(
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
         elevation: 0,
         backgroundColor: secondaryColor,
         foregroundColor: Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        shape: BeveledRectangleBorder(),
       ),
       navigationBarTheme: NavigationBarThemeData(
         elevation: 0,
-        height: 72,
-        backgroundColor: blush,
-        indicatorColor: Colors.white,
+        height: 68,
+        backgroundColor: primaryColor,
+        indicatorColor: secondaryColor,
         labelTextStyle: WidgetStatePropertyAll(
-          GoogleFonts.karla(fontSize: 12, fontWeight: FontWeight.w700),
+          GoogleFonts.ibmPlexSans(fontSize: 11, fontWeight: FontWeight.w700, color: Colors.white),
         ),
+        iconTheme: const WidgetStatePropertyAll(IconThemeData(color: Colors.white)),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: Colors.white,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide.none,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: const BorderSide(color: primaryColor, width: 1.4),
-        ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(6), borderSide: const BorderSide(color: Color(0x330E4D5A))),
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(6), borderSide: const BorderSide(color: Color(0x330E4D5A))),
+        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(6), borderSide: const BorderSide(color: primaryColor, width: 1.6)),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
-          backgroundColor: primaryColor,
+          backgroundColor: secondaryColor,
           foregroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-          shape: const StadiumBorder(),
-          textStyle: GoogleFonts.karla(fontWeight: FontWeight.w800),
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 13),
+          shape: const BeveledRectangleBorder(),
+          textStyle: GoogleFonts.spaceGrotesk(fontWeight: FontWeight.w700),
         ),
       ),
     );
@@ -98,10 +91,10 @@ class VisualTheme {
     final colorScheme = ColorScheme.fromSeed(
       seedColor: primaryColor,
       brightness: Brightness.dark,
-      primary: const Color(0xFF9BB8A8),
-      secondary: const Color(0xFFE0A0A0),
+      primary: const Color(0xFF7EB8C4),
+      secondary: secondaryColor,
       tertiary: accentColor,
-      surface: moss,
+      surface: deep,
     );
 
     return ThemeData(
@@ -109,64 +102,54 @@ class VisualTheme {
       brightness: Brightness.dark,
       colorScheme: colorScheme,
       scaffoldBackgroundColor: night,
-      textTheme: GoogleFonts.karlaTextTheme(ThemeData.dark().textTheme),
+      textTheme: GoogleFonts.ibmPlexSansTextTheme(ThemeData.dark().textTheme),
       cardTheme: CardThemeData(
         elevation: 0,
-        color: moss,
+        color: deep,
         margin: EdgeInsets.zero,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
-      ),
-      appBarTheme: AppBarTheme(
-        centerTitle: false,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        backgroundColor: night,
-        foregroundColor: Colors.white,
-        titleTextStyle: GoogleFonts.newsreader(
-          fontSize: 28,
-          fontWeight: FontWeight.w600,
-          color: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+          side: const BorderSide(color: Color(0x33FFFFFF)),
         ),
       ),
-      floatingActionButtonTheme: FloatingActionButtonThemeData(
+      appBarTheme: AppBarTheme(
+        centerTitle: true,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        backgroundColor: deep,
+        foregroundColor: Colors.white,
+        titleTextStyle: GoogleFonts.spaceGrotesk(fontSize: 20, fontWeight: FontWeight.w700, color: Colors.white),
+      ),
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
         elevation: 0,
         backgroundColor: secondaryColor,
         foregroundColor: Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        shape: BeveledRectangleBorder(),
       ),
       navigationBarTheme: NavigationBarThemeData(
         elevation: 0,
-        height: 72,
-        backgroundColor: moss,
-        indicatorColor: primaryColor.withValues(alpha: 0.35),
+        height: 68,
+        backgroundColor: deep,
+        indicatorColor: secondaryColor.withValues(alpha: 0.75),
         labelTextStyle: WidgetStatePropertyAll(
-          GoogleFonts.karla(fontSize: 12, fontWeight: FontWeight.w700),
+          GoogleFonts.ibmPlexSans(fontSize: 11, fontWeight: FontWeight.w700),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: const Color(0xFF2A2825),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide.none,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: const BorderSide(color: Color(0xFF9BB8A8), width: 1.4),
-        ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        fillColor: const Color(0xFF0F2A30),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(6), borderSide: BorderSide.none),
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(6), borderSide: BorderSide.none),
+        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(6), borderSide: const BorderSide(color: Color(0xFF7EB8C4), width: 1.6)),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
-          backgroundColor: const Color(0xFF9BB8A8),
-          foregroundColor: night,
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-          shape: const StadiumBorder(),
-          textStyle: GoogleFonts.karla(fontWeight: FontWeight.w800),
+          backgroundColor: secondaryColor,
+          foregroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 13),
+          shape: const BeveledRectangleBorder(),
+          textStyle: GoogleFonts.spaceGrotesk(fontWeight: FontWeight.w700),
         ),
       ),
     );
@@ -174,31 +157,32 @@ class VisualTheme {
 
   static Color getCategoryColor(String category) {
     final colors = {
-      'Wool': const Color(0xFFC47B7B),
-      'Cotton': const Color(0xFF5B7A6A),
-      'Alpaca': const Color(0xFFC9845A),
-      'Silk': const Color(0xFF8A6B8A),
-      'Blends': const Color(0xFF7A8B6A),
-      'Tools': const Color(0xFF6B5B4F),
-      'Patterns': const Color(0xFF4A6FA5),
-      'Notions': const Color(0xFFB07A5A),
-      'Other': const Color(0xFF7A6E6A),
+      'Lures': const Color(0xFFE07A4A),
+      'Flies': const Color(0xFF0E4D5A),
+      'Line': const Color(0xFF3A7CA5),
+      'Hooks': const Color(0xFF8A6A3D),
+      'Sinkers': const Color(0xFF6A746C),
+      'Rods': const Color(0xFF2C5F4A),
+      'Reels': const Color(0xFFF0C14A),
+      'Tools': const Color(0xFF5B4A3A),
+      'Apparel': const Color(0xFF4A6FA5),
+      'Other': const Color(0xFF6A746C),
     };
-    return colors[category] ?? const Color(0xFF7A6E6A);
+    return colors[category] ?? const Color(0xFF6A746C);
   }
 
   static Color getConditionColor(String condition) {
     switch (condition.toLowerCase()) {
-      case 'new':
-        return const Color(0xFF5B7A6A);
-      case 'wound':
-        return const Color(0xFF4A6FA5);
-      case 'partial':
-        return const Color(0xFFC9845A);
-      case 'scrap':
-        return const Color(0xFFC47B7B);
+      case 'fresh':
+        return const Color(0xFF2C5F4A);
+      case 'fished':
+        return const Color(0xFF3A7CA5);
+      case 'rusted':
+        return const Color(0xFFE07A4A);
+      case 'spare':
+        return const Color(0xFFF0C14A);
       default:
-        return const Color(0xFF7A6E6A);
+        return const Color(0xFF6A746C);
     }
   }
 }

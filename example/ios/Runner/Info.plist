@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Stash Loom</string>
+	<string>Reel Bay</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -15,7 +15,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>Stash Loom</string>
+	<string>Reel Bay</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -53,8 +53,8 @@
 		<false/>
 	</dict>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Stash Loom uses your photo library so you can save a fiber photo with each skein.</string>
+	<string>Reel Bay uses your photo library so you can save a photo of each lure or tray.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Stash Loom uses your camera so you can photograph yarn labels and cakes.</string>
+	<string>Reel Bay uses your camera so you can photograph lures, flies, and tackle labels.</string>
 </dict>
 </plist>

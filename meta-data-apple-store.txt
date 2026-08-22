@@ -1,37 +1,37 @@
 APP NAME
-Stash Loom
+Reel Bay
 
 SUBTITLE
-Map your yarn stash
+Map your tackle trays
 
 KEYWORDS
-yarn,knit,stash,skein,wool,fiber,basket,craft,merino,pattern,offline,studio
+fishing,tackle,lure,hook,reel,fly,bay,gear,rod,tray,jig,offline
 
 PROMOTION
-Map baskets, log skeins, and find any fiber in the studio. A private yarn catalog — fully offline.
+Stage trays, log lures, and find any rig before you launch. Private, offline.
 
 DESCRIPTION
-Stash Loom is a quiet catalog for knitters and crocheters who already own more yarn than they remember.
+Reel Bay is a tackle map for anglers who already own more lures than they can keep in their head.
 
-Map every basket in the studio — the sock leftovers, the sweater wool, the notions tin — then file each skein where it actually lives. When you wonder whether you still have that merino dye lot, search once instead of emptying three drawers.
+Name every tray in the boat — the jig box, the fly book, the spare-leader tin — then file each lure where it actually lives. When you wonder if that gold spoon is still in the dock bag, search once instead of emptying three compartments.
 
 What you can do
-• Create named baskets with a tag, studio corner, and drawer or hook
-• File skeins by fiber: wool, cotton, alpaca, silk, blends, plus tools, patterns, and notions
-• Mark state as New, Wound, Partial, or Scrap
-• Attach a fiber photo from the camera or your album
-• Pin the skeins on your current project
-• Rewind a skein from one basket to another and keep a short note
-• See a stash snapshot: how many baskets are in use, which fibers run deepest
-• Export or restore the whole stash as a JSON file
+• Create named bays with a mark, dock, and tray slot
+• File gear by class: lures, flies, line, hooks, sinkers, rods, reels, tools, and apparel
+• Mark condition as Fresh, Fished, Rusted, or Spare
+• Attach a photo from the camera or your album
+• Bookmark the lures that always go in the boat first
+• Move a lure from one bay to another and keep a short note
+• See a kit snapshot: how many bays are in use, which classes run deepest
+• Export or restore the whole kit as a JSON file
 
 Why it is different
-Stash Loom is not a shopping list and not a generic storage box. It is a studio map. The language, layout, and states are written for makers: baskets instead of bins, skeins instead of items, dye lots and project notes instead of packing labels.
+Reel Bay is not a fish-finder and not a generic storage box. It is a dock-side catalog. The language, layout, and states are written for anglers: bays instead of bins, lures instead of items, water notes instead of packing labels.
 
 Private by design
-Everything stays on your iPhone. There is no account, no cloud sync, and no yarn marketplace. Open the app offline and the same baskets are still there.
+Everything stays on your iPhone. There is no account, no cloud sync, and no tackle shop. Open the app at the ramp with no signal and the same trays are still there.
 
 Who it is for
-New knitters building a first stash, long-time makers with more than one closet, anyone tired of buying a third ball of the same sock yarn.
+Weekend bass anglers, fly fishers with more than one book, anyone tired of buying a third pack of the same jig.
 
-Stash Loom — know the basket before you cast on.
+Reel Bay — know the tray before you launch.

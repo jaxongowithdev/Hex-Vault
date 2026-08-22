@@ -1,3 +1,3 @@
-# Stash Loom — feature set
+# Reel Bay — feature set
 
-Studio / Baskets / Gauge / Bench navigation, skein catalog with fiber photos, search, current-project pins, rewind history, JSON backup, offline SQLite (`stash_loom.db`).
+Dock / Bays / Tide / Cabin navigation, lure catalog with tackle photos, search, go-to kit pins, rerig history, JSON backup, offline SQLite (`reel_bay.db`).

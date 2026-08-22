@@ -1,4 +1,4 @@
-// Yarn basket / studio stash model
+// Tackle bay / fishing tray model
 class ContainerModel {
   final int? id;
   final String name;

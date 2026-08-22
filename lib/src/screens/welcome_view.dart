@@ -16,26 +16,10 @@ class _WelcomeViewState extends State<WelcomeView> {
   int _currentPage = 0;
 
   final _pages = [
-    {
-      'icon': Icons.volunteer_activism,
-      'title': 'Your stash, finally mapped',
-      'description': 'Give every basket a home. Know which wool lives in which drawer before you start another sweater.',
-    },
-    {
-      'icon': Icons.photo_outlined,
-      'title': 'Photograph the fiber',
-      'description': 'Snap the label or the cake so you remember the dye lot, the yardage, and the brand.',
-    },
-    {
-      'icon': Icons.search,
-      'title': 'Find the skein, not the pile',
-      'description': 'Search merino, sock, or a project name and see the basket immediately.',
-    },
-    {
-      'icon': Icons.lock_outline,
-      'title': 'The studio stays private',
-      'description': 'No account, no cloud, no yarn ads. The stash lives only on this phone.',
-    },
+    {'icon': Icons.phishing, 'title': 'Reel Bay', 'description': 'Stage every tackle tray before you launch. Know which lure lives in which bay.'},
+    {'icon': Icons.photo_camera_outlined, 'title': 'Snap the lure', 'description': 'Photograph a spoon, a fly, or a leader so you remember the exact pattern you own.'},
+    {'icon': Icons.radar, 'title': 'Find it on the water', 'description': 'Search “jig” or “fluorocarbon” and see the tray immediately.'},
+    {'icon': Icons.wifi_off, 'title': 'Works at the dock', 'description': 'No account and no signal required. The catalog stays on this phone.'},
   ];
 
   Future<void> _finish() async {
@@ -52,13 +36,16 @@ class _WelcomeViewState extends State<WelcomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: VisualTheme.blush,
+      backgroundColor: VisualTheme.primaryColor,
       body: SafeArea(
         child: Column(
           children: [
             Align(
-              alignment: Alignment.centerRight,
-              child: TextButton(onPressed: _finish, child: const Text('Skip')),
+              alignment: Alignment.centerLeft,
+              child: TextButton(
+                onPressed: _finish,
+                child: Text('SKIP', style: GoogleFonts.spaceGrotesk(color: Colors.white54, letterSpacing: 1.4)),
+              ),
             ),
             Expanded(
               child: PageView.builder(
@@ -72,26 +59,18 @@ class _WelcomeViewState extends State<WelcomeView> {
                     child: Column(
                       children: [
                         const Spacer(),
-                        Container(
-                          width: 96,
-                          height: 96,
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(page['icon'] as IconData, size: 42, color: VisualTheme.secondaryColor),
-                        ),
-                        const SizedBox(height: 28),
+                        Icon(page['icon'] as IconData, size: 72, color: VisualTheme.accentColor),
+                        const SizedBox(height: 24),
                         Text(
                           page['title'] as String,
                           textAlign: TextAlign.center,
-                          style: GoogleFonts.newsreader(fontSize: 34, height: 1.15, fontWeight: FontWeight.w600),
+                          style: GoogleFonts.spaceGrotesk(fontSize: 34, fontWeight: FontWeight.w700, color: Colors.white),
                         ),
                         const SizedBox(height: 14),
                         Text(
                           page['description'] as String,
                           textAlign: TextAlign.center,
-                          style: GoogleFonts.karla(fontSize: 16, height: 1.5),
+                          style: GoogleFonts.ibmPlexSans(fontSize: 16, height: 1.45, color: Colors.white70),
                         ),
                         const Spacer(),
                       ],
@@ -107,13 +86,10 @@ class _WelcomeViewState extends State<WelcomeView> {
                   ...List.generate(
                     _pages.length,
                     (i) => Container(
-                      margin: const EdgeInsets.only(right: 6),
-                      width: 8,
-                      height: 8,
-                      decoration: BoxDecoration(
-                        color: _currentPage == i ? VisualTheme.secondaryColor : Colors.white,
-                        shape: BoxShape.circle,
-                      ),
+                      margin: const EdgeInsets.only(right: 5),
+                      width: 10,
+                      height: 4,
+                      color: _currentPage == i ? VisualTheme.secondaryColor : Colors.white24,
                     ),
                   ),
                   const Spacer(),
@@ -122,10 +98,10 @@ class _WelcomeViewState extends State<WelcomeView> {
                       if (_currentPage == _pages.length - 1) {
                         _finish();
                       } else {
-                        _pageController.nextPage(duration: const Duration(milliseconds: 280), curve: Curves.easeOut);
+                        _pageController.nextPage(duration: const Duration(milliseconds: 260), curve: Curves.easeOut);
                       }
                     },
-                    child: Text(_currentPage == _pages.length - 1 ? 'Open the studio' : 'Next'),
+                    child: Text(_currentPage == _pages.length - 1 ? 'Launch' : 'Next'),
                   ),
                 ],
               ),

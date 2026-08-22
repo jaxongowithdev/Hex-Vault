@@ -28,10 +28,7 @@ class _SearchViewState extends State<SearchView> {
 
   Future<void> _performSearch(String query) async {
     if (query.trim().isEmpty) {
-      setState(() {
-        _results = null;
-        _isSearching = false;
-      });
+      setState(() { _results = null; _isSearching = false; });
       return;
     }
     setState(() => _isSearching = true);
@@ -44,11 +41,7 @@ class _SearchViewState extends State<SearchView> {
           if (c != null) containers[item.containerId] = c;
         }
       }
-      setState(() {
-        _results = results;
-        _containersCache = containers;
-        _isSearching = false;
-      });
+      setState(() { _results = results; _containersCache = containers; _isSearching = false; });
     } catch (e) {
       debugPrint('Error searching: $e');
       setState(() => _isSearching = false);
@@ -63,7 +56,9 @@ class _SearchViewState extends State<SearchView> {
           key: const ValueKey('search_field'),
           controller: _searchController,
           autofocus: true,
-          decoration: const InputDecoration(hintText: 'Merino, sock, dye lot…', border: InputBorder.none, enabledBorder: InputBorder.none, focusedBorder: InputBorder.none, filled: false),
+          style: const TextStyle(color: Colors.white),
+          cursorColor: VisualTheme.accentColor,
+          decoration: const InputDecoration(hintText: 'Jig, fly, fluoro…', hintStyle: TextStyle(color: Colors.white70), border: InputBorder.none, enabledBorder: InputBorder.none, focusedBorder: InputBorder.none, filled: false),
           onChanged: _performSearch,
         ),
         actions: [
@@ -77,26 +72,25 @@ class _SearchViewState extends State<SearchView> {
 
   Widget _buildBody() {
     if (_isSearching) return const Center(child: CircularProgressIndicator());
-    if (_searchController.text.isEmpty) return _hint(Icons.search, 'Search the stash', 'Try a fiber, a project, or a note.');
-    if (_results == null || _results!.isEmpty) return _hint(Icons.search_off, 'No match', 'Try a shorter word or another fiber.');
+    if (_searchController.text.isEmpty) return _hint(Icons.radar, 'Locate tackle', 'Search a lure, class, or water note.');
+    if (_results == null || _results!.isEmpty) return _hint(Icons.search_off, 'No match', 'Try a shorter word or another class.');
     return ListView.builder(
       padding: const EdgeInsets.all(16),
       itemCount: _results!.length,
       itemBuilder: (_, i) {
         final item = _results![i];
-        final basket = _containersCache[item.containerId];
+        final bay = _containersCache[item.containerId];
         return Padding(
           padding: const EdgeInsets.only(bottom: 8),
           child: Card(
             child: ListTile(
-              leading: Icon(Icons.volunteer_activism, color: VisualTheme.getCategoryColor(item.category)),
-              title: Text(item.name, style: const TextStyle(fontWeight: FontWeight.w800)),
-              subtitle: Text('${item.category} · ${item.quantity}${basket != null ? '\n${basket.name} · ${basket.room}' : ''}'),
-              isThreeLine: basket != null,
-              trailing: const Icon(Icons.chevron_right),
+              leading: Icon(Icons.phishing, color: VisualTheme.getCategoryColor(item.category)),
+              title: Text(item.name, style: const TextStyle(fontWeight: FontWeight.w700)),
+              subtitle: Text('${item.category} · ${item.quantity}${bay != null ? '\n${bay.name} / ${bay.room}' : ''}'),
+              isThreeLine: bay != null,
+              trailing: const Icon(Icons.arrow_forward, size: 18),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => ItemDetailView(itemId: item.id!)))
-                    .then((_) => _performSearch(_searchController.text));
+                Navigator.push(context, MaterialPageRoute(builder: (_) => ItemDetailView(itemId: item.id!))).then((_) => _performSearch(_searchController.text));
               },
             ),
           ),
@@ -113,8 +107,8 @@ class _SearchViewState extends State<SearchView> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(icon, size: 48, color: VisualTheme.primaryColor),
-            const SizedBox(height: 14),
-            Text(title, style: GoogleFonts.newsreader(fontSize: 24, fontWeight: FontWeight.w600)),
+            const SizedBox(height: 12),
+            Text(title, style: GoogleFonts.spaceGrotesk(fontSize: 22, fontWeight: FontWeight.w700)),
             const SizedBox(height: 8),
             Text(subtitle, textAlign: TextAlign.center),
           ],

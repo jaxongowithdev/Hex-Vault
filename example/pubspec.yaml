@@ -1,5 +1,5 @@
-name: stash_loom_example
-description: "Stash Loom - Yarn basket and skein catalog"
+name: reel_bay_example
+description: "Reel Bay - Tackle tray and lure catalog"
 publish_to: 'none'
 version: 1.0.0+1
 environment:

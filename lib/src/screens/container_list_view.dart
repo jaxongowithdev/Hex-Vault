@@ -19,7 +19,7 @@ class _ContainerListViewState extends State<ContainerListView> {
   Map<int, int> _itemCounts = {};
   bool _isLoading = true;
   String _sortBy = 'updated';
-  bool _isGridView = true;
+  bool _isGridView = false;
 
   @override
   void initState() {
@@ -55,21 +55,15 @@ class _ContainerListViewState extends State<ContainerListView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Baskets'),
+        title: const Text('Bays'),
         actions: [
-          IconButton(
-            icon: Icon(_isGridView ? Icons.view_agenda_outlined : Icons.grid_view),
-            onPressed: () => setState(() => _isGridView = !_isGridView),
-          ),
+          IconButton(icon: Icon(_isGridView ? Icons.view_agenda_outlined : Icons.grid_view), onPressed: () => setState(() => _isGridView = !_isGridView)),
           PopupMenuButton<String>(
-            onSelected: (v) {
-              setState(() => _sortBy = v);
-              _loadContainers();
-            },
+            onSelected: (v) { setState(() => _sortBy = v); _loadContainers(); },
             itemBuilder: (_) => const [
               PopupMenuItem(value: 'name', child: Text('By name')),
-              PopupMenuItem(value: 'room', child: Text('By studio')),
-              PopupMenuItem(value: 'updated', child: Text('Recently wound')),
+              PopupMenuItem(value: 'room', child: Text('By dock')),
+              PopupMenuItem(value: 'updated', child: Text('Last rigged')),
             ],
           ),
         ],
@@ -83,19 +77,16 @@ class _ContainerListViewState extends State<ContainerListView> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.shopping_basket_outlined, size: 52),
+                        const Icon(Icons.inventory_2_outlined, size: 48),
                         const SizedBox(height: 12),
-                        Text('No baskets yet', style: GoogleFonts.newsreader(fontSize: 26, fontWeight: FontWeight.w600)),
+                        Text('No bays staged', style: GoogleFonts.spaceGrotesk(fontSize: 22, fontWeight: FontWeight.w700)),
                         const SizedBox(height: 8),
-                        const Text('Start a sock drawer, a leftover bin, or the project tote.', textAlign: TextAlign.center),
+                        const Text('Start a fly tray, a boat box, or the truck tailgate kit.', textAlign: TextAlign.center),
                       ],
                     ),
                   ),
                 )
-              : RefreshIndicator(
-                  onRefresh: _loadContainers,
-                  child: _isGridView ? _grid() : _list(),
-                ),
+              : RefreshIndicator(onRefresh: _loadContainers, child: _isGridView ? _grid() : _list()),
       floatingActionButton: FloatingActionButton.extended(
         key: const ValueKey('fab_add_container'),
         onPressed: () async {
@@ -103,7 +94,7 @@ class _ContainerListViewState extends State<ContainerListView> {
           if (r == true) _loadContainers();
         },
         icon: const Icon(Icons.add),
-        label: const Text('Basket'),
+        label: const Text('Bay'),
       ),
     );
   }
@@ -111,9 +102,7 @@ class _ContainerListViewState extends State<ContainerListView> {
   Widget _grid() {
     return GridView.builder(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 100),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2, childAspectRatio: 0.86, crossAxisSpacing: 12, mainAxisSpacing: 12,
-      ),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 0.9, crossAxisSpacing: 10, mainAxisSpacing: 10),
       itemCount: _containers!.length,
       itemBuilder: (_, i) {
         final c = _containers![i];
@@ -122,24 +111,20 @@ class _ContainerListViewState extends State<ContainerListView> {
         return Card(
           child: InkWell(
             onTap: () => _open(c),
-            borderRadius: BorderRadius.circular(28),
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CircleAvatar(
-                    backgroundColor: VisualTheme.blush,
-                    child: Text(c.code.substring(0, 1), style: const TextStyle(color: VisualTheme.secondaryColor, fontWeight: FontWeight.w800)),
-                  ),
-                  const SizedBox(height: 12),
-                  Text(c.name, style: GoogleFonts.newsreader(fontSize: 20, fontWeight: FontWeight.w600), maxLines: 2),
-                  const Spacer(),
-                  Text('${c.room} · ${c.shelf}', maxLines: 1, overflow: TextOverflow.ellipsis),
+                  Text(c.code, style: GoogleFonts.spaceGrotesk(color: VisualTheme.secondaryColor, fontWeight: FontWeight.w700, fontSize: 12)),
                   const SizedBox(height: 8),
-                  LinearProgressIndicator(value: pct / 100, minHeight: 6, backgroundColor: VisualTheme.blush, color: VisualTheme.primaryColor, borderRadius: BorderRadius.circular(8)),
+                  Text(c.name, style: GoogleFonts.spaceGrotesk(fontSize: 18, fontWeight: FontWeight.w700), maxLines: 2),
+                  const Spacer(),
+                  Text('${c.room} / ${c.shelf}', maxLines: 1, overflow: TextOverflow.ellipsis),
+                  const SizedBox(height: 8),
+                  LinearProgressIndicator(value: pct / 100, minHeight: 5, backgroundColor: VisualTheme.mist, color: VisualTheme.secondaryColor),
                   const SizedBox(height: 6),
-                  Text('$count / ${c.capacity} skeins'),
+                  Text('$count / ${c.capacity} lures'),
                 ],
               ),
             ),
@@ -157,14 +142,13 @@ class _ContainerListViewState extends State<ContainerListView> {
         final c = _containers![i];
         final count = _itemCounts[c.id] ?? 0;
         return Padding(
-          padding: const EdgeInsets.only(bottom: 10),
+          padding: const EdgeInsets.only(bottom: 8),
           child: Card(
             child: ListTile(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              title: Text(c.name, style: const TextStyle(fontWeight: FontWeight.w800)),
-              subtitle: Text('${c.room} · ${c.shelf}\n$count / ${c.capacity} skeins'),
+              title: Text(c.name, style: const TextStyle(fontWeight: FontWeight.w700)),
+              subtitle: Text('${c.code}  ·  ${c.room} / ${c.shelf}\n$count / ${c.capacity} lures'),
               isThreeLine: true,
-              trailing: const Icon(Icons.chevron_right),
+              trailing: const Icon(Icons.arrow_forward),
               onTap: () => _open(c),
             ),
           ),

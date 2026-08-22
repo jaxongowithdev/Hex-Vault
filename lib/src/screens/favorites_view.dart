@@ -36,11 +36,7 @@ class _FavoritesViewState extends State<FavoritesView> {
           if (c != null) containers[item.containerId] = c;
         }
       }
-      setState(() {
-        _favoriteItems = favorites;
-        _containersCache = containers;
-        _isLoading = false;
-      });
+      setState(() { _favoriteItems = favorites; _containersCache = containers; _isLoading = false; });
     } catch (e) {
       debugPrint('Error loading favorites: $e');
       setState(() => _isLoading = false);
@@ -50,7 +46,7 @@ class _FavoritesViewState extends State<FavoritesView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Current project')),
+      appBar: AppBar(title: const Text('Go-to kit')),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _favoriteItems == null || _favoriteItems!.isEmpty
@@ -60,11 +56,11 @@ class _FavoritesViewState extends State<FavoritesView> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.favorite_border, size: 48),
-                        const SizedBox(height: 14),
-                        Text('Nothing on the needles', style: GoogleFonts.newsreader(fontSize: 24, fontWeight: FontWeight.w600)),
+                        const Icon(Icons.bookmark_border, size: 48),
+                        const SizedBox(height: 12),
+                        Text('No go-to kit yet', style: GoogleFonts.spaceGrotesk(fontSize: 22, fontWeight: FontWeight.w700)),
                         const SizedBox(height: 8),
-                        const Text('Pin the skeins you are knitting with right now.', textAlign: TextAlign.center),
+                        const Text('Bookmark the lures you always put in the boat first.', textAlign: TextAlign.center),
                       ],
                     ),
                   ),
@@ -76,17 +72,17 @@ class _FavoritesViewState extends State<FavoritesView> {
                     itemCount: _favoriteItems!.length,
                     itemBuilder: (_, i) {
                       final item = _favoriteItems![i];
-                      final basket = _containersCache[item.containerId];
+                      final bay = _containersCache[item.containerId];
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 8),
                         child: Card(
                           child: ListTile(
-                            title: Text(item.name, style: const TextStyle(fontWeight: FontWeight.w800)),
-                            subtitle: Text('${item.category} · ${item.quantity}${basket != null ? '\n${basket.name} · ${basket.room}' : ''}'),
-                            isThreeLine: basket != null,
+                            title: Text(item.name, style: const TextStyle(fontWeight: FontWeight.w700)),
+                            subtitle: Text('${item.category} · ${item.quantity}${bay != null ? '\n${bay.name} / ${bay.room}' : ''}'),
+                            isThreeLine: bay != null,
                             trailing: IconButton(
                               key: ValueKey('favorite_toggle_${item.id}'),
-                              icon: Icon(item.isFavorite ? Icons.favorite : Icons.favorite_border, color: item.isFavorite ? VisualTheme.secondaryColor : null),
+                              icon: Icon(item.isFavorite ? Icons.bookmark : Icons.bookmark_border, color: item.isFavorite ? VisualTheme.accentColor : null),
                               onPressed: () async {
                                 await _storage.updateItem(item.copyWith(isFavorite: !item.isFavorite));
                                 _loadFavorites();
