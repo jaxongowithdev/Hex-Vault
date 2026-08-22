@@ -10,7 +10,6 @@ import 'item_detail_view.dart';
 
 class ContainerDetailView extends StatefulWidget {
   final int containerId;
-
   const ContainerDetailView({super.key, required this.containerId});
 
   @override
@@ -31,11 +30,9 @@ class _ContainerDetailViewState extends State<ContainerDetailView> {
 
   Future<void> _loadData() async {
     setState(() => _isLoading = true);
-
     try {
       final container = await _storage.getContainer(widget.containerId);
       final items = await _storage.getItemsByContainer(widget.containerId);
-
       setState(() {
         _container = container;
         _items = items;
@@ -50,81 +47,52 @@ class _ContainerDetailViewState extends State<ContainerDetailView> {
   Future<void> _deleteContainer() async {
     final confirm = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Clear this larder?'),
-        content: const Text(
-          'Every staple filed here will be removed. This cannot be undone.',
-        ),
+      builder: (_) => AlertDialog(
+        title: const Text('Clear this crate?'),
+        content: const Text('Every pressing filed here will be removed.'),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Keep'),
-          ),
+          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Keep')),
           FilledButton(
             onPressed: () => Navigator.pop(context, true),
             style: FilledButton.styleFrom(backgroundColor: Colors.red),
-            child: const Text('Remove'),
+            child: const Text('Clear'),
           ),
         ],
       ),
     );
-
     if (confirm == true) {
-      try {
-        await _storage.deleteContainer(widget.containerId);
-        if (mounted) {
-          Navigator.pop(context, true);
-        }
-      } catch (e) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error: $e')),
-          );
-        }
-      }
+      await _storage.deleteContainer(widget.containerId);
+      if (mounted) Navigator.pop(context, true);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return Scaffold(
-        appBar: AppBar(),
-        body: const Center(child: CircularProgressIndicator()),
-      );
+      return Scaffold(appBar: AppBar(), body: const Center(child: CircularProgressIndicator()));
     }
-
     if (_container == null) {
-      return Scaffold(
-        appBar: AppBar(),
-        body: const Center(child: Text('Larder not found')),
-      );
+      return Scaffold(appBar: AppBar(), body: const Center(child: Text('Crate not found')));
     }
 
-    final itemCount = _items?.length ?? 0;
-    final capacity = _container!.capacity;
-    final percentage = capacity > 0 ? (itemCount / capacity * 100).round() : 0;
+    final count = _items?.length ?? 0;
+    final pct = _container!.capacity > 0 ? (count / _container!.capacity * 100).round() : 0;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(_container!.name),
         actions: [
           PopupMenuButton(
-            itemBuilder: (context) => [
-              const PopupMenuItem(value: 'edit', child: Text('Edit larder')),
-              const PopupMenuItem(value: 'delete', child: Text('Remove larder')),
+            itemBuilder: (_) => const [
+              PopupMenuItem(value: 'edit', child: Text('Edit crate')),
+              PopupMenuItem(value: 'delete', child: Text('Clear crate')),
             ],
             onSelected: (value) {
               if (value == 'edit') {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        ContainerFormView(container: _container),
-                  ),
-                ).then((result) {
-                  if (result == true) _loadData();
-                });
+                  MaterialPageRoute(builder: (_) => ContainerFormView(container: _container)),
+                ).then((r) { if (r == true) _loadData(); });
               } else if (value == 'delete') {
                 _deleteContainer();
               }
@@ -143,57 +111,29 @@ class _ContainerDetailViewState extends State<ContainerDetailView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      _container!.code,
-                      style: GoogleFonts.nunito(
-                        letterSpacing: 1.4,
-                        fontWeight: FontWeight.w800,
-                        color: VisualTheme.secondaryColor,
-                      ),
-                    ),
+                    Text(_container!.code, style: const TextStyle(color: VisualTheme.secondaryColor, fontWeight: FontWeight.w800)),
                     const SizedBox(height: 6),
-                    Text(
-                      _container!.name,
-                      style: GoogleFonts.fraunces(
-                        fontSize: 28,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    _buildInfoRow(Icons.cottage_outlined, 'Zone', _container!.room),
-                    _buildInfoRow(Icons.view_week_outlined, 'Bay', _container!.shelf),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Fill',
-                      style: Theme.of(context).textTheme.titleMedium,
+                    Text(_container!.name, style: GoogleFonts.playfairDisplay(fontSize: 28, fontWeight: FontWeight.w600)),
+                    const SizedBox(height: 10),
+                    Text('${_container!.room} · ${_container!.shelf}'),
+                    const SizedBox(height: 14),
+                    LinearProgressIndicator(
+                      value: pct / 100,
+                      minHeight: 8,
+                      backgroundColor: VisualTheme.linen,
+                      color: VisualTheme.primaryColor,
                     ),
                     const SizedBox(height: 8),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: LinearProgressIndicator(
-                        value: percentage / 100,
-                        minHeight: 10,
-                        backgroundColor: VisualTheme.parchment,
-                        color: VisualTheme.primaryColor,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text('$itemCount / $capacity staples · $percentage% full'),
+                    Text('$count / ${_container!.capacity} pressings · $pct% full'),
                   ],
                 ),
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 22),
             Row(
               children: [
                 Expanded(
-                  child: Text(
-                    'Staples (${_items?.length ?? 0})',
-                    style: GoogleFonts.fraunces(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                  child: Text('Pressings ($count)', style: GoogleFonts.playfairDisplay(fontSize: 22, fontWeight: FontWeight.w600)),
                 ),
                 FilledButton.icon(
                   key: const ValueKey('add_item_button'),
@@ -201,65 +141,35 @@ class _ContainerDetailViewState extends State<ContainerDetailView> {
                     final result = await Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ItemFormView(
-                          preselectedContainerId: widget.containerId,
-                        ),
+                        builder: (_) => ItemFormView(preselectedContainerId: widget.containerId),
                       ),
                     );
                     if (result == true) _loadData();
                   },
                   icon: const Icon(Icons.add),
-                  label: const Text('Staple'),
+                  label: const Text('Pressing'),
                 ),
               ],
             ),
             const SizedBox(height: 12),
             if (_items == null || _items!.isEmpty)
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(32),
-                  child: Center(
-                    child: Column(
-                      children: [
-                        const Icon(Icons.spa_outlined, size: 48),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Nothing filed here yet',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              )
+              const Card(child: Padding(padding: EdgeInsets.all(28), child: Center(child: Text('Nothing filed here yet'))))
             else
               ..._items!.map((item) => Padding(
                     padding: const EdgeInsets.only(bottom: 8),
                     child: Card(
                       child: ListTile(
                         leading: CircleAvatar(
-                          backgroundColor: VisualTheme.getCategoryColor(item.category)
-                              .withValues(alpha: 0.18),
-                          child: Icon(
-                            Icons.spa_outlined,
-                            color: VisualTheme.getCategoryColor(item.category),
-                          ),
+                          backgroundColor: VisualTheme.getCategoryColor(item.category).withValues(alpha: 0.16),
+                          child: Icon(Icons.album, color: VisualTheme.getCategoryColor(item.category)),
                         ),
-                        title: Text(
-                          item.name,
-                          style: const TextStyle(fontWeight: FontWeight.w800),
-                        ),
-                        subtitle: Text(
-                          '${item.category} · ${item.quantity} · ${item.condition}',
-                        ),
+                        title: Text(item.name, style: const TextStyle(fontWeight: FontWeight.w800)),
+                        subtitle: Text('${item.category} · ${item.quantity} · ${item.condition}'),
                         trailing: const Icon(Icons.chevron_right),
                         onTap: () async {
                           await Navigator.push(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  ItemDetailView(itemId: item.id!),
-                            ),
+                            MaterialPageRoute(builder: (_) => ItemDetailView(itemId: item.id!)),
                           );
                           _loadData();
                         },
@@ -268,20 +178,6 @@ class _ContainerDetailViewState extends State<ContainerDetailView> {
                   )),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildInfoRow(IconData icon, String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Row(
-        children: [
-          Icon(icon, size: 20, color: VisualTheme.primaryColor),
-          const SizedBox(width: 8),
-          Text('$label: '),
-          Text(value, style: const TextStyle(fontWeight: FontWeight.w800)),
-        ],
       ),
     );
   }

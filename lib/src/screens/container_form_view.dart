@@ -4,7 +4,6 @@ import '../models/container_model.dart';
 
 class ContainerFormView extends StatefulWidget {
   final ContainerModel? container;
-
   const ContainerFormView({super.key, this.container});
 
   @override
@@ -14,7 +13,6 @@ class ContainerFormView extends StatefulWidget {
 class _ContainerFormViewState extends State<ContainerFormView> {
   final _formKey = GlobalKey<FormState>();
   final _storage = StorageManager.instance;
-
   late TextEditingController _nameController;
   late TextEditingController _codeController;
   late TextEditingController _roomController;
@@ -28,9 +26,7 @@ class _ContainerFormViewState extends State<ContainerFormView> {
     _codeController = TextEditingController(text: widget.container?.code);
     _roomController = TextEditingController(text: widget.container?.room);
     _shelfController = TextEditingController(text: widget.container?.shelf);
-    _capacityController = TextEditingController(
-      text: widget.container?.capacity.toString() ?? '24',
-    );
+    _capacityController = TextEditingController(text: widget.container?.capacity.toString() ?? '40');
   }
 
   @override
@@ -45,7 +41,6 @@ class _ContainerFormViewState extends State<ContainerFormView> {
 
   Future<void> _saveContainer() async {
     if (!_formKey.currentState!.validate()) return;
-
     try {
       final container = ContainerModel(
         id: widget.container?.id,
@@ -55,21 +50,15 @@ class _ContainerFormViewState extends State<ContainerFormView> {
         shelf: _shelfController.text.trim(),
         capacity: int.parse(_capacityController.text.trim()),
       );
-
       if (widget.container == null) {
         await _storage.createContainer(container);
       } else {
         await _storage.updateContainer(container);
       }
-
-      if (mounted) {
-        Navigator.pop(context, true);
-      }
+      if (mounted) Navigator.pop(context, true);
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
-        );
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
       }
     }
   }
@@ -77,11 +66,8 @@ class _ContainerFormViewState extends State<ContainerFormView> {
   @override
   Widget build(BuildContext context) {
     final isEditing = widget.container != null;
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text(isEditing ? 'Edit larder' : 'New larder'),
-      ),
+      appBar: AppBar(title: Text(isEditing ? 'Edit crate' : 'New crate')),
       body: Form(
         key: _formKey,
         child: ListView(
@@ -91,91 +77,66 @@ class _ContainerFormViewState extends State<ContainerFormView> {
               key: const ValueKey('name_field'),
               controller: _nameController,
               decoration: const InputDecoration(
-                labelText: 'Larder name',
-                hintText: 'e.g., Spice drawer',
-                prefixIcon: Icon(Icons.local_dining_outlined),
+                labelText: 'Crate name',
+                hintText: 'e.g., Jazz wall, 7-inch cube',
+                prefixIcon: Icon(Icons.album_outlined),
               ),
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return 'Give this larder a name';
-                }
-                return null;
-              },
+              validator: (v) => (v == null || v.trim().isEmpty) ? 'Name this crate' : null,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 14),
             TextFormField(
               key: const ValueKey('code_field'),
               controller: _codeController,
               decoration: const InputDecoration(
-                labelText: 'Shelf mark',
-                hintText: 'e.g., LAR-01, SPICE',
+                labelText: 'Spine mark',
+                hintText: 'e.g., VIN-01, JAZZ',
                 prefixIcon: Icon(Icons.tag),
               ),
               textCapitalization: TextCapitalization.characters,
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return 'Add a short mark for the shelf';
-                }
-                return null;
-              },
+              validator: (v) => (v == null || v.trim().isEmpty) ? 'Add a spine mark' : null,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 14),
             TextFormField(
               key: const ValueKey('room_field'),
               controller: _roomController,
               decoration: const InputDecoration(
-                labelText: 'Kitchen zone',
-                hintText: 'e.g., Pantry, Island, Fridge',
-                prefixIcon: Icon(Icons.cottage_outlined),
+                labelText: 'Listening room',
+                hintText: 'e.g., Den, Hall, Studio',
+                prefixIcon: Icon(Icons.weekend_outlined),
               ),
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return 'Where does this larder live?';
-                }
-                return null;
-              },
+              validator: (v) => (v == null || v.trim().isEmpty) ? 'Where does this crate live?' : null,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 14),
             TextFormField(
               key: const ValueKey('shelf_field'),
               controller: _shelfController,
               decoration: const InputDecoration(
                 labelText: 'Bay / row',
-                hintText: 'e.g., Top bay, Left row',
+                hintText: 'e.g., Eye level, Bottom cube',
                 prefixIcon: Icon(Icons.view_week_outlined),
               ),
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return 'Add a bay or row';
-                }
-                return null;
-              },
+              validator: (v) => (v == null || v.trim().isEmpty) ? 'Add a bay or row' : null,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 14),
             TextFormField(
               key: const ValueKey('capacity_field'),
               controller: _capacityController,
               decoration: const InputDecoration(
-                labelText: 'How many staples fit',
+                labelText: 'How many pressings fit',
                 prefixIcon: Icon(Icons.stacked_bar_chart),
               ),
               keyboardType: TextInputType.number,
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return 'Enter a capacity';
-                }
-                final capacity = int.tryParse(value.trim());
-                if (capacity == null || capacity <= 0) {
-                  return 'Use a positive number';
-                }
+              validator: (v) {
+                final n = int.tryParse(v?.trim() ?? '');
+                if (n == null || n <= 0) return 'Use a positive number';
                 return null;
               },
             ),
-            const SizedBox(height: 28),
+            const SizedBox(height: 24),
             FilledButton(
               key: const ValueKey('save_button'),
               onPressed: _saveContainer,
-              child: Text(isEditing ? 'Save larder' : 'Create larder'),
+              child: Text(isEditing ? 'Save crate' : 'Create crate'),
             ),
           ],
         ),

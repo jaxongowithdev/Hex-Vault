@@ -7,10 +7,7 @@ import 'config_view.dart';
 class DashboardView extends StatefulWidget {
   final VoidCallback onSettingsChanged;
 
-  const DashboardView({
-    super.key,
-    required this.onSettingsChanged,
-  });
+  const DashboardView({super.key, required this.onSettingsChanged});
 
   @override
   State<DashboardView> createState() => _DashboardViewState();
@@ -18,7 +15,6 @@ class DashboardView extends StatefulWidget {
 
 class _DashboardViewState extends State<DashboardView> {
   int _selectedIndex = 0;
-
   late final List<Widget> _screens;
 
   @override
@@ -35,37 +31,30 @@ class _DashboardViewState extends State<DashboardView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: _screens,
-      ),
+      body: IndexedStack(index: _selectedIndex, children: _screens),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
-        onDestinationSelected: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
+        onDestinationSelected: (index) => setState(() => _selectedIndex = index),
         destinations: const [
           NavigationDestination(
-            icon: Icon(Icons.cottage_outlined),
-            selectedIcon: Icon(Icons.cottage),
-            label: 'Kitchen',
+            icon: Icon(Icons.weekend_outlined),
+            selectedIcon: Icon(Icons.weekend),
+            label: 'Lounge',
           ),
           NavigationDestination(
-            icon: Icon(Icons.kitchen_outlined),
-            selectedIcon: Icon(Icons.kitchen),
-            label: 'Larders',
+            icon: Icon(Icons.album_outlined),
+            selectedIcon: Icon(Icons.album),
+            label: 'Crates',
           ),
           NavigationDestination(
-            icon: Icon(Icons.insights_outlined),
-            selectedIcon: Icon(Icons.insights),
-            label: 'Insights',
+            icon: Icon(Icons.graphic_eq),
+            selectedIcon: Icon(Icons.graphic_eq),
+            label: 'Spin',
           ),
           NavigationDestination(
-            icon: Icon(Icons.tune_outlined),
+            icon: Icon(Icons.tune),
             selectedIcon: Icon(Icons.tune),
-            label: 'Studio',
+            label: 'Booth',
           ),
         ],
       ),

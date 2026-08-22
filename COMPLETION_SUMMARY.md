@@ -1,3 +1,3 @@
-# Larder Haven
+# Vinyl Folio
 
-Offline pantry map. Olive / terracotta / cream UI, Fraunces + Nunito, food-and-drink App Store category. Listing copy lives in `meta-data-apple-store.txt`.
+Offline record folio. Burgundy / gold / ivory UI, Playfair Display + Figtree. Music App Store category. Listing copy in `meta-data-apple-store.txt`.

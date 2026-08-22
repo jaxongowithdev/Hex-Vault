@@ -1,3 +1,3 @@
-# Larder Haven — feature set
+# Vinyl Folio — feature set
 
-Kitchen / Larders / Insights / Studio navigation, staple catalog with label photos, search, weekly pins, reshelve history, JSON backup, and offline SQLite storage (`larder_haven.db`).
+Lounge / Crates / Spin / Booth navigation, pressing catalog with sleeve photos, search, rotation pins, reshelve history, JSON backup, offline SQLite (`vinyl_folio.db`).

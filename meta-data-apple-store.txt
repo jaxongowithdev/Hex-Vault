@@ -1,37 +1,37 @@
 APP NAME
-Larder Haven
+Vinyl Folio
 
 SUBTITLE
-Map your pantry shelves
+Catalog every pressing
 
 KEYWORDS
-pantry,kitchen,larder,spice,grocery,stock,jar,shelf,food,restock,organize,offline
+vinyl,record,album,lp,collection,jazz,crate,pressing,music,shelf,catalog,offline
 
 PROMOTION
-Catalog jars, spices, and dry goods by shelf. See what is low before you shop. Private, offline, and built for a real kitchen.
+Map crates, log pressings, and find any album on the shelf. A private record folio — fully offline.
 
 DESCRIPTION
-Larder Haven is a quiet kitchen catalog for people who cook from what they already have.
+Vinyl Folio is a quiet catalog for people who collect records, not playlists.
 
-Map every larder in the house — the spice drawer, the baking bay, the freezer door, the overflow cupboard — then file each staple where it actually lives. When you wonder whether you still have smoked paprika or a second bag of oats, search once instead of opening every door.
+Map every crate in the house — the jazz wall, the 7-inch cube, the overflow under the turntable — then file each pressing where it actually lives. When you wonder whether you already own that Blue Note reissue, search once instead of flipping a whole bay.
 
 What you can do
-• Create named larders with a shelf mark, kitchen zone, and bay
-• File staples by aisle: grains, spices, oils, canned, baking, tea, and more
-• Mark stock as Fresh, Opened, Low, or Expired
-• Attach a label photo from the camera or your album
-• Pin weekly staples you reach for again and again
-• Reshelve a jar from one larder to another and keep a short note
-• See a kitchen snapshot: how many larders are in use, which aisles are fullest
-• Export or restore the whole catalog as a JSON file
+• Create named crates with a spine mark, listening room, and bay
+• File pressings by genre: jazz, rock, soul, classical, hip-hop, electronic, folk, soundtrack, world
+• Grade condition as Mint, Near mint, Played, or Worn
+• Attach a sleeve photo from the camera or your album
+• Pin a weekly rotation of records you keep reaching for
+• Reshelve a pressing from one crate to another and keep a short note
+• See a collection snapshot: how many crates are in use, which genres run deepest
+• Export or restore the whole folio as a JSON file
 
 Why it is different
-Larder Haven is not a shopping list and not a generic box inventory. It is a pantry map. The language, layout, and categories are written for a working kitchen: zones instead of rooms, bays instead of warehouse racks, stock status instead of “used or damaged.”
+Vinyl Folio is not a streaming library and not a generic storage box. It is a listening-room map. The language, layout, and grades are written for collectors: crates instead of bins, pressings instead of items, sleeve notes instead of packing labels.
 
 Private by design
-Everything stays on your iPhone. There is no account, no cloud sync, and no grocery feed. Open the app offline and the same shelves are still there.
+Everything stays on your iPhone. There is no account, no cloud sync, and no marketplace. Open the app offline and the same shelves are still there.
 
 Who it is for
-Home cooks who buy in bulk, households that share a pantry, anyone tired of buying a third bottle of soy sauce. Start with one drawer. Grow it into a full kitchen map.
+New collectors building a first wall, long-time crate diggers with more than one room, anyone tired of buying a second copy of an album they already own.
 
-Larder Haven — know the shelf before you write the list.
+Vinyl Folio — know the crate before you flip.

@@ -1,7 +1,5 @@
-# Larder Haven
-
-Kitchen pantry catalog. Run from this folder:
+# Vinyl Folio
 
 ```bash
-fvm flutter run
+flutter run
 ```

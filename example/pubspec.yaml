@@ -1,5 +1,5 @@
-name: larder_haven_example
-description: "Larder Haven - Kitchen pantry stock tracker"
+name: vinyl_folio_example
+description: "Vinyl Folio - Record crate and pressing catalog"
 publish_to: 'none'
 version: 1.0.0+1
 environment:

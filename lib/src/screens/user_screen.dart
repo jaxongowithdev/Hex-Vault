@@ -26,10 +26,9 @@ class _UserScreenState extends State<UserScreen> {
 
   Future<void> _initializeApp() async {
     try {
-      debugPrint('Starting Larder Haven initialization...');
+      debugPrint('Starting Vinyl Folio initialization...');
       await _storage.database;
       final prefs = await _storage.getPreferences();
-
       setState(() {
         _preferences = prefs;
         _isInitialized = true;
@@ -48,9 +47,7 @@ class _UserScreenState extends State<UserScreen> {
   Future<void> _reloadPreferences() async {
     try {
       final prefs = await _storage.getPreferences();
-      setState(() {
-        _preferences = prefs;
-      });
+      setState(() => _preferences = prefs);
     } catch (e) {
       debugPrint('Error reloading preferences: $e');
     }
@@ -67,15 +64,13 @@ class _UserScreenState extends State<UserScreen> {
         case 'dark':
           themeMode = ThemeMode.dark;
           break;
-        case 'system':
         default:
           themeMode = ThemeMode.system;
-          break;
       }
     }
 
     return MaterialApp(
-      title: 'Larder Haven',
+      title: 'Vinyl Folio',
       debugShowCheckedModeBanner: false,
       theme: VisualTheme.lightTheme,
       darkTheme: VisualTheme.darkTheme,
@@ -84,7 +79,7 @@ class _UserScreenState extends State<UserScreen> {
         builder: (context) {
           if (!_isInitialized || _preferences == null) {
             return Scaffold(
-              backgroundColor: VisualTheme.cream,
+              backgroundColor: VisualTheme.ivory,
               body: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -92,31 +87,17 @@ class _UserScreenState extends State<UserScreen> {
                     Container(
                       width: 72,
                       height: 72,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: VisualTheme.primaryColor,
-                        borderRadius: BorderRadius.circular(22),
+                        shape: BoxShape.circle,
                       ),
-                      child: const Icon(
-                        Icons.kitchen_outlined,
-                        color: Colors.white,
-                        size: 36,
-                      ),
+                      child: const Icon(Icons.album, color: VisualTheme.secondaryColor, size: 36),
                     ),
-                    const SizedBox(height: 20),
-                    Text(
-                      'Opening the larder…',
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
+                    const SizedBox(height: 18),
+                    const Text('Cueing the folio…'),
                     if (_errorMessage != null) ...[
-                      const SizedBox(height: 24),
-                      Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Text(
-                          'Error: $_errorMessage',
-                          style: const TextStyle(color: Colors.red),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
+                      const SizedBox(height: 20),
+                      Text('Error: $_errorMessage', textAlign: TextAlign.center),
                     ],
                   ],
                 ),

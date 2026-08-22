@@ -1,4 +1,4 @@
-// Kitchen larder / pantry shelf model
+// Record crate / listening-room shelf model
 class ContainerModel {
   final int? id;
   final String name;

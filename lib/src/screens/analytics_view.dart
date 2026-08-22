@@ -25,12 +25,10 @@ class _AnalyticsViewState extends State<AnalyticsView> {
 
   Future<void> _loadData() async {
     setState(() => _isLoading = true);
-
     try {
       final stats = await _storage.getStatistics();
       final categories = await _storage.getItemsByCategory();
       final rooms = await _storage.getItemsByRoom();
-
       setState(() {
         _stats = stats;
         _categoryStats = categories;
@@ -46,9 +44,7 @@ class _AnalyticsViewState extends State<AnalyticsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Insights'),
-      ),
+      appBar: AppBar(title: const Text('Spin')),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : RefreshIndicator(
@@ -56,30 +52,18 @@ class _AnalyticsViewState extends State<AnalyticsView> {
               child: ListView(
                 padding: const EdgeInsets.fromLTRB(20, 8, 20, 28),
                 children: [
-                  _buildOverviewCard(),
+                  _overview(),
                   if (_categoryStats != null && _categoryStats!.isNotEmpty) ...[
-                    const SizedBox(height: 28),
-                    Text(
-                      'By aisle',
-                      style: GoogleFonts.fraunces(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    _buildCategoryChart(),
+                    const SizedBox(height: 24),
+                    Text('By genre', style: GoogleFonts.playfairDisplay(fontSize: 22, fontWeight: FontWeight.w600)),
+                    const SizedBox(height: 10),
+                    _chart(_categoryStats!, true),
                   ],
                   if (_roomStats != null && _roomStats!.isNotEmpty) ...[
-                    const SizedBox(height: 28),
-                    Text(
-                      'By kitchen zone',
-                      style: GoogleFonts.fraunces(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    _buildRoomChart(),
+                    const SizedBox(height: 24),
+                    Text('By room', style: GoogleFonts.playfairDisplay(fontSize: 22, fontWeight: FontWeight.w600)),
+                    const SizedBox(height: 10),
+                    _chart(_roomStats!, false),
                   ],
                 ],
               ),
@@ -87,67 +71,25 @@ class _AnalyticsViewState extends State<AnalyticsView> {
     );
   }
 
-  Widget _buildOverviewCard() {
+  Widget _overview() {
     if (_stats == null) return const SizedBox.shrink();
-
-    final totalContainers = _stats!['totalContainers'] ?? 0;
-    final totalItems = _stats!['totalItems'] ?? 0;
-    final emptyContainers = _stats!['emptyContainers'] ?? 0;
-    final occupiedContainers = totalContainers - emptyContainers;
-
+    final crates = _stats!['totalContainers'] ?? 0;
+    final items = _stats!['totalItems'] ?? 0;
+    final empty = _stats!['emptyContainers'] ?? 0;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Kitchen snapshot',
-              style: GoogleFonts.fraunces(
-                fontSize: 22,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
+            Text('Collection snapshot', style: GoogleFonts.playfairDisplay(fontSize: 22, fontWeight: FontWeight.w600)),
             const SizedBox(height: 16),
             Row(
               children: [
-                Expanded(
-                  child: _buildStatItem(
-                    'Larders',
-                    totalContainers.toString(),
-                    Icons.kitchen_outlined,
-                    VisualTheme.primaryColor,
-                  ),
-                ),
-                Expanded(
-                  child: _buildStatItem(
-                    'Staples',
-                    totalItems.toString(),
-                    Icons.spa_outlined,
-                    VisualTheme.secondaryColor,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                Expanded(
-                  child: _buildStatItem(
-                    'In use',
-                    occupiedContainers.toString(),
-                    Icons.check_circle_outline,
-                    VisualTheme.accentColor,
-                  ),
-                ),
-                Expanded(
-                  child: _buildStatItem(
-                    'Bare',
-                    emptyContainers.toString(),
-                    Icons.inbox_outlined,
-                    const Color(0xFF7A8478),
-                  ),
-                ),
+                _cell('Crates', crates.toString()),
+                _cell('Pressings', items.toString()),
+                _cell('In use', (crates - empty).toString()),
+                _cell('Empty', empty.toString()),
               ],
             ),
           ],
@@ -156,83 +98,50 @@ class _AnalyticsViewState extends State<AnalyticsView> {
     );
   }
 
-  Widget _buildStatItem(String label, String value, IconData icon, Color color) {
-    return Column(
-      children: [
-        Icon(icon, size: 28, color: color),
-        const SizedBox(height: 8),
-        Text(
-          value,
-          style: GoogleFonts.fraunces(fontSize: 26, fontWeight: FontWeight.w600),
-        ),
-        Text(label, textAlign: TextAlign.center),
-      ],
+  Widget _cell(String label, String value) {
+    return Expanded(
+      child: Column(
+        children: [
+          Text(value, style: GoogleFonts.playfairDisplay(fontSize: 22, fontWeight: FontWeight.w600)),
+          Text(label, style: const TextStyle(fontSize: 12)),
+        ],
+      ),
     );
   }
 
-  Widget _buildCategoryChart() {
-    final sortedCategories = _categoryStats!.entries.toList()
-      ..sort((a, b) => b.value.compareTo(a.value));
-
+  Widget _chart(Map<String, int> data, bool genre) {
+    final sorted = data.entries.toList()..sort((a, b) => b.value.compareTo(a.value));
+    final total = _stats?['totalItems'] ?? 1;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
-          children: sortedCategories.map((entry) {
-            return _buildBarItem(
-              entry.key,
-              entry.value,
-              VisualTheme.getCategoryColor(entry.key),
+          children: sorted.map((e) {
+            final pct = (e.value / total * 100).round();
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(e.key, style: const TextStyle(fontWeight: FontWeight.w700)),
+                      Text('${e.value} · $pct%'),
+                    ],
+                  ),
+                  const SizedBox(height: 5),
+                  LinearProgressIndicator(
+                    value: e.value / total,
+                    minHeight: 7,
+                    backgroundColor: VisualTheme.linen,
+                    color: genre ? VisualTheme.getCategoryColor(e.key) : VisualTheme.primaryColor,
+                  ),
+                ],
+              ),
             );
           }).toList(),
         ),
-      ),
-    );
-  }
-
-  Widget _buildRoomChart() {
-    final sortedRooms = _roomStats!.entries.toList()
-      ..sort((a, b) => b.value.compareTo(a.value));
-
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: sortedRooms.map((entry) {
-            return _buildBarItem(entry.key, entry.value, VisualTheme.primaryColor);
-          }).toList(),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBarItem(String label, int value, Color color) {
-    final total = _stats?['totalItems'] ?? 1;
-    final percentage = (value / total * 100).round();
-
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 14),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(label, style: const TextStyle(fontWeight: FontWeight.w700)),
-              Text('$value · $percentage%'),
-            ],
-          ),
-          const SizedBox(height: 6),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: LinearProgressIndicator(
-              value: value / total,
-              minHeight: 9,
-              backgroundColor: VisualTheme.parchment,
-              color: color,
-            ),
-          ),
-        ],
       ),
     );
   }

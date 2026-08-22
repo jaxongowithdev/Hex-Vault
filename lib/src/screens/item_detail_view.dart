@@ -11,7 +11,6 @@ import 'move_item_view.dart';
 
 class ItemDetailView extends StatefulWidget {
   final int itemId;
-
   const ItemDetailView({super.key, required this.itemId});
 
   @override
@@ -32,7 +31,6 @@ class _ItemDetailViewState extends State<ItemDetailView> {
 
   Future<void> _loadData() async {
     setState(() => _isLoading = true);
-
     try {
       final item = await _storage.getItem(widget.itemId);
       if (item != null) {
@@ -53,46 +51,25 @@ class _ItemDetailViewState extends State<ItemDetailView> {
 
   Future<void> _toggleFavorite() async {
     if (_item == null) return;
-
-    try {
-      final updated = _item!.copyWith(isFavorite: !_item!.isFavorite);
-      await _storage.updateItem(updated);
-      setState(() {
-        _item = updated;
-      });
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              updated.isFavorite
-                  ? 'Pinned to weekly staples'
-                  : 'Removed from weekly staples',
-            ),
-            duration: const Duration(seconds: 1),
-          ),
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
-        );
-      }
+    final updated = _item!.copyWith(isFavorite: !_item!.isFavorite);
+    await _storage.updateItem(updated);
+    setState(() => _item = updated);
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(updated.isFavorite ? 'Pinned to the rotation' : 'Removed from the rotation'),
+        duration: const Duration(seconds: 1),
+      ));
     }
   }
 
   Future<void> _deleteItem() async {
     final confirm = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Remove this staple?'),
-        content: const Text('It will leave the larder catalog.'),
+      builder: (_) => AlertDialog(
+        title: const Text('Remove this pressing?'),
+        content: const Text('It will leave the folio.'),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Keep'),
-          ),
+          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Keep')),
           FilledButton(
             onPressed: () => Navigator.pop(context, true),
             style: FilledButton.styleFrom(backgroundColor: Colors.red),
@@ -101,37 +78,19 @@ class _ItemDetailViewState extends State<ItemDetailView> {
         ],
       ),
     );
-
     if (confirm == true) {
-      try {
-        await _storage.deleteItem(widget.itemId);
-        if (mounted) {
-          Navigator.pop(context, true);
-        }
-      } catch (e) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error: $e')),
-          );
-        }
-      }
+      await _storage.deleteItem(widget.itemId);
+      if (mounted) Navigator.pop(context, true);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return Scaffold(
-        appBar: AppBar(),
-        body: const Center(child: CircularProgressIndicator()),
-      );
+      return Scaffold(appBar: AppBar(), body: const Center(child: CircularProgressIndicator()));
     }
-
     if (_item == null) {
-      return Scaffold(
-        appBar: AppBar(),
-        body: const Center(child: Text('Staple not found')),
-      );
+      return Scaffold(appBar: AppBar(), body: const Center(child: Text('Pressing not found')));
     }
 
     return Scaffold(
@@ -142,35 +101,23 @@ class _ItemDetailViewState extends State<ItemDetailView> {
             key: const ValueKey('favorite_toggle'),
             icon: Icon(
               _item!.isFavorite ? Icons.favorite : Icons.favorite_border,
-              color: _item!.isFavorite ? VisualTheme.secondaryColor : null,
+              color: _item!.isFavorite ? VisualTheme.primaryColor : null,
             ),
             onPressed: _toggleFavorite,
           ),
           PopupMenuButton(
-            itemBuilder: (context) => [
-              const PopupMenuItem(value: 'move', child: Text('Move to another larder')),
-              const PopupMenuItem(value: 'edit', child: Text('Edit staple')),
-              const PopupMenuItem(value: 'delete', child: Text('Remove staple')),
+            itemBuilder: (_) => const [
+              PopupMenuItem(value: 'move', child: Text('Move to another crate')),
+              PopupMenuItem(value: 'edit', child: Text('Edit pressing')),
+              PopupMenuItem(value: 'delete', child: Text('Remove pressing')),
             ],
             onSelected: (value) {
               if (value == 'move') {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MoveItemView(item: _item!),
-                  ),
-                ).then((result) {
-                  if (result == true) _loadData();
-                });
+                Navigator.push(context, MaterialPageRoute(builder: (_) => MoveItemView(item: _item!)))
+                    .then((r) { if (r == true) _loadData(); });
               } else if (value == 'edit') {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ItemFormView(item: _item),
-                  ),
-                ).then((result) {
-                  if (result == true) _loadData();
-                });
+                Navigator.push(context, MaterialPageRoute(builder: (_) => ItemFormView(item: _item)))
+                    .then((r) { if (r == true) _loadData(); });
               } else if (value == 'delete') {
                 _deleteItem();
               }
@@ -189,104 +136,64 @@ class _ItemDetailViewState extends State<ItemDetailView> {
                 children: [
                   if (_item!.photoPath != null && _item!.photoPath!.isNotEmpty) ...[
                     ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(14),
                       child: Image.file(
                         File(_item!.photoPath!),
                         height: 200,
                         width: double.infinity,
                         fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            height: 160,
-                            color: VisualTheme.parchment,
-                            child: const Center(
-                              child: Icon(Icons.broken_image, size: 48),
-                            ),
-                          );
-                        },
+                        errorBuilder: (_, __, ___) => Container(
+                          height: 140,
+                          color: VisualTheme.linen,
+                          child: const Center(child: Icon(Icons.broken_image)),
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 14),
                   ],
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: VisualTheme.getCategoryColor(_item!.category)
-                          .withValues(alpha: 0.16),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      _item!.category,
-                      style: TextStyle(
-                        color: VisualTheme.getCategoryColor(_item!.category),
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
                   Text(
-                    _item!.name,
-                    style: GoogleFonts.fraunces(
-                      fontSize: 28,
-                      fontWeight: FontWeight.w600,
+                    _item!.category.toUpperCase(),
+                    style: TextStyle(
+                      color: VisualTheme.getCategoryColor(_item!.category),
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 1.2,
+                      fontSize: 11,
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  _buildInfoRow(Icons.numbers, 'Count', _item!.quantity.toString()),
-                  _buildInfoRow(
-                    Icons.eco_outlined,
-                    'Stock',
-                    _item!.condition,
-                  ),
-                  if (_item!.estimatedValue != null)
-                    _buildInfoRow(
-                      Icons.payments_outlined,
-                      'Typical cost',
-                      '\$${_item!.estimatedValue}',
-                    ),
+                  const SizedBox(height: 6),
+                  Text(_item!.name, style: GoogleFonts.playfairDisplay(fontSize: 28, fontWeight: FontWeight.w600)),
+                  const SizedBox(height: 14),
+                  _row('Copies', _item!.quantity.toString()),
+                  _row('Grade', _item!.condition),
+                  if (_item!.estimatedValue != null) _row('Value', '\$${_item!.estimatedValue}'),
                   if (_item!.notes != null && _item!.notes!.isNotEmpty) ...[
-                    const SizedBox(height: 12),
-                    Text(
-                      'Kitchen note',
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 10),
+                    const Text('Sleeve note', style: TextStyle(fontWeight: FontWeight.w800)),
+                    const SizedBox(height: 4),
                     Text(_item!.notes!),
                   ],
                 ],
               ),
             ),
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 12),
           Card(
             child: ListTile(
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              leading: const CircleAvatar(
-                backgroundColor: VisualTheme.parchment,
-                child: Icon(Icons.kitchen_outlined, color: VisualTheme.primaryColor),
-              ),
-              title: Text(_container?.name ?? 'Unknown larder'),
+              leading: const Icon(Icons.album_outlined),
+              title: Text(_container?.name ?? 'Unknown crate'),
               subtitle: _container != null
-                  ? Text(
-                      '${_container!.room} · ${_container!.shelf}\nMark: ${_container!.code}',
-                    )
+                  ? Text('${_container!.room} · ${_container!.shelf}\nMark: ${_container!.code}')
                   : null,
               isThreeLine: _container != null,
               trailing: const Icon(Icons.chevron_right),
-              onTap: _container != null
-                  ? () {
-                      Navigator.push(
+              onTap: _container == null
+                  ? null
+                  : () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ContainerDetailView(
-                            containerId: _container!.id!,
-                          ),
+                          builder: (_) => ContainerDetailView(containerId: _container!.id!),
                         ),
-                      );
-                    }
-                  : null,
+                      ),
             ),
           ),
         ],
@@ -294,14 +201,12 @@ class _ItemDetailViewState extends State<ItemDetailView> {
     );
   }
 
-  Widget _buildInfoRow(IconData icon, String label, String value) {
+  Widget _row(String label, String value) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.only(bottom: 6),
       child: Row(
         children: [
-          Icon(icon, size: 20, color: VisualTheme.primaryColor),
-          const SizedBox(width: 8),
-          Text('$label: '),
+          SizedBox(width: 80, child: Text(label)),
           Text(value, style: const TextStyle(fontWeight: FontWeight.w800)),
         ],
       ),

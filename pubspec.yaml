@@ -1,5 +1,5 @@
 name: user_screen
-description: "Larder Haven - Map kitchen shelves, catalog pantry staples, and know what to restock. Completely offline."
+description: "Vinyl Folio - Catalog record crates, log pressings, and find any album on the shelf. Completely offline."
 version: 1.0.0+2
 
 environment:

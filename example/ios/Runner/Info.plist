@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Larder Haven</string>
+	<string>Vinyl Folio</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -15,7 +15,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>Larder Haven</string>
+	<string>Vinyl Folio</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -53,8 +53,8 @@
 		<false/>
 	</dict>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Larder Haven uses your photo library so you can save a label photo with each kitchen staple.</string>
+	<string>Vinyl Folio uses your photo library so you can save a sleeve photo with each pressing.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Larder Haven uses your camera so you can photograph jars, tins, and pantry labels.</string>
+	<string>Vinyl Folio uses your camera so you can photograph album covers and labels.</string>
 </dict>
 </plist>
