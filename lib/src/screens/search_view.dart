@@ -56,9 +56,9 @@ class _SearchViewState extends State<SearchView> {
           key: const ValueKey('search_field'),
           controller: _searchController,
           autofocus: true,
-          style: const TextStyle(color: Colors.white),
+          style: const TextStyle(color: Color(0xFFF6EFE3)),
           cursorColor: VisualTheme.secondaryColor,
-          decoration: const InputDecoration(hintText: 'Portra, 120, HP5…', hintStyle: TextStyle(color: Colors.white70), border: InputBorder.none, enabledBorder: InputBorder.none, focusedBorder: InputBorder.none, filled: false),
+          decoration: const InputDecoration(hintText: 'd20, goblin, map…', hintStyle: TextStyle(color: Colors.white70), border: InputBorder.none, enabledBorder: InputBorder.none, focusedBorder: InputBorder.none, filled: false),
           onChanged: _performSearch,
         ),
         actions: [
@@ -72,22 +72,22 @@ class _SearchViewState extends State<SearchView> {
 
   Widget _buildBody() {
     if (_isSearching) return const Center(child: CircularProgressIndicator());
-    if (_searchController.text.isEmpty) return _hint(Icons.search, 'Locate stock', 'Search a roll, format, or lab note.');
-    if (_results == null || _results!.isEmpty) return _hint(Icons.search_off, 'No match', 'Try a shorter word or another format.');
+    if (_searchController.text.isEmpty) return _hint(Icons.search, 'Locate a piece', 'Search a set, kind, or session note.');
+    if (_results == null || _results!.isEmpty) return _hint(Icons.search_off, 'No match', 'Try a shorter word or another kind.');
     return ListView.builder(
       padding: const EdgeInsets.all(16),
       itemCount: _results!.length,
       itemBuilder: (_, i) {
         final item = _results![i];
-        final can = _containersCache[item.containerId];
+        final chest = _containersCache[item.containerId];
         return Padding(
           padding: const EdgeInsets.only(bottom: 8),
           child: Card(
             child: ListTile(
-              leading: Icon(Icons.camera_roll, color: VisualTheme.getCategoryColor(item.category)),
+              leading: Icon(Icons.casino, color: VisualTheme.getCategoryColor(item.category)),
               title: Text(item.name, style: const TextStyle(fontWeight: FontWeight.w700)),
-              subtitle: Text('${item.category} · ${item.quantity}${can != null ? '\n${can.name} / ${can.room}' : ''}'),
-              isThreeLine: can != null,
+              subtitle: Text('${item.category} · ${item.quantity}${chest != null ? '\n${chest.name} / ${chest.room}' : ''}'),
+              isThreeLine: chest != null,
               trailing: const Icon(Icons.arrow_forward, size: 18),
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (_) => ItemDetailView(itemId: item.id!))).then((_) => _performSearch(_searchController.text));
@@ -106,9 +106,9 @@ class _SearchViewState extends State<SearchView> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 48, color: VisualTheme.primaryColor),
+            Icon(icon, size: 48, color: VisualTheme.accentColor),
             const SizedBox(height: 12),
-            Text(title, style: GoogleFonts.instrumentSerif(fontSize: 24, fontWeight: FontWeight.w600)),
+            Text(title, style: GoogleFonts.cinzel(fontSize: 22, fontWeight: FontWeight.w700)),
             const SizedBox(height: 8),
             Text(subtitle, textAlign: TextAlign.center),
           ],

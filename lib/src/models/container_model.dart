@@ -1,4 +1,4 @@
-// Film canister / darkroom tray model
+// Dice chest / tabletop kit model
 class ContainerModel {
   final int? id;
   final String name;

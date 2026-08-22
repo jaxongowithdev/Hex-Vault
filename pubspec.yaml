@@ -1,5 +1,5 @@
 name: user_screen
-description: "Canister Press - Map film cans, log rolls, and find any stock before you load. Completely offline."
+description: "Hex Vault - Map dice chests, log sets, and find any piece before game night. Completely offline."
 version: 1.0.0+2
 
 environment:

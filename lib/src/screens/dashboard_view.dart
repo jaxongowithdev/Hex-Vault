@@ -35,10 +35,10 @@ class _DashboardViewState extends State<DashboardView> {
         selectedIndex: _selectedIndex,
         onDestinationSelected: (i) => setState(() => _selectedIndex = i),
         destinations: const [
-          NavigationDestination(icon: Icon(Icons.auto_awesome_mosaic_outlined), selectedIcon: Icon(Icons.auto_awesome_mosaic), label: 'Bench'),
-          NavigationDestination(icon: Icon(Icons.camera_roll_outlined), selectedIcon: Icon(Icons.camera_roll), label: 'Cans'),
-          NavigationDestination(icon: Icon(Icons.equalizer_outlined), selectedIcon: Icon(Icons.equalizer), label: 'Stock'),
-          NavigationDestination(icon: Icon(Icons.science_outlined), selectedIcon: Icon(Icons.science), label: 'Lab'),
+          NavigationDestination(icon: Icon(Icons.table_restaurant_outlined), selectedIcon: Icon(Icons.table_restaurant), label: 'Table'),
+          NavigationDestination(icon: Icon(Icons.inventory_2_outlined), selectedIcon: Icon(Icons.inventory_2), label: 'Chests'),
+          NavigationDestination(icon: Icon(Icons.casino_outlined), selectedIcon: Icon(Icons.casino), label: 'Roll'),
+          NavigationDestination(icon: Icon(Icons.shield_outlined), selectedIcon: Icon(Icons.shield), label: 'Keep'),
         ],
       ),
     );

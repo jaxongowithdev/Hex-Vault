@@ -1,19 +1,19 @@
-# Canister Press
+# Hex Vault
 
-A private analog catalog. Log cans, file rolls, and find any stock before you load — fully offline.
+A private table catalog. Stage chests, log dice, and find any set before game night — fully offline.
 
-**App Name:** Canister Press
-**Subtitle:** Map your film rolls
-**Category:** Photo & Video
-**Bundle ID:** com.app.canisterpress.build
-**Database:** `canister_press.db`
+**App Name:** Hex Vault
+**Subtitle:** Map your dice chests
+**Category:** Entertainment
+**Bundle ID:** com.app.hexvault.build
+**Database:** `hex_vault.db`
 
 ## Navigation
 
-- Bench — lab pulse and quick actions
-- Cans — all tins and pouches
-- Stock — format and room snapshot
-- Lab — look and backup
+- Table — vault pulse and quick actions
+- Chests — all trays and cases
+- Roll — kind and room snapshot
+- Keep — look and backup
 
 Listing copy lives in `meta-data-apple-store.txt`.
 

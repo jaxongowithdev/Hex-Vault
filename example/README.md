@@ -1,4 +1,4 @@
-# Canister Press
+# Hex Vault
 
 ```bash
 flutter run

@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Canister Press</string>
+	<string>Hex Vault</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -15,7 +15,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>Canister Press</string>
+	<string>Hex Vault</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -53,8 +53,8 @@
 		<false/>
 	</dict>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Canister Press uses your photo library so you can save a photo of each film box or canister.</string>
+	<string>Hex Vault uses your photo library so you can save a photo of each dice set or mini.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Canister Press uses your camera so you can photograph film boxes, canisters, and lab notes.</string>
+	<string>Hex Vault uses your camera so you can photograph dice, minis, and table maps.</string>
 </dict>
 </plist>

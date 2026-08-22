@@ -26,7 +26,7 @@ class _ContainerFormViewState extends State<ContainerFormView> {
     _codeController = TextEditingController(text: widget.container?.code);
     _roomController = TextEditingController(text: widget.container?.room);
     _shelfController = TextEditingController(text: widget.container?.shelf);
-    _capacityController = TextEditingController(text: widget.container?.capacity.toString() ?? '12');
+    _capacityController = TextEditingController(text: widget.container?.capacity.toString() ?? '20');
   }
 
   @override
@@ -61,23 +61,23 @@ class _ContainerFormViewState extends State<ContainerFormView> {
   Widget build(BuildContext context) {
     final isEditing = widget.container != null;
     return Scaffold(
-      appBar: AppBar(title: Text(isEditing ? 'Edit can' : 'New can')),
+      appBar: AppBar(title: Text(isEditing ? 'Edit chest' : 'New chest')),
       body: Form(
         key: _formKey,
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            TextFormField(key: const ValueKey('name_field'), controller: _nameController, decoration: const InputDecoration(labelText: 'Can name', hintText: 'e.g., Fridge tin, Travel pouch', prefixIcon: Icon(Icons.camera_roll_outlined)), validator: (v) => (v == null || v.trim().isEmpty) ? 'Name this can' : null),
+            TextFormField(key: const ValueKey('name_field'), controller: _nameController, decoration: const InputDecoration(labelText: 'Chest name', hintText: 'e.g., Dice tray, Mini case', prefixIcon: Icon(Icons.inventory_2_outlined)), validator: (v) => (v == null || v.trim().isEmpty) ? 'Name this chest' : null),
             const SizedBox(height: 12),
-            TextFormField(key: const ValueKey('code_field'), controller: _codeController, decoration: const InputDecoration(labelText: 'Can mark', hintText: 'e.g., CAN-01, PORTRA', prefixIcon: Icon(Icons.tag)), textCapitalization: TextCapitalization.characters, validator: (v) => (v == null || v.trim().isEmpty) ? 'Add a can mark' : null),
+            TextFormField(key: const ValueKey('code_field'), controller: _codeController, decoration: const InputDecoration(labelText: 'Chest mark', hintText: 'e.g., HEX-01, D20', prefixIcon: Icon(Icons.tag)), textCapitalization: TextCapitalization.characters, validator: (v) => (v == null || v.trim().isEmpty) ? 'Add a chest mark' : null),
             const SizedBox(height: 12),
-            TextFormField(key: const ValueKey('room_field'), controller: _roomController, decoration: const InputDecoration(labelText: 'Room / fridge', hintText: 'e.g., Kitchen, Darkroom, Bag', prefixIcon: Icon(Icons.kitchen_outlined)), validator: (v) => (v == null || v.trim().isEmpty) ? 'Where is this can stored?' : null),
+            TextFormField(key: const ValueKey('room_field'), controller: _roomController, decoration: const InputDecoration(labelText: 'Room / shelf', hintText: 'e.g., Study, Closet, Bag', prefixIcon: Icon(Icons.table_restaurant_outlined)), validator: (v) => (v == null || v.trim().isEmpty) ? 'Where is this chest stored?' : null),
             const SizedBox(height: 12),
-            TextFormField(key: const ValueKey('shelf_field'), controller: _shelfController, decoration: const InputDecoration(labelText: 'Rack / slot', hintText: 'e.g., Top shelf, Left pocket', prefixIcon: Icon(Icons.view_week_outlined)), validator: (v) => (v == null || v.trim().isEmpty) ? 'Add a rack or slot' : null),
+            TextFormField(key: const ValueKey('shelf_field'), controller: _shelfController, decoration: const InputDecoration(labelText: 'Slot / pocket', hintText: 'e.g., Top drawer, Left pouch', prefixIcon: Icon(Icons.view_week_outlined)), validator: (v) => (v == null || v.trim().isEmpty) ? 'Add a slot or pocket' : null),
             const SizedBox(height: 12),
-            TextFormField(key: const ValueKey('capacity_field'), controller: _capacityController, decoration: const InputDecoration(labelText: 'Roll slots', prefixIcon: Icon(Icons.stacked_bar_chart)), keyboardType: TextInputType.number, validator: (v) { final n = int.tryParse(v?.trim() ?? ''); return (n == null || n <= 0) ? 'Use a positive number' : null; }),
+            TextFormField(key: const ValueKey('capacity_field'), controller: _capacityController, decoration: const InputDecoration(labelText: 'Piece slots', prefixIcon: Icon(Icons.stacked_bar_chart)), keyboardType: TextInputType.number, validator: (v) { final n = int.tryParse(v?.trim() ?? ''); return (n == null || n <= 0) ? 'Use a positive number' : null; }),
             const SizedBox(height: 22),
-            FilledButton(key: const ValueKey('save_button'), onPressed: _saveContainer, child: Text(isEditing ? 'Save can' : 'Stage can')),
+            FilledButton(key: const ValueKey('save_button'), onPressed: _saveContainer, child: Text(isEditing ? 'Save chest' : 'Stage chest')),
           ],
         ),
       ),

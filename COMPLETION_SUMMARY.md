@@ -1,3 +1,3 @@
-# Canister Press
+# Hex Vault
 
-Offline analog film map. Charcoal / amber / safe-red UI, Instrument Serif + DM Sans. Photo & Video App Store category. Listing copy in `meta-data-apple-store.txt`.
+Offline tabletop map. Midnight / copper / plum UI, Cinzel + Source Sans 3. Entertainment App Store category. Listing copy in `meta-data-apple-store.txt`.

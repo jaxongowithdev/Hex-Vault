@@ -13,7 +13,7 @@ class StorageManager {
 
   Future<Database> get database async {
     if (_database != null) return _database!;
-    _database = await _initDB('canister_press.db');
+    _database = await _initDB('hex_vault.db');
     return _database!;
   }
 
@@ -52,7 +52,7 @@ class StorageManager {
         name TEXT NOT NULL,
         category TEXT NOT NULL,
         quantity INTEGER NOT NULL DEFAULT 1,
-        condition TEXT NOT NULL DEFAULT 'Unshot',
+        condition TEXT NOT NULL DEFAULT 'New',
         purchaseDate TEXT,
         estimatedValue REAL,
         notes TEXT,
@@ -85,7 +85,7 @@ class StorageManager {
         theme TEXT NOT NULL DEFAULT 'system',
         language TEXT NOT NULL DEFAULT 'en',
         capacityUnit TEXT NOT NULL DEFAULT 'items',
-        defaultBoxPrefix TEXT NOT NULL DEFAULT 'CAN',
+        defaultBoxPrefix TEXT NOT NULL DEFAULT 'HEX',
         showOnboarding INTEGER NOT NULL DEFAULT 1
       )
     ''');

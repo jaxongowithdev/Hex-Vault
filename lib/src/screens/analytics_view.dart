@@ -39,7 +39,7 @@ class _AnalyticsViewState extends State<AnalyticsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Stock')),
+      appBar: AppBar(title: const Text('Roll')),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : RefreshIndicator(
@@ -50,13 +50,13 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                   _overview(),
                   if (_categoryStats != null && _categoryStats!.isNotEmpty) ...[
                     const SizedBox(height: 22),
-                    Text('By format', style: GoogleFonts.instrumentSerif(fontSize: 22, fontWeight: FontWeight.w600)),
+                    Text('By kind', style: GoogleFonts.cinzel(fontSize: 20, fontWeight: FontWeight.w700)),
                     const SizedBox(height: 10),
                     _chart(_categoryStats!, true),
                   ],
                   if (_roomStats != null && _roomStats!.isNotEmpty) ...[
                     const SizedBox(height: 22),
-                    Text('By room', style: GoogleFonts.instrumentSerif(fontSize: 22, fontWeight: FontWeight.w600)),
+                    Text('By room', style: GoogleFonts.cinzel(fontSize: 20, fontWeight: FontWeight.w700)),
                     const SizedBox(height: 10),
                     _chart(_roomStats!, false),
                   ],
@@ -68,22 +68,22 @@ class _AnalyticsViewState extends State<AnalyticsView> {
 
   Widget _overview() {
     if (_stats == null) return const SizedBox.shrink();
-    final cans = _stats!['totalContainers'] ?? 0;
+    final chests = _stats!['totalContainers'] ?? 0;
     final items = _stats!['totalItems'] ?? 0;
     final empty = _stats!['emptyContainers'] ?? 0;
     return Container(
-      padding: const EdgeInsets.all(18),
-      color: VisualTheme.primaryColor,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(color: VisualTheme.primaryColor, borderRadius: BorderRadius.circular(16)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('STOCK SNAPSHOT', style: GoogleFonts.dmSans(color: VisualTheme.secondaryColor, letterSpacing: 1.6, fontSize: 11, fontWeight: FontWeight.w700)),
+          Text('VAULT SNAPSHOT', style: GoogleFonts.sourceSans3(color: VisualTheme.secondaryColor, letterSpacing: 1.6, fontSize: 11, fontWeight: FontWeight.w700)),
           const SizedBox(height: 14),
           Row(
             children: [
-              _cell('Cans', cans.toString()),
-              _cell('Rolls', items.toString()),
-              _cell('In use', (cans - empty).toString()),
+              _cell('Chests', chests.toString()),
+              _cell('Pieces', items.toString()),
+              _cell('In use', (chests - empty).toString()),
               _cell('Empty', empty.toString()),
             ],
           ),
@@ -96,7 +96,7 @@ class _AnalyticsViewState extends State<AnalyticsView> {
     return Expanded(
       child: Column(
         children: [
-          Text(value, style: GoogleFonts.instrumentSerif(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w600)),
+          Text(value, style: GoogleFonts.cinzel(color: const Color(0xFFF6EFE3), fontSize: 22, fontWeight: FontWeight.w700)),
           Text(label, style: const TextStyle(color: Colors.white70, fontSize: 12)),
         ],
       ),
@@ -119,7 +119,7 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                 children: [
                   Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(e.key, style: const TextStyle(fontWeight: FontWeight.w700)), Text('${e.value} · $pct%')]),
                   const SizedBox(height: 5),
-                  LinearProgressIndicator(value: e.value / total, minHeight: 4, backgroundColor: VisualTheme.mist, color: klass ? VisualTheme.getCategoryColor(e.key) : VisualTheme.secondaryColor),
+                  LinearProgressIndicator(value: e.value / total, minHeight: 6, backgroundColor: VisualTheme.mist, color: klass ? VisualTheme.getCategoryColor(e.key) : VisualTheme.secondaryColor, borderRadius: BorderRadius.circular(4)),
                 ],
               ),
             );

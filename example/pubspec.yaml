@@ -1,5 +1,5 @@
-name: canister_press_example
-description: "Canister Press - Analog film and darkroom catalog"
+name: hex_vault_example
+description: "Hex Vault - Tabletop dice and mini catalog"
 publish_to: 'none'
 version: 1.0.0+1
 environment:

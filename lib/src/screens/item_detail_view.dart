@@ -56,7 +56,7 @@ class _ItemDetailViewState extends State<ItemDetailView> {
     setState(() => _item = updated);
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(updated.isFavorite ? 'Pinned to the next load' : 'Removed from the next load'),
+        content: Text(updated.isFavorite ? 'Pinned to the session kit' : 'Removed from the session kit'),
         duration: const Duration(seconds: 1),
       ));
     }
@@ -66,8 +66,8 @@ class _ItemDetailViewState extends State<ItemDetailView> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('Drop this roll?'),
-        content: const Text('It will leave the film catalog.'),
+        title: const Text('Drop this piece?'),
+        content: const Text('It will leave the vault catalog.'),
         actions: [
           TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Keep')),
           FilledButton(onPressed: () => Navigator.pop(context, true), style: FilledButton.styleFrom(backgroundColor: Colors.red), child: const Text('Drop')),
@@ -83,7 +83,7 @@ class _ItemDetailViewState extends State<ItemDetailView> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) return Scaffold(appBar: AppBar(), body: const Center(child: CircularProgressIndicator()));
-    if (_item == null) return Scaffold(appBar: AppBar(), body: const Center(child: Text('Roll not found')));
+    if (_item == null) return Scaffold(appBar: AppBar(), body: const Center(child: Text('Piece not found')));
 
     return Scaffold(
       appBar: AppBar(
@@ -96,9 +96,9 @@ class _ItemDetailViewState extends State<ItemDetailView> {
           ),
           PopupMenuButton(
             itemBuilder: (_) => const [
-              PopupMenuItem(value: 'move', child: Text('Move to another can')),
-              PopupMenuItem(value: 'edit', child: Text('Edit roll')),
-              PopupMenuItem(value: 'delete', child: Text('Drop roll')),
+              PopupMenuItem(value: 'move', child: Text('Move to another chest')),
+              PopupMenuItem(value: 'edit', child: Text('Edit piece')),
+              PopupMenuItem(value: 'delete', child: Text('Drop piece')),
             ],
             onSelected: (v) {
               if (v == 'move') {
@@ -123,7 +123,7 @@ class _ItemDetailViewState extends State<ItemDetailView> {
                 children: [
                   if (_item!.photoPath != null && _item!.photoPath!.isNotEmpty) ...[
                     ClipRRect(
-                      borderRadius: BorderRadius.circular(2),
+                      borderRadius: BorderRadius.circular(12),
                       child: Image.file(
                         File(_item!.photoPath!),
                         height: 200,
@@ -134,16 +134,16 @@ class _ItemDetailViewState extends State<ItemDetailView> {
                     ),
                     const SizedBox(height: 12),
                   ],
-                  Text(_item!.category.toUpperCase(), style: GoogleFonts.dmSans(color: VisualTheme.getCategoryColor(_item!.category), letterSpacing: 1.4, fontSize: 11, fontWeight: FontWeight.w700)),
+                  Text(_item!.category.toUpperCase(), style: GoogleFonts.sourceSans3(color: VisualTheme.getCategoryColor(_item!.category), letterSpacing: 1.4, fontSize: 11, fontWeight: FontWeight.w700)),
                   const SizedBox(height: 6),
-                  Text(_item!.name, style: GoogleFonts.instrumentSerif(fontSize: 28, fontWeight: FontWeight.w600)),
+                  Text(_item!.name, style: GoogleFonts.cinzel(fontSize: 26, fontWeight: FontWeight.w700)),
                   const SizedBox(height: 12),
                   _row('Count', _item!.quantity.toString()),
                   _row('State', _item!.condition),
                   if (_item!.estimatedValue != null) _row('Replace', '\$${_item!.estimatedValue}'),
                   if (_item!.notes != null && _item!.notes!.isNotEmpty) ...[
                     const SizedBox(height: 10),
-                    const Text('Lab note', style: TextStyle(fontWeight: FontWeight.w700)),
+                    const Text('Session note', style: TextStyle(fontWeight: FontWeight.w700)),
                     const SizedBox(height: 4),
                     Text(_item!.notes!),
                   ],
@@ -154,8 +154,8 @@ class _ItemDetailViewState extends State<ItemDetailView> {
           const SizedBox(height: 12),
           Card(
             child: ListTile(
-              leading: const Icon(Icons.camera_roll_outlined),
-              title: Text(_container?.name ?? 'Unknown can'),
+              leading: const Icon(Icons.inventory_2_outlined),
+              title: Text(_container?.name ?? 'Unknown chest'),
               subtitle: _container != null ? Text('${_container!.room} / ${_container!.shelf}\nMark: ${_container!.code}') : null,
               isThreeLine: _container != null,
               trailing: const Icon(Icons.arrow_forward, size: 18),
